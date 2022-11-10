@@ -198,10 +198,10 @@ export const addWhitelistTx = async(
 export const batchDepositTx = async(
   signer: ethers.Signer,
   IContract: ethers.Contract,
-  args: Array<string[]>
+  args: Array<any[]>
   ) => {
   const contract = IContract.connect(signer)
-
+  const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
   try {
     console.log("BATCH DEPOSIT")
     console.log("///////////////////////////////////////////////")
@@ -210,6 +210,14 @@ export const batchDepositTx = async(
     console.log("amounts: ", args[2])
     console.log("///////////////////////////////////////////////")
     
+    // Check if token is a ERC20 if yes parse the amount with its decimals
+    for(let i = 0; i < args[0].length; i++){
+      const contract = ERC20.attach(args[0][i])
+      const nb = await contract.decimals()
+      if (nb) args[2][i] = ethers.utils.parseUnits(args[2][i], nb);
+    }
+    
+
     //Estimation of the gas cost
     const gas = await contract.estimateGas.batchDeposit(...args)     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))

@@ -2,12 +2,11 @@ import { useRef, useState } from "react"
 import { Html } from "@react-three/drei"
 import Experience from "../Experience/Experience"
 import { useForm } from "react-hook-form";
-import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button, Spacer, HStack } from '@chakra-ui/react'
+import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button, HStack } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import Contract from "../Experience/World/Contract";
 import { lootTx } from "../Lib/web3/transactions";
 import { Select } from '@chakra-ui/react'
-import { ethers } from "ethers";
 
 const defaultLoots = {item: [], tokenIds: [], amounts: [], type_: []}
 const TYPE = ["", "ERC20", "ERC721", "ERC1155"];
