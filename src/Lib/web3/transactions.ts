@@ -371,10 +371,10 @@ export const setApprovalForAllTx = async(
     console.log("///////////////////////////////////////////////")
     
     //Estimation of the gas cost
-    const gas = await contract.estimateGas.SetApprovalForAllTx(args.to, args.switch)     
+    const gas = await contract.estimateGas.setApprovalForAllTx(args.to, args.switch)     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.apprSetApprovalForAllTxove(args.to, args.switch)
+    const tx = await contract.setApprovalForAllTx(args.to, args.switch)
     console.log("transaction sent !")
 
     return tx
@@ -630,6 +630,53 @@ export const burnERC721Tx = async(
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
     const tx = await contract.burn(args.id)
+    console.log("transaction sent !")
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
+
+
+
+
+
+/**
+ * @dev Loot a specific token from the chest.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The token address, id & amount
+ * @returns the Tx sent
+ */
+export const lootTx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: any },
+  type: number
+  ) => {
+
+    const contract = IContract.connect(signer)
+    
+  try {
+    console.log("\t\t\tLOOT")
+    console.log("///////////////////////////////////////////////")
+    console.log("address: ", args.address)
+    console.log("id: ", args.id)
+    console.log("amount: ", args.amount)
+    console.log("type: ", type)
+    console.log("///////////////////////////////////////////////")
+    
+    // if token is ERC20 parse it to big number
+    if (type === 1) args.amount = ethers.utils.parseEther(args.amount)
+    
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas.loot(...Object.values(args))     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract.loot(...Object.values(args))
     console.log("transaction sent !")
 
     return tx

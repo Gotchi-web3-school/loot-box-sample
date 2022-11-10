@@ -5,7 +5,12 @@ import { useForm } from "react-hook-form";
 import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button, Spacer, HStack } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import Contract from "../Experience/World/Contract";
-// import { lootTx } from "../Lib/web3/transactions";
+import { lootTx } from "../Lib/web3/transactions";
+import { Select } from '@chakra-ui/react'
+import { ethers } from "ethers";
+
+const defaultLoots = {item: [], tokenIds: [], amounts: [], type_: []}
+const TYPE = ["", "ERC20", "ERC721", "ERC1155"];
 
 const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experience }) => {
 
@@ -17,13 +22,17 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
   |              HOOKS                |
   |__________________________________*/
 
-  const { user } = experience.world
-  const [contract, setContract] = useState<Contract>()
-  const [mode, setCurrMode] = useState<string | undefined>()
-  const [loots, setLoots] = useState<any[]>([])
-  const [connected, setConnected] = useState<boolean>()
-  const lootRef = useRef<any>()
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { 
+    register, 
+    handleSubmit, 
+    watch, 
+    formState: { errors } }         = useForm();
+  const { user }                    = experience.world
+  const [contract, setContract]     = useState<Contract>()
+  const [mode, setCurrMode]         = useState<string | undefined>()
+  const [loots, setLoots]           = useState<{item: string[], tokenIds: any[], amounts: any[], type_: any[]}>(defaultLoots)
+  const [connected, setConnected]   = useState<boolean>()
+  const lootRef                     = useRef<any>()
 
 
 
@@ -33,11 +42,24 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
   |            FUNCTIONS              |
   |__________________________________*/
 
-  const onSubmit = async (data) => {
-    // const tx = await lootTx(user?.wallet.signer, contract?.interface!, args)
-    // contract!.handleTxs(tx)
+  const onSubmit = async (data) => 
+  {
+    const args = data
+    args.address = loots.item[parseInt(watch().address)]
+    const type = loots.type_[parseInt(watch().address)]
+    const tx = await lootTx(user?.wallet.signer, contract?.interface!, args, type)
+
+    contract!.handleTxs(tx)
   };
-  
+
+  const lookInside = async (): Promise<any> => 
+  {
+    const contract = experience.world.lootBoxScene!.contracts[group].interface
+    const chest = await contract.connect(experience.world.user?.wallet.signer)
+    const res = await chest.look()
+    return {item: res[0], tokenIds: res[1], amounts: res[2], type_: res[3]}
+  }
+
 
 
 
@@ -50,9 +72,8 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
     setCurrMode(experience.controller.getCurrentMode())
     setContract(experience.world.lootBoxScene!.contracts[group])
     setConnected(experience.world.user!.wallet.isConnected)
+    setLoots(await lookInside())
 
-    console.log(await contract!.interface!.callStatic.look())
-    setLoots(await contract!.interface!.callStatic.look())
   })
 
   
@@ -76,7 +97,7 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
             <ChakraProvider>
               <Box border={"1px solid #9ecaed"}  overflowY="auto" width="268px" height={"268px"} padding="1rem" borderRadius={"32px"} textAlign="center" textColor={'white'} boxShadow={"inset 0 0 20px #9ecaed, 0 0 20px #9ecaed"}>
                 <Box>
-                  <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >Batch deposit</Text>
+                  <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >Loot</Text>
                   <Box as="button" fontSize={"10px"} position={"fixed"} top="20px" right="20px" onClick={() =>{
                     experience.controller.chestContractControls.main()
                     setCurrMode(experience.controller.getCurrentMode())
@@ -87,34 +108,50 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
                 </Box>
 
 
-                <Stack alignItems={"left"} mt="1rem" spacing={"1rem"}>
-                  <Box mb="1rem">
-                    <FormLabel  m="0" width="3.7rem" position={"relative"}top="-1" left="5" overflow={"hidden"} >Batch 1</FormLabel>
+                <Stack alignItems={"left"} >
+                    <FormLabel  m="0" width="3.7rem" position={"relative"} left="5" overflow={"hidden"} >Batch 1</FormLabel>
                     <Box border="0.01rem solid white" borderRadius={"xl"} textAlign="left" p="0.5rem">
+
                       <Box >
                         <Text fontSize={"xs"}>Address</Text>
-                        <Input  disabled={!loots.length} _hover={{boxShadow:"inset 0 0 2px white, 0 0 2px white"}} fontSize="8px" border="none" padding="0.3rem" placeholder="0x..." size="sm" borderRadius={"5px"} {...register("address1", {required: true, maxLength: 42, minLength: 42, pattern: /^0x[A-Fa-f0-9]{40}$/i})} />
-                        {errors.address1?.type === "pattern" && <Text color="red" fontSize="6px">Address must start with "0x" and follow by 40 "Aa-Ff" and/or "0-9"<br />example: 0x0A2b6922FcFF343D51efB4bE45CFBA5Cd7aa08B6</Text>}
-                        {errors.address1?.type === "required" && <Text color="red" fontSize="10px">Address is required</Text>}
-                        {(errors.address1?.type === "minLength" || errors.address1?.type === "maxLength") && <Text color="red" fontSize="10px">Address must be 42 long</Text>}
+                        <Select fontSize={"0.8rem"} placeholder='Select option' _hover={{boxShadow:"inset 0 0 2px white, 0 0 2px white"}} border="none" {...register("address", {required: true})}>
+                          {loots.item.length && loots.item.map((elem, index) => {
+                            return (<option key={index} value={index}>{TYPE[loots.type_[index].toString()]} - {elem} - ID {loots.tokenIds[index].toString()}</option>)
+                          })}
+                        </Select>
                       </Box>
+
                       <HStack mt="1rem" alignItems={"center"}>
                           <Text fontSize={"xs"}>Id</Text>
-                          <Input  disabled={!loots.length} _hover={{boxShadow:"inset 0 0 2px white, 0 0 2px white"}} border="none" type="number" min="0" maxW="20%" fontSize="8px" padding="0.3rem" placeholder="0" size="sm" borderRadius={"5px"} {...register("id1", {required: true})} />
-                          {errors.id1?.type === "required" && <Text textAlign={"center"} color="red" fontSize="10px">Id is required</Text>}
-                          <Spacer />
+                          <Input type="number" id="id" value={loots.tokenIds[parseInt(watch().address)] ?? '0'}  disabled={!loots.item.length} _hover={{boxShadow:"inset 0 0 2px white, 0 0 2px white"}} border="none"  min="0" maxW="10%" fontSize="8px" padding="0.3rem" placeholder="0" size="sm" borderRadius={"5px"} {...register("id", {required: true})} />
+                          {errors.amount1?.type === "required" && <Text textAlign={"center"} color="red" fontSize="10px">Amount is required</Text>}
                           <Text fontSize={"xs"}>Amount</Text>
-                          <Input  disabled={!loots.length} _hover={{boxShadow:"inset 0 0 2px white, 0 0 2px white"}} border="none" type="number" min="0" maxW="20%" fontSize="8px" padding="0.3rem" placeholder="3" size="sm" borderRadius={"5px"} {...register("amount1", {required: true})} />
+                          <Input 
+                            type="number" 
+                            id="amount" 
+                            disabled={!loots.item.length} 
+                            _hover={{boxShadow:"inset 0 0 2px white, 0 0 2px white"}} 
+                            border="none" 
+                            min={loots.type_[parseInt(watch().address)] === 1 ? "0" : "1"} 
+                            max={loots.amounts[parseInt(watch().address)]} 
+                            step=".000000000000000001" 
+                            maxW="100%" 
+                            fontSize="8px" 
+                            padding="0.3rem" 
+                            placeholder="1" 
+                            size="sm" 
+                            borderRadius={"5px"} 
+                            {...register("amount", { required: true } )} 
+                          />
                           {errors.amount1?.type === "required" && <Text textAlign={"center"} color="red" fontSize="10px">Amount is required</Text>}
                       </HStack>
-                    </Box>
-                  </Box>
+                     </Box>
 
                   
                   { connected ?
-                    <Button disabled={!loots.length} onClick={handleSubmit(onSubmit)} alignSelf="center" mt="3rem !important" maxH="2rem" maxW="5rem" px="0.5rem" borderRadius="0.2rem" bg="blue.500">Send Tx</Button>
+                    <Button disabled={!loots.item.length} onClick={handleSubmit(onSubmit)} alignSelf="center" maxH="2rem" maxW="5rem" px="0.5rem" borderRadius="0.2rem" bg="blue.500">Send Tx</Button>
                     :
-                    <Button onClick={() => { user?.wallet.connect().then((result) => setConnected(result)) }} alignSelf="center" mt="3rem !important" maxH="2rem" maxW="5rem" px="0.5rem" borderRadius="0.2rem" bg="orange" >Connect</Button>
+                    <Button onClick={() => { user?.wallet.connect().then((result) => setConnected(result)) }} alignSelf="center" maxH="2rem" maxW="5rem" px="0.5rem" borderRadius="0.2rem" bg="orange" >Connect</Button>
                   }
 
                 </Stack>
