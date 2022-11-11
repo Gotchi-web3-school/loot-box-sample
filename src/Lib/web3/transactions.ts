@@ -200,8 +200,10 @@ export const batchDepositTx = async(
   IContract: ethers.Contract,
   args: Array<any[]>
   ) => {
+
   const contract = IContract.connect(signer)
   const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
+
   try {
     console.log("BATCH DEPOSIT")
     console.log("///////////////////////////////////////////////")
@@ -667,6 +669,7 @@ export const lootTx = async(
   ) => {
 
     const contract = IContract.connect(signer)
+    const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
     
   try {
     console.log("\t\t\tLOOT")
@@ -678,13 +681,73 @@ export const lootTx = async(
     console.log("///////////////////////////////////////////////")
     
     // if token is ERC20 parse it to big number
-    if (type === 1) args.amount = ethers.utils.parseEther(args.amount)
+    if (type === 1)
+    {
+      const contract = ERC20.attach(args.address)
+      args.amount = ethers.utils.parseUnits(args.amount, await contract.decimals())
+    } 
     
     //Estimation of the gas cost
     const gas = await contract.estimateGas.loot(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
     const tx = await contract.loot(...Object.values(args))
+    console.log("transaction sent !")
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
+
+
+
+
+
+/**
+ * @dev Batch loot tokens from the chest.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The token addresses, ids & amounts
+ * @returns the Tx sent
+ */
+export const batchLootTx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: any[] },
+  types: number[]
+  ) => {
+
+    const contract = IContract.connect(signer)
+    const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
+    
+  try {
+    console.log("\t\tBATCH LOOT")
+    console.log("///////////////////////////////////////////////")
+    console.log("address: ", args.addresses)
+    console.log("id: ", args.ids)
+    console.log("amount: ", args.amounts)
+    console.log("type: ", types)
+    console.log("///////////////////////////////////////////////")
+    
+    // Check if token is a ERC20 if yes parse the amount with its decimals
+    for(let i = 0; i < types.length; i++)
+    {
+      if (types[i] === 1) 
+      {
+        const contract = ERC20.attach(args.addresses[i])
+        args.amounts[i] = ethers.utils.parseUnits(args.amounts[i], await contract.decimals());
+      }
+    }
+
+    console.log(args)
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas.batchLoot(...Object.values(args))     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract.batchLoot(...Object.values(args))
     console.log("transaction sent !")
 
     return tx
