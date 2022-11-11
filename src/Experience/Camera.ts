@@ -6,7 +6,6 @@ import Debug from './Utils/Debug';
 import GUI from 'lil-gui';
 import User from "./World/User";
 import Controller from "./Controller";
-import Time from "./Utils/Time";
 import { Vector3 } from "three";
 
 export default class Camera {
@@ -18,7 +17,7 @@ export default class Camera {
   // Classes
   experience: Experience
   debug: Debug
-  time: Time
+  time: THREE.Clock
   scene: THREE.Scene
   user?: User
   controller: Controller
@@ -51,7 +50,7 @@ export default class Camera {
    constructor(controls: OrbitControls, camera: any) {
      this.experience = Experience.Instance()
      this.debug = this.experience.debug
-     this.time = this.experience.time
+     this.time = this.experience.root.clock
      this.scene = this.experience.scene 
      this.controller = this.experience.controller
      this.instance = camera
