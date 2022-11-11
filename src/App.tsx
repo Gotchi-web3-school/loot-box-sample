@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { extend, useThree, useFrame } from "@react-three/fiber";
+import { OrbitControls, Sky } from "@react-three/drei"
+import { useControls } from 'leva'
 import Experience from "./Experience/Experience";
-import { OrbitControls } from "@react-three/drei"
 import AddWhitelist from "./fiber/AddWhitelist";
 import ApproveERC20 from "./fiber/ApproveERC20";
 import ApproveERC721 from "./fiber/ApproveERC721";
@@ -45,12 +46,17 @@ function App() {
   }, [root])
 
   useFrame( () => experience?.update() )
+
+  const { sunPosition } = useControls('sky', {
+    sunPosition: { value: [ 1, 2, 3 ] }
+})
   
   return (
     <>
       <color args={ ["#695b5b"] } attach="background" />
 
       <OrbitControls args={ [root.camera, root.gl.domElement] } ref={controlsRef} />
+      <Sky sunPosition={sunPosition}/>
 
       <group ref={inputsFunctionRef} >
         
