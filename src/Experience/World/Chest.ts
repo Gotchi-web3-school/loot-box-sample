@@ -1,11 +1,12 @@
-import * as THREE from "three";
-import Experience from "../Experience";
-import Resources from "../Utils/Resources";
-import Materials from "../Utils/Materials";
-import Raycaster from "../Utils/Raycaster";
-import ChestItem from "./ChestItem";
-import Sounds from "../Sounds";
-import { BigNumberish } from "ethers";
+import * as THREE         from "three";
+import { BigNumberish }   from "ethers";
+import Contract           from "./Contract";
+import ChestItem          from "./ChestItem";
+import Experience         from "../Experience";
+import Resources          from "../Utils/Resources";
+import Materials          from "../Utils/Materials";
+import Raycaster          from "../Utils/Raycaster";
+import Sounds             from "../Sounds";
 
 
 export default class Chest {
@@ -17,33 +18,38 @@ export default class Chest {
   materials: Materials
   time: THREE.Clock
   sounds: Sounds
+
+  // Scene
   chestModel: any
   resource: any
-  originX: number
-  contracts: {[key: string]: any} = {}
+  originX: number = -2
   animation: {[key: string]: any} = {}
-  audio: {[key: string]: any} = {}
-  loots: ChestItem[] = []
-  openOffset: number = 0
+  openOffset: number = 1.3
   openIndex: number = 0
+  
+  // blockchain
+  contract?: Contract
+  loots: ChestItem[] = []
 
-  constructor() {
+  constructor() 
+  {
     this.experience = Experience.Instance()
+    this.raycaster =  this.experience.raycaster
     this.scene = this.experience.scene
     this.resources = this.experience.resources
-    this.resource = this.resources.items.scene
     this.materials = this.experience.materials
     this.time = this.experience.root.clock
     this.sounds = this.experience.sounds
+
     this.chestModel = this.experience.world.lootBoxScene!.models.chestModel
-    this.raycaster =  this.experience.raycaster
-    this.originX = -2
+    this.resource = this.resources.items.scene
 
     this.setGLTF()
     this.setAnimation()
   }
 
-  setGLTF() {
+  setGLTF() 
+  {
     console.log("chestModel", this.chestModel)
   }
 
@@ -57,7 +63,8 @@ export default class Chest {
     this.animation.action.current = this.animation.action.open
   }
 
-  setLoots(items: {addresses: string[], ids: BigNumberish[], amounts: BigNumberish[], types: number[]}) {
+  setLoots(items: {addresses: string[], ids: BigNumberish[], amounts: BigNumberish[], types: number[]}) 
+  {
     const chestItems: ChestItem[] = []
     for (let i = 0; i < items.addresses.length; i++) 
     {
@@ -81,9 +88,6 @@ export default class Chest {
       item.mesh.position.y = 0.5
       item.mesh.scale.set(0.5, 0.5, 0.5)
     }
-
-    this.openOffset = 1.3;
-    this.openIndex = 0;
   }
 
   openAnimation() 
