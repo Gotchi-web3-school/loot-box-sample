@@ -56,7 +56,7 @@ function App() {
       <color args={ ["#695b5b"] } attach="background" />
 
       <OrbitControls args={ [root.camera, root.gl.domElement] } ref={controlsRef} />
-      <Sky sunPosition={sunPosition}/>
+      <Sky distance={450000} sunPosition={ sunPosition } inclination={0} azimuth={0.25}/>
 
       <group ref={inputsFunctionRef} >
         

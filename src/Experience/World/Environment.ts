@@ -33,8 +33,8 @@ export default class Environment {
 
   private setLights(): void
   {
-    this.ambientLights["ambientLight"] = new THREE.AmbientLight('#ffffff', 0)
-    this.pointLights["pointLight"] = new THREE.PointLight("#ffffff", 2)
+    this.ambientLights["ambientLight"] = new THREE.AmbientLight('#ffffff', 0.1)
+    this.pointLights["pointLight"] = new THREE.PointLight("#ffffff", 0.5)
     this.pointLights["pointLight"].castShadow = true
     this.pointLights["pointLight"].position.y = 10
     this.scene.add(this.ambientLights["ambientLight"], this.pointLights["pointLight"])
