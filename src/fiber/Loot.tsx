@@ -1,12 +1,18 @@
 import { useRef, useState } from "react"
-import { Html } from "@react-three/drei"
-import Experience from "../Experience/Experience"
-import { useForm } from "react-hook-form";
-import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button, HStack } from '@chakra-ui/react'
+import { 
+  ChakraProvider, 
+  FormLabel, 
+  Input, 
+  Box, 
+  Stack, 
+  Text, Button, HStack }    from '@chakra-ui/react'
+import { Html }             from "@react-three/drei"
+import Experience           from "../Experience/Experience"
+import { useForm }          from "react-hook-form";
 import { ChevronRightIcon } from '@chakra-ui/icons'
-import Contract from "../Experience/World/Contract";
-import { lootTx } from "../Lib/web3/transactions";
-import { Select } from '@chakra-ui/react'
+import Contract             from "../Experience/World/Contract";
+import { lootTx }           from "../Lib/web3/transactions";
+import { Select }           from '@chakra-ui/react'
 
 const defaultLoots = {item: [], tokenIds: [], amounts: [], type_: []}
 const TYPE = ["", "ERC20", "ERC721", "ERC1155"];
@@ -21,15 +27,12 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
   |              HOOKS                |
   |__________________________________*/
 
-  const { 
-    register, 
-    handleSubmit, 
-    watch, 
-    formState: { errors } }         = useForm();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
+  const [loots, setLoots]           = useState<{item: string[], tokenIds: any[], amounts: any[], type_: any[]}>(defaultLoots)
   const { user }                    = experience.world
   const [contract, setContract]     = useState<Contract>()
   const [mode, setCurrMode]         = useState<string | undefined>()
-  const [loots, setLoots]           = useState<{item: string[], tokenIds: any[], amounts: any[], type_: any[]}>(defaultLoots)
   const [connected, setConnected]   = useState<boolean>()
   const lootRef                     = useRef<any>()
 
@@ -50,7 +53,7 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
 
     contract!.handleTxs(tx)
   };
-
+  
   const lookInside = async (): Promise<any> => 
   {
     const contract = experience.world.lootBoxScene!.contracts[group].interface

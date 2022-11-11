@@ -30,7 +30,7 @@ export default class LootBoxScene {
   parseModel()
   {
     this.model = this.resource.scene
-    // Smart contracts
+    
     // Chest.sol
     this.models.chestSC = new THREE.Group()
     this.models.chestSC.name = "chestSC"

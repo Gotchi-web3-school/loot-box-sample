@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { extend, useThree, useFrame } from "@react-three/fiber";
-import { OrbitControls, Sky, Stars } from "@react-three/drei"
+import { OrbitControls, Stars } from "@react-three/drei"
 import { useControls } from 'leva'
 import Experience from "./Experience/Experience";
 import AddWhitelist from "./fiber/AddWhitelist";
