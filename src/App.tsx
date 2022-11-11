@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { extend, useThree, useFrame } from "@react-three/fiber";
-import { OrbitControls, Sky } from "@react-three/drei"
+import { OrbitControls, Sky, Stars } from "@react-three/drei"
 import { useControls } from 'leva'
 import Experience from "./Experience/Experience";
 import AddWhitelist from "./fiber/AddWhitelist";
@@ -47,16 +47,23 @@ function App() {
 
   useFrame( () => experience?.update() )
 
-  const { sunPosition } = useControls('sky', {
-    sunPosition: { value: [ 1, 2, 3 ] }
-})
+  const { radius, depth, count, factor, saturation, speed } = useControls('sky', {
+    radius: { value: 64, min: 0, max: 100 },
+    depth: { value: 130, min: 0, max: 500 },
+    count: { value: 9000, min: 0, max: 100000 },
+    factor: { value: 4, min: 0, max: 20 },
+    saturation: { value: 10, min: 0, max: 1 },
+    speed: { value: 3, min: 0, max: 10 },
+  })
   
   return (
     <>
-      <color args={ ["#695b5b"] } attach="background" />
+      <color args={ ["black"] } attach="background" />
 
       <OrbitControls args={ [root.camera, root.gl.domElement] } ref={controlsRef} />
-      <Sky distance={450000} sunPosition={ sunPosition } inclination={0} azimuth={0.25}/>
+      {/* <Sky distance={450000} sunPosition={ sunPosition } inclination={0} azimuth={0.25}/> */}
+      <Stars radius={radius} depth={depth} count={count} factor={factor} saturation={saturation} speed={speed} />
+
 
       <group ref={inputsFunctionRef} >
         

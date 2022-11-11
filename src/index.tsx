@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <ChakraProvider>
-      <Canvas camera={{ fov: 45, far: 100, position: [0, 3, 10] }} >
+      <Canvas camera={{ fov: 45, far: 1000, position: [0, 3, 10] }} >
           <App />
       </Canvas>
     </ChakraProvider>
