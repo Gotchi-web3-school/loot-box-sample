@@ -455,6 +455,30 @@
         },
         {
             "doubleSided" : true,
+            "emissiveFactor" : [
+                0.36235910654067993,
+                0.36235910654067993,
+                0.36235910654067993
+            ],
+            "name" : "NFT-faces",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.263306200504303,
+                    0.263306200504303,
+                    0.263306200504303,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "emissiveFactor" : [
+                0.08325501531362534,
+                0.08325501531362534,
+                0.08325501531362534
+            ],
             "name" : "nft color",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
@@ -468,6 +492,11 @@
         },
         {
             "doubleSided" : true,
+            "emissiveFactor" : [
+                0.04344819486141205,
+                0.04344819486141205,
+                0.04344819486141205
+            ],
             "name" : "Content",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
@@ -505,7 +534,8 @@
                         "NORMAL" : 5,
                         "TEXCOORD_0" : 6
                     },
-                    "indices" : 7
+                    "indices" : 7,
+                    "material" : 1
                 }
             ]
         },
@@ -519,7 +549,7 @@
                         "TEXCOORD_0" : 10
                     },
                     "indices" : 11,
-                    "material" : 1
+                    "material" : 2
                 }
             ]
         },
@@ -532,7 +562,8 @@
                         "NORMAL" : 13,
                         "TEXCOORD_0" : 14
                     },
-                    "indices" : 15
+                    "indices" : 15,
+                    "material" : 1
                 }
             ]
         },
@@ -546,7 +577,7 @@
                         "TEXCOORD_0" : 18
                     },
                     "indices" : 19,
-                    "material" : 2
+                    "material" : 3
                 }
             ]
         },
@@ -560,7 +591,7 @@
                         "TEXCOORD_0" : 22
                     },
                     "indices" : 19,
-                    "material" : 2
+                    "material" : 3
                 }
             ]
         },
@@ -574,7 +605,7 @@
                         "TEXCOORD_0" : 25
                     },
                     "indices" : 19,
-                    "material" : 2
+                    "material" : 3
                 }
             ]
         },
@@ -588,7 +619,7 @@
                         "TEXCOORD_0" : 28
                     },
                     "indices" : 29,
-                    "material" : 2
+                    "material" : 3
                 }
             ]
         }
