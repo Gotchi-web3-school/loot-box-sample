@@ -8,12 +8,27 @@ export const sources = [
     path: "models/Fox/glTF/Fox.gltf"
   },
   {
-    name: "singleChestModel",
+    name: "chestModel",
     type: "gltfModel",
-    path: "models/Chest/glTF/SingleChest.gltf"
+    path: "models/chest.gltf"
   },
   {
-    name: "scene",
+    name: "erc20Model",
+    type: "gltfModel",
+    path: "models/erc20.gltf"
+  },
+  {
+    name: "erc721Model",
+    type: "gltfModel",
+    path: "models/erc721.gltf"
+  },
+  {
+    name: "erc1155Model",
+    type: "gltfModel",
+    path: "models/erc1155.gltf"
+  },
+  {
+    name: "sceneModel",
     type: "gltfModel",
     path: "models/Scene/lootBox-scene.gltf"
   },
