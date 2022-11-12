@@ -6,11 +6,28 @@ import Resources from "./Resources";
 export default class Factory {
   experience: Experience
   resources: Resources
+  erc20?: any
+  erc721?: any
+  erc1155?: any
 
   constructor() 
   {
     this.experience = Experience.Instance()
     this.resources = this.experience.resources
+  
+    this.resources.on("ready", () => {
+      this.erc20 = this.resources.items.erc20Model
+      this.erc721 = this.resources.items.erc721Model
+      this.erc1155 = this.resources.items.erc1155Model
+
+      console.log(this.erc721)
+      this.experience.scene.add(this.erc721!.scene)
+      const other = new THREE.Group().copy(this.erc721.scene)
+      other.position.y = 5
+      this.experience.scene.add(other)
+
+    })
+
   }
 
   public createTextMesh(text: string, color: string = "white", obj?: any): THREE.Mesh<THREE.BufferGeometry, THREE.Material>
@@ -40,4 +57,39 @@ export default class Factory {
 
   public createSmartContractMesh(abi: string[] & Object[], meshes: THREE.Mesh[], bytecode?: string, address?: string)
   {}
+
+  public createErc20Mesh(address: string): THREE.Group
+  {
+    const token = this.erc20.scene.clone()
+    
+    token.name = address
+
+    return token
+  }
+
+  public createErc721Mesh(address: string, name: string, id: number): THREE.Group
+  {
+    const token =  this.erc721.scene.clone()
+    const nameMesh = this.createTextMesh(name)
+    const idMesh = this.createTextMesh(id.toString())
+    
+    token.name = address
+    token.getObjectByName("erc721_name")!.copy(nameMesh)
+    token.getObjectByName("erc721_id")!.copy(idMesh)
+
+    return token
+  }
+
+  public createErc1155Mesh(address: string, name: string = "beautiful nft", id: number): THREE.Group
+  {
+    const token = this.erc1155.scene.clone()
+    const nameMesh = this.createTextMesh(name)
+    const idMesh = this.createTextMesh(id.toString())
+    
+    token.name = address
+    token.getObjectByName("erc721_name")!.copy(nameMesh)
+    token.getObjectByName("erc721_id")!.copy(idMesh)
+
+    return token
+  }
 }
