@@ -213,12 +213,14 @@ export const batchDepositTx = async(
     console.log("///////////////////////////////////////////////")
     
     // Check if token is a ERC20 if yes parse the amount with its decimals
-    for(let i = 0; i < args[0].length; i++){
-      const contract = ERC20.attach(args[0][i])
-      const nb = await contract.decimals()
-      if (nb) args[2][i] = ethers.utils.parseUnits(args[2][i], nb);
+    for(let i = 0; i < args[0].length; i++) 
+    {
+      try {
+        const erc20Contract = ERC20.attach(args[0][i])
+        const nb = await erc20Contract.decimals()
+        ethers.utils.parseUnits(args[2][i], nb);
+      } catch (error) {/* not a ERC20 */}
     }
-    
 
     //Estimation of the gas cost
     const gas = await contract.estimateGas.batchDeposit(...args)     
@@ -370,21 +372,23 @@ export const setApprovalForAllTx = async(
   IContract: ethers.Contract,
   args: { [ key: string ]: any }
   ) => {
+
     const contract = IContract.connect(signer)
-    
+    console.log(contract)
 
   try {
+    console.log("")
     console.log("SET APPROVAL FOR ALL")
     console.log("///////////////////////////////////////////////")
-    console.log("to: ", args.address)
+    console.log("to: ", args.to)
     console.log("switch: ", args.switch)
     console.log("///////////////////////////////////////////////")
     
     //Estimation of the gas cost
-    const gas = await contract.estimateGas.setApprovalForAllTx(args.to, args.switch)     
+    const gas = await contract.estimateGas.setApprovalForAll(args.to, args.switch)     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.setApprovalForAllTx(args.to, args.switch)
+    const tx = await contract.setApprovalForAll(args.to, args.switch)
     console.log("transaction sent !")
 
     return tx
