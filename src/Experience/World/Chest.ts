@@ -53,6 +53,8 @@ export default class Chest {
 
   setGLTF() 
   {
+    this.chestModel.scene.position.copy(new THREE.Vector3(1.64, 0, 8.76))
+    this.chestModel.scene.rotation.y = -(Math.PI * 0.25)
     this.scene.add(this.chestModel.scene)
   }
 
@@ -154,7 +156,7 @@ export default class Chest {
 
   update() 
   {
-    this.animation.mixer.update(this.time.getDelta() * 300)
+    this.animation.mixer.update(this.time.getDelta() * 50)
     this.openAnimation()
   }
 }
