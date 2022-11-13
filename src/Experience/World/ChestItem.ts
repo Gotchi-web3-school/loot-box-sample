@@ -3,7 +3,7 @@ import Experience from "../Experience";
 import Resources from "../Utils/Resources";
 import Materials from "../Utils/Materials";
 import { ethers, BigNumberish } from "ethers";
-import { interfaces } from "../../Lib/web3/interfaces";
+import { interfaceType } from "../../Lib/web3/interfaces";
 import Chest from "./Chest";
 import Factory from "../Utils/Factory"
 
@@ -22,12 +22,12 @@ export default class ChestItem {
    time: THREE.Clock
    item: Loot
    scene: THREE.Scene
-   
+
    out: boolean = false
    resources: Resources
    materials: Materials
    contract: ethers.Contract
-   mesh: THREE.Mesh
+   mesh: THREE.Group
 
   constructor(chest: Chest, item: Loot) {
     this.experience = Experience.Instance()
@@ -38,9 +38,10 @@ export default class ChestItem {
     this.resources = this.experience.resources
     this.materials = this.experience.materials
     this.scene = this.experience.scene
-    this.contract = new ethers.Contract(item.address, interfaces[item.type], this.experience.world.user?.wallet.signer)
+    this.contract = new ethers.Contract(item.address, interfaceType[item.type], this.experience.world.user?.wallet.signer)
 
-    this.mesh = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial())
+    this.mesh = this.factory.createErc721Mesh(item.address, "yolo", item.id.toString())
+    this.scene.add(this.mesh)
   }
 
   update() {
