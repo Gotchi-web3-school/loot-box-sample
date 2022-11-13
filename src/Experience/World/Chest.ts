@@ -25,7 +25,7 @@ export default class Chest {
   chestModel: any
   chestScene: THREE.Group
   resource: any
-  originX: number = -2
+  originX: number = 0
   animation: {[key: string]: any} = {}
   openOffset: number = 1.3
   openIndex: number = 0
@@ -49,6 +49,7 @@ export default class Chest {
     this.chestScene = this.chestModel.scene
     this.resource   = this.resources.items.scene
 
+
     this.setGLTF()
     this.setAnimation()
     this.setEvent()
@@ -58,6 +59,8 @@ export default class Chest {
   {
     this.chestModel.scene.position.copy(new THREE.Vector3(1.64, 0, 8.76))
     this.chestModel.scene.rotation.y = -(Math.PI * 0.25)
+    this.originX = this.chestModel.scene.position.x
+
     this.scene.add(this.chestModel.scene)
   }
 
@@ -88,7 +91,7 @@ export default class Chest {
         setTimeout(() => action.stop(), 500)
         
         for(const loot of loots) {
-          loot.mesh.position.set(-2, 0.5, 0)
+          loot.mesh!.position.copy(this.chestScene.position)
           loot.out = false
         }
         this.openIndex = 0;
@@ -152,25 +155,28 @@ export default class Chest {
   {
     if (this.animation.action.current.paused) 
     {
-      // loots displacement when user open the chest
+      // calcul each loot displacement & final position when openning the chest
       if (this.openIndex < this.loots.length) 
       {
         let finalPosition = ( this.originX - ( this.loots.length / 2 ) + this.openIndex + 0.5 )
         let delta = finalPosition - this.originX
-
-        if ( this.openOffset - this.loots[this.openIndex].mesh.position.y > 0 ) 
+        
+        // 1. Animation during the openning of chest
+        if ( this.openOffset - this.loots[this.openIndex].mesh!.position.y > 0 ) 
         {
-          this.loots[this.openIndex].mesh.position.y += (this.time.getDelta() * 0.003);
-          this.loots[this.openIndex].mesh.rotation.y += (this.time.getDelta() * 0.01);
-          this.loots[this.openIndex].mesh.position.x = this.originX + (delta * (this.loots[this.openIndex].mesh.position.y / this.openOffset));
+          this.loots[this.openIndex].mesh!.position.y += (this.time.getDelta() * 400);
+          this.loots[this.openIndex].mesh!.rotation.y = this.time.getElapsedTime() * 5
+          this.loots[this.openIndex].mesh!.position.x = this.originX + (delta * (this.loots[this.openIndex].mesh!.position.y / this.openOffset));
         }
         else 
         {
+          // 2. Once the item is at his final position go to the next one
           this.loots[this.openIndex].out = true;
 
           this.openIndex++;
         }
       }
+      // 3. Animaton once all the item has been set up hovering above the chest
       this.loots.forEach((loot: ChestItem) => loot.update())
     }
   }

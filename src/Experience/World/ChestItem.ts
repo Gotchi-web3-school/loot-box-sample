@@ -3,7 +3,6 @@ import Experience from "../Experience";
 import Resources from "../Utils/Resources";
 import Materials from "../Utils/Materials";
 import { ethers, BigNumberish } from "ethers";
-import { interfaceType } from "../../Lib/web3/interfaces";
 import Chest from "./Chest";
 import Factory from "../Utils/Factory"
 
@@ -12,6 +11,12 @@ type Loot = {
   id: BigNumberish
   amount: BigNumberish
   type: number
+}
+
+const interfaceType = {
+  "1": "erc20",
+  "2": "erc721",
+  "3": "erc1155",
 }
 
 export default class ChestItem {
@@ -27,7 +32,7 @@ export default class ChestItem {
    resources: Resources
    materials: Materials
    contract: ethers.Contract
-   mesh: THREE.Group
+   mesh?: THREE.Group
 
   constructor(chest: Chest, item: Loot) {
     this.experience = Experience.Instance()
@@ -38,16 +43,46 @@ export default class ChestItem {
     this.resources = this.experience.resources
     this.materials = this.experience.materials
     this.scene = this.experience.scene
-    this.contract = new ethers.Contract(item.address, interfaceType[item.type], this.experience.world.user?.wallet.signer)
 
-    this.mesh = this.factory.createErc721Mesh(item.address, "yolo", item.id.toString())
-    this.scene.add(this.mesh)
+    let abi = this.resources.items[`${interfaceType[item.type]}Abi`].abi
+    this.contract = new ethers.Contract(item.address, abi, this.experience.world.user?.wallet.signer)
+
+    this.setMesh(item)
+  }
+
+  async setMesh(item: Loot)
+  {
+    let name;
+
+    if (item.type !== 3) name = await this.contract.symbol()
+
+    switch(item.type) 
+    {
+      case 1:
+        this.mesh = this.factory.createErc20Mesh(item.address, name)
+        this.mesh.position.copy(this.chest.chestModel.scene.position)
+      break
+        
+      case 2:
+        this.mesh = this.factory.createErc721Mesh(item.address, name, item.id.toString())
+        this.mesh.position.copy(this.chest.chestModel.scene.position)
+      break
+
+      case 3:
+        this.mesh = this.factory.createErc1155Mesh(item.address, name, item.id.toString())
+        this.mesh.position.copy(this.chest.chestModel.scene.position)
+      break
+
+      default:
+        console.error("Error with the type of item");
+    }
+    this.scene.add(this.mesh!)
   }
 
   update() {
     if (this.out) {
-      this.mesh.position.y = Math.cos(Math.sin(-this.chest.time.elapsedTime * 0.001)) + this.chest.openOffset
-      this.mesh.rotation.y = this.chest.time.elapsedTime * 0.001
+      this.mesh!.position.y = Math.cos(Math.sin(-this.chest.time.getElapsedTime())) + this.chest.openOffset
+      this.mesh!.rotation.y = this.chest.time.getElapsedTime()
     }
   }
 }

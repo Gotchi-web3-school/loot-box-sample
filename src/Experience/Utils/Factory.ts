@@ -48,27 +48,50 @@ export default class Factory {
     return mesh
   }
 
-  public createSmartContractMesh(abi: string[] & Object[], meshes: THREE.Mesh[], bytecode?: string, address?: string)
-  {}
+  public createTextGeometry(text: string, obj?: any)
+  {
+    const textGeometry = new TextGeometry(
+      text.split('').join(' '), 
+      {
+        font: this.resources.items.aovel, 
+        size: obj?.size || 0.5,
+        height: obj?.height || 0.2,
+        curveSegments: obj?.curveSegments || 12,
+        bevelEnabled: obj?.bevelEnabled || true,
+        bevelThickness: obj?.bevelThickness || 0,
+        bevelSize: obj?.bevelSize || 0,
+        bevelOffset: obj?.bevelOffset || 0,
+        bevelSegments: obj?.bevelSegments || 5
+      }
+    )
+    textGeometry.center()
+    
+    return textGeometry
+  }
 
-  public createErc20Mesh(address: string): THREE.Group
+  public createErc20Mesh(address: string, name: string): THREE.Group
   {
     const token = this.erc20.scene.clone()
-    
     token.name = address
+
+    const nameGeometry = this.createTextGeometry(name, { size: 0.5 })
+
+    token.getObjectByName("erc20_nameF").geometry.copy(nameGeometry)
+    token.getObjectByName("erc20_nameB").geometry.copy(nameGeometry)
 
     return token
   }
 
   public createErc721Mesh(address: string, name: string, id: string): THREE.Group
   {
-    const token =  this.erc721.scene.clone()
-    const nameMesh = this.createTextMesh(name)
-    const idMesh = this.createTextMesh(id.toString())
-    
+    const token = this.erc721.scene.clone()
     token.name = address
-    token.getObjectByName("erc721_name")!.copy(nameMesh)
-    token.getObjectByName("erc721_id")!.copy(idMesh)
+    console.log(token)
+    const nameGeometry = this.createTextGeometry(name, { size: 0.05, height: 0.02 })
+    const idGeometry = this.createTextGeometry(id, { size: 0.05, height: 0.02 })
+
+    token.getObjectByName("erc721_name").geometry.copy(nameGeometry)
+    token.getObjectByName("erc721_id").geometry.copy(idGeometry)
 
     return token
   }
@@ -76,12 +99,13 @@ export default class Factory {
   public createErc1155Mesh(address: string, name: string = "beautiful nft", id: string): THREE.Group
   {
     const token = this.erc1155.scene.clone()
-    const nameMesh = this.createTextMesh(name)
-    const idMesh = this.createTextMesh(id.toString())
-    
     token.name = address
-    token.getObjectByName("erc721_name")!.copy(nameMesh)
-    token.getObjectByName("erc721_id")!.copy(idMesh)
+
+    const nameGeometry = this.createTextGeometry(name, { size: 0.05, height: 0.02 })
+    const idGeometry = this.createTextGeometry(id, { size: 0.05, height: 0.02 })
+
+    token.getObjectByName("erc721_name").geometry.copy(nameGeometry)
+    token.getObjectByName("erc721_id").geometry.copy(idGeometry)
 
     return token
   }
