@@ -7,6 +7,9 @@ import bloop from "../static/sounds/bloop.mp3";
 import whoosh from "../static/sounds/whoosh.mp3";
 import star from "../static/sounds/star.wav";
 import futuristic2 from "../static/sounds/futuristic_set_2.wav";
+import openChest from "../static/sounds/openning_chest.mp3";
+import openLockedChest from "../static/sounds/openning_locked_chest.mp3";
+import closeChest from "../static/sounds/closing_chest.mp3";
 
 export default class Sounds {
   muted: boolean = false
@@ -17,18 +20,24 @@ export default class Sounds {
   bloop: any
   whoosh: any
   star: any
+  openChest: any
+  openLockedChest: any
+  closeChest: any
   funcHover: any
 
   constructor() {
     this.experience = Experience.Instance()
     this.debug = this.experience.debug
 
-    this.arcade = new Howl({ src: [arcade] });
-    this.click = new Howl({ src: [click] });
-    this.bloop = new Howl({ src: [bloop] });
-    this.whoosh = new Howl({ src: [whoosh] });
-    this.star = new Howl({ src: [star] });
-    this.funcHover = new Howl({
+    this.arcade           = new Howl({ src: [arcade] });
+    this.click            = new Howl({ src: [click] });
+    this.bloop            = new Howl({ src: [bloop] });
+    this.whoosh           = new Howl({ src: [whoosh] });
+    this.star             = new Howl({ src: [star] });
+    this.openChest        = new Howl({ src: [openChest] });
+    this.openLockedChest  = new Howl({ src: [openLockedChest] });
+    this.closeChest       = new Howl({ src: [closeChest] });
+    this.funcHover        = new Howl({
       src: [futuristic2],
       sprite: {
         hover1: [0, 500],
@@ -69,10 +78,13 @@ export default class Sounds {
     })
   }
 
-  playArcade()                   { this.arcade.play()        }
-  playClick()                    { this.click.play()         }
-  playBloop()                    { this.bloop.play()         }
-  playWhoosh()                   { this.whoosh.play()        }
-  playStar()                     { this.star.play()          }
-  playFuncHover(name: string)    { this.funcHover.play(name) }
+  playArcade()                   { this.arcade.play()          }
+  playClick()                    { this.click.play()           }
+  playBloop()                    { this.bloop.play()           }
+  playWhoosh()                   { this.whoosh.play()          }
+  playStar()                     { this.star.play()            }
+  playOpenChest()                { this.openChest.play()       }
+  playOpenLockedChest()          { this.openLockedChest.play() }
+  playCloseChest()               { this.closeChest.play()      }
+  playFuncHover(name: string)    { this.funcHover.play(name)   }
 }
