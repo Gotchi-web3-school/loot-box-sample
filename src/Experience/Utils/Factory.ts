@@ -60,7 +60,7 @@ export default class Factory {
     return token
   }
 
-  public createErc721Mesh(address: string, name: string, id: number): THREE.Group
+  public createErc721Mesh(address: string, name: string, id: string): THREE.Group
   {
     const token =  this.erc721.scene.clone()
     const nameMesh = this.createTextMesh(name)
@@ -73,7 +73,7 @@ export default class Factory {
     return token
   }
 
-  public createErc1155Mesh(address: string, name: string = "beautiful nft", id: number): THREE.Group
+  public createErc1155Mesh(address: string, name: string = "beautiful nft", id: string): THREE.Group
   {
     const token = this.erc1155.scene.clone()
     const nameMesh = this.createTextMesh(name)
