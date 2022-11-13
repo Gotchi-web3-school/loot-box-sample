@@ -7,6 +7,8 @@ import { ChevronRightIcon } from '@chakra-ui/icons'
 
 const Import: React.FC<{group: string, experience: Experience}>  = ({ group, experience }) => {
   // hooks
+  const { user } = experience.world
+  const [connected, setConnected] = useState<boolean>()
   const [mode, setCurrMode] = useState<string | undefined>(undefined)
   const importRef = useRef<any>()
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -16,6 +18,7 @@ const Import: React.FC<{group: string, experience: Experience}>  = ({ group, exp
     experience.world.lootBoxScene!.contracts[group].attachAddress(data.address)
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
+    experience.world.lootBoxScene!.contracts[group].trigger("import " + group)
   };
   
   // Events
@@ -61,7 +64,11 @@ const Import: React.FC<{group: string, experience: Experience}>  = ({ group, exp
 
                   <Spacer />
 
-                  <Button onClick={handleSubmit(onSubmit)} maxW="5rem" maxH="2rem" borderRadius="0.2rem" bg="blue.500" >Import</Button>
+                  { connected ?
+                    <Button onClick={handleSubmit(onSubmit)} alignSelf="center" mt="2rem !important" maxH="2rem" maxW="5rem" px="0.5rem" borderRadius="0.2rem" bg="blue.500" >Import</Button>
+                    :
+                    <Button onClick={() => { user?.wallet.connect().then((result) => setConnected(result)) }} maxH="2rem" px="0.5rem" borderRadius="0.2rem" background="orange" >Connect</Button>
+                  }
 
                 </Stack>
               </Box>
