@@ -7,6 +7,7 @@ import Resources          from "../Utils/Resources";
 import Materials          from "../Utils/Materials";
 import Raycaster          from "../Utils/Raycaster";
 import Sounds             from "../Sounds";
+import PreLoader          from "../PreLoader";
 
 
 export default class Chest {
@@ -14,7 +15,8 @@ export default class Chest {
   experience: Experience
   raycaster: Raycaster
   scene: THREE.Scene
-  resources: Resources
+  resources: Resources        
+  preLoader: PreLoader
   materials: Materials
   time: THREE.Clock
   sounds: Sounds
@@ -38,6 +40,7 @@ export default class Chest {
     this.raycaster  = this.experience.raycaster
     this.scene      = this.experience.scene
     this.resources  = this.experience.resources
+    this.preLoader  = this.experience.preLoader 
     this.materials  = this.experience.materials
     this.time       = this.experience.root.clock
     this.sounds     = this.experience.sounds
@@ -98,20 +101,33 @@ export default class Chest {
       }
     })
 
+    this.preLoader.on("start", () => {
+
+      this.contract = this.experience.world.lootBoxScene?.contracts.chest
+
+      this.experience.world.lootBoxScene?.contracts.chest.on("import chest", async () => {
+        const IContract = this.contract!.interface!.connect(this.experience.world.user?.wallet.signer)
+        const loots = await IContract.callStatic.look()
+        this.setLoots(loots)
+      })
+
+    })
+
+
   }
 
-  setLoots(items: {addresses: string[], ids: BigNumberish[], amounts: BigNumberish[], types: number[]}) 
+  setLoots(loots: {items: string[], tokenIds: BigNumberish[], amounts: BigNumberish[], type_: number[]}) 
   {
     const chestItems: ChestItem[] = []
-    for (let i = 0; i < items.addresses.length; i++) 
+    for (let i = 0; i < loots.items.length; i++) 
     {
       chestItems.push(
 
         new ChestItem(this, {
-          address: items.addresses[i],
-          id: items.ids[i],
-          amount: items.amounts[i],
-          type: items.types[i],
+          address: loots.items[i],
+          id: loots.tokenIds[i],
+          amount: loots.amounts[i],
+          type: loots.type_[i],
         })
 
       )
@@ -119,12 +135,17 @@ export default class Chest {
 
     this.loots = chestItems
 
-    for (const item of chestItems) 
-    {
-      item.mesh.position.x = -2
-      item.mesh.position.y = 0.5
-      item.mesh.scale.set(0.5, 0.5, 0.5)
-    }
+    // for (const item of chestItems) 
+    // {
+    //   item.mesh.position.x = -2
+    //   item.mesh.position.y = 0.5
+    //   item.mesh.scale.set(0.5, 0.5, 0.5)
+    // }
+  }
+
+  refreshLoots()
+  {
+
   }
 
   openAnimation() 
@@ -156,7 +177,7 @@ export default class Chest {
 
   update() 
   {
-    this.animation.mixer.update(this.time.getDelta() * 50)
+    this.animation.mixer.update(0.02)
     this.openAnimation()
   }
 }
