@@ -113,7 +113,6 @@ export default class LootBoxScene {
     this.scene.add(this.models.erc1155SC)
 
     // Models
-    this.models.chestModel = this.model.getObjectByName("chest")
     this.models.clickMe = this.model.getObjectByName("clickMe")
     this.models.grass = this.model.getObjectByName("grass")
     this.models.road = this.model.getObjectByName("road")
@@ -184,11 +183,10 @@ export default class LootBoxScene {
   {
     this.resources.on("texturesMapped", () => 
     {
-      this.contracts.chest = new Contract(this.resources.items.chestAbi.abi, this.models.chestSC, this.resources.items.chestAbi.bytecode)
-      this.contracts.erc20 = new Contract(this.resources.items.erc20Abi.abi, this.models.erc20SC, this.resources.items.erc20Abi.bytecode)
-      this.contracts.erc721 = new Contract(this.resources.items.erc721Abi.abi, this.models.erc721SC, this.resources.items.erc721Abi.bytecode)
-      this.contracts.erc1155 = new Contract(this.resources.items.erc1155Abi.abi, this.models.erc1155SC, this.resources.items.erc1155Abi.bytecode)
-
+      this.contracts.chest    = new Contract( this.resources.items.chestAbi.abi,     this.models.chestSC,    this.resources.items.chestAbi.bytecode   )
+      this.contracts.erc20    = new Contract( this.resources.items.erc20Abi.abi,     this.models.erc20SC,    this.resources.items.erc20Abi.bytecode   )
+      this.contracts.erc721   = new Contract( this.resources.items.erc721Abi.abi,    this.models.erc721SC,   this.resources.items.erc721Abi.bytecode  )
+      this.contracts.erc1155  = new Contract( this.resources.items.erc1155Abi.abi,   this.models.erc1155SC,  this.resources.items.erc1155Abi.bytecode )
     })
   }
 

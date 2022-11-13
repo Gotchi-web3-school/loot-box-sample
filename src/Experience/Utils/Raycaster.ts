@@ -106,6 +106,16 @@ export default class Raycaster extends EventEmitter{
     // erc1155.sol
     this.objectsToTest.push(this.lootBoxScene?.models.erc1155SC)
     this.lootBoxScene?.models.erc1155SC.children.forEach((obj3d: THREE.Object3D) => this.objectsToTest.push(obj3d))
+
+    // chest
+    this.world!.chest!.chestScene.traverse((obj3d: THREE.Object3D) => 
+    {
+      if (obj3d instanceof THREE.SkinnedMesh)
+      {
+        obj3d.parent!.name = "chest"
+        this.objectsToTest.push(obj3d)
+      }
+    })
   }
 
   private setWindowListener()
@@ -179,6 +189,10 @@ export default class Raycaster extends EventEmitter{
 
             case "erc1155SC":
               this.controller.worldControls.erc1155SC()
+            break
+
+            case "chest":
+              this.trigger("clickChest")
             break
 
             default:

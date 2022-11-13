@@ -19,13 +19,6 @@ export default class Factory {
       this.erc20 = this.resources.items.erc20Model
       this.erc721 = this.resources.items.erc721Model
       this.erc1155 = this.resources.items.erc1155Model
-
-      console.log(this.erc721)
-      this.experience.scene.add(this.erc721!.scene)
-      const other = new THREE.Group().copy(this.erc721.scene)
-      other.position.y = 5
-      this.experience.scene.add(other)
-
     })
 
   }

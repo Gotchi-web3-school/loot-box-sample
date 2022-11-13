@@ -22,6 +22,7 @@ export default class ChestItem {
    time: THREE.Clock
    item: Loot
    scene: THREE.Scene
+   
    out: boolean = false
    resources: Resources
    materials: Materials

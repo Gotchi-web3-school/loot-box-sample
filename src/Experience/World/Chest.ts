@@ -21,6 +21,7 @@ export default class Chest {
 
   // Scene
   chestModel: any
+  chestScene: THREE.Group
   resource: any
   originX: number = -2
   animation: {[key: string]: any} = {}
@@ -34,33 +35,67 @@ export default class Chest {
   constructor() 
   {
     this.experience = Experience.Instance()
-    this.raycaster =  this.experience.raycaster
-    this.scene = this.experience.scene
-    this.resources = this.experience.resources
-    this.materials = this.experience.materials
-    this.time = this.experience.root.clock
-    this.sounds = this.experience.sounds
+    this.raycaster  = this.experience.raycaster
+    this.scene      = this.experience.scene
+    this.resources  = this.experience.resources
+    this.materials  = this.experience.materials
+    this.time       = this.experience.root.clock
+    this.sounds     = this.experience.sounds
 
-    this.chestModel = this.experience.world.lootBoxScene!.models.chestModel
-    this.resource = this.resources.items.scene
+    this.chestModel = this.resources.items.chestModel
+    this.chestScene = this.chestModel.scene
+    this.resource   = this.resources.items.scene
 
     this.setGLTF()
     this.setAnimation()
+    this.setEvent()
   }
 
   setGLTF() 
   {
-    console.log("chestModel", this.chestModel)
+    this.scene.add(this.chestModel.scene)
   }
 
   setAnimation() 
   {
     this.animation = {}
-    this.animation.mixer = new THREE.AnimationMixer(this.chestModel)
+    this.animation.mixer = new THREE.AnimationMixer(this.chestModel.scene)
     
     this.animation.action = {}
     this.animation.action.open = this.animation.mixer.clipAction(this.chestModel.animations[0])
     this.animation.action.current = this.animation.action.open
+  }
+
+  setEvent()
+  {
+    this.raycaster.on("clickChest", () => 
+    {
+      let action = this.animation.action.current
+      let open = this.sounds.openChest
+      let close = this.sounds.closeChest
+      let loots = this.loots
+
+      if (action.paused) 
+      {
+        action.paused = false
+        close.play()
+
+        setTimeout(() => action.stop(), 500)
+        
+        for(const loot of loots) {
+          loot.mesh.position.set(-2, 0.5, 0)
+          loot.out = false
+        }
+        this.openIndex = 0;
+      }
+      else 
+      {
+        action.play()
+        open.play()
+        setTimeout(() => action.paused = true, 500)
+      }
+    })
+
   }
 
   setLoots(items: {addresses: string[], ids: BigNumberish[], amounts: BigNumberish[], types: number[]}) 
@@ -92,16 +127,22 @@ export default class Chest {
 
   openAnimation() 
   {
-    if (this.animation.action.current.paused) {
-      if (this.openIndex < this.loots.length) {
-        let finalPosition = (this.originX - (this.loots.length / 2) + this.openIndex + 0.5)
+    if (this.animation.action.current.paused) 
+    {
+      // loots displacement when user open the chest
+      if (this.openIndex < this.loots.length) 
+      {
+        let finalPosition = ( this.originX - ( this.loots.length / 2 ) + this.openIndex + 0.5 )
         let delta = finalPosition - this.originX
-        if (this.openOffset - this.loots[this.openIndex].mesh.position.y > 0) {
+
+        if ( this.openOffset - this.loots[this.openIndex].mesh.position.y > 0 ) 
+        {
           this.loots[this.openIndex].mesh.position.y += (this.time.getDelta() * 0.003);
           this.loots[this.openIndex].mesh.rotation.y += (this.time.getDelta() * 0.01);
           this.loots[this.openIndex].mesh.position.x = this.originX + (delta * (this.loots[this.openIndex].mesh.position.y / this.openOffset));
         }
-        else {
+        else 
+        {
           this.loots[this.openIndex].out = true;
 
           this.openIndex++;
@@ -111,8 +152,9 @@ export default class Chest {
     }
   }
 
-  update() {
-    this.animation.mixer.update(this.time.getDelta())
+  update() 
+  {
+    this.animation.mixer.update(this.time.getDelta() * 300)
     this.openAnimation()
   }
 }

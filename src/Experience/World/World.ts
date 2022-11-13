@@ -1,9 +1,10 @@
-import * as THREE from "three"
-import Experience from "../Experience";
-import Environment from "./Environment";
-import User from "./User";
-import Resources from "../Utils/Resources";
-import LootBoxScene from "./LootBoxScene";
+import * as THREE     from "three"
+import Chest          from "./Chest";
+import Environment    from "./Environment";
+import LootBoxScene   from "./LootBoxScene";
+import User           from "./User";
+import Experience     from "../Experience";
+import Resources      from "../Utils/Resources";
 
 export default class World {
   // Classes
@@ -13,6 +14,7 @@ export default class World {
   lootBoxScene?: LootBoxScene
   user?: User
   environment?: Environment
+  chest?: Chest
 
 
   constructor() {
@@ -24,10 +26,12 @@ export default class World {
     const gridHelper = new THREE.GridHelper(100, 100);
     this.scene.add(gridHelper);
 
-    this.resources.on("ready", () => {
-      this.lootBoxScene = new LootBoxScene()
-      this.user = new User();
-      this.environment = new Environment();
+    this.resources.on("ready", () => 
+    {
+      this.lootBoxScene   = new LootBoxScene()
+      this.user           = new User();
+      this.environment    = new Environment();
+      this.chest          = new Chest()
     })
 
   }
@@ -36,6 +40,7 @@ export default class World {
   {
     this.user?.update()
     this.lootBoxScene?.update()
+    this.chest?.update()
   }
 
 }
