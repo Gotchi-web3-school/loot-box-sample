@@ -10,6 +10,7 @@ import { Vector3 } from "three"
 import { RootState } from "@react-three/fiber"
 import Materials from "../Utils/Materials";
 import Raycaster from "../Utils/Raycaster";
+import EventEmitter from "../Utils/EventEmitter"
 
 type Functions = {
   [key: string]: {
@@ -19,7 +20,7 @@ type Functions = {
   }
 }
 
-export default class Contract {
+export default class Contract extends EventEmitter {
   // Classes
   experience: Experience
   scene: THREE.Scene
@@ -72,6 +73,8 @@ export default class Contract {
    */
   constructor(abi: string[] & Object[], meshes: THREE.Group, bytecode: string, address?: string)
   {
+    super()
+
     this.experience = Experience.Instance()
     this.scene = this.experience.scene
     this.factory = this.experience.factory
