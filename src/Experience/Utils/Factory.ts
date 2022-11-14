@@ -98,7 +98,7 @@ export default class Factory {
     return token
   }
 
-  public createErc1155Mesh(address: string, name: string = "beautiful", id: string): THREE.Group
+  public createErc1155Mesh(address: string, name: string = "erc1155", id: string): THREE.Group
   {
     const token = this.erc1155.scene.clone()
     
