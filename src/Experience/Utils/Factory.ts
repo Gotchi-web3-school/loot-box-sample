@@ -85,27 +85,31 @@ export default class Factory {
   public createErc721Mesh(address: string, name: string, id: string): THREE.Group
   {
     const token = this.erc721.scene.clone()
-    token.name = address
-    console.log(token)
+    
     const nameGeometry = this.createTextGeometry(name, { size: 0.05, height: 0.02 })
     const idGeometry = this.createTextGeometry(id, { size: 0.05, height: 0.02 })
 
-    token.getObjectByName("erc721_name").geometry.copy(nameGeometry)
-    token.getObjectByName("erc721_id").geometry.copy(idGeometry)
+    token.getObjectByName("erc721_name").geometry.dispose()
+    token.getObjectByName("erc721_id").geometry.dispose()
+
+    token.getObjectByName("erc721_name").geometry = nameGeometry
+    token.getObjectByName("erc721_id").geometry = idGeometry
 
     return token
   }
 
-  public createErc1155Mesh(address: string, name: string = "beautiful nft", id: string): THREE.Group
+  public createErc1155Mesh(address: string, name: string = "beautiful", id: string): THREE.Group
   {
     const token = this.erc1155.scene.clone()
-    token.name = address
-
+    
     const nameGeometry = this.createTextGeometry(name, { size: 0.05, height: 0.02 })
     const idGeometry = this.createTextGeometry(id, { size: 0.05, height: 0.02 })
 
-    token.getObjectByName("erc721_name").geometry.copy(nameGeometry)
-    token.getObjectByName("erc721_id").geometry.copy(idGeometry)
+    token.getObjectByName("erc1155_name").geometry.dispose()
+    token.getObjectByName("erc1155_id").geometry.dispose()
+
+    token.getObjectByName("erc1155_name").geometry = nameGeometry
+    token.getObjectByName("erc1155_id").geometry = idGeometry
 
     return token
   }
