@@ -8,6 +8,7 @@ import Materials          from "../Utils/Materials";
 import Raycaster          from "../Utils/Raycaster";
 import Sounds             from "../Sounds";
 import PreLoader          from "../PreLoader";
+import { Vector3 } from "three";
 
 
 export default class Chest {
@@ -25,9 +26,9 @@ export default class Chest {
   chestModel: any
   chestScene: THREE.Group
   resource: any
-  originX: number = 0
+  originPos: THREE.Vector3 = new THREE.Vector3()
   animation: {[key: string]: any} = {}
-  openOffset: number = 1.3
+  openYaxisOffset: number = 1.3
   openIndex: number = 0
   
   // blockchain
@@ -59,7 +60,7 @@ export default class Chest {
   {
     this.chestModel.scene.position.copy(new THREE.Vector3(1.64, 0, 8.76))
     this.chestModel.scene.rotation.y = -(Math.PI * 0.25)
-    this.originX = this.chestModel.scene.position.x
+    this.originPos.copy(this.chestModel.scene.position)
 
     this.scene.add(this.chestModel.scene)
   }
@@ -158,15 +159,28 @@ export default class Chest {
       // calcul each loot displacement & final position when openning the chest
       if (this.openIndex < this.loots.length) 
       {
-        let finalPosition = ( this.originX - ( this.loots.length / 2 ) + this.openIndex + 0.5 )
-        let delta = finalPosition - this.originX
+
+        let chestDirection = this.chestScene.getWorldDirection(new Vector3()) // Getting the dirrection of our chest (looking at)
+        chestDirection.x = -chestDirection.x                                  // rotate this direction by 90deg
+
+        // Calculing final position of current item
+        let finalPosition = new THREE.Vector3().copy(this.originPos)
+        finalPosition.add( new THREE.Vector3().addScalar(this.openIndex - ( this.loots.length / 2 ) + 0.5).multiply(chestDirection) )
+        
+        // the difference amount of distance between initial position and final position
+        let diffenrence = new THREE.Vector3().copy(finalPosition).sub(this.originPos)
+
         
         // 1. Animation during the openning of chest
-        if ( this.openOffset - this.loots[this.openIndex].mesh!.position.y > 0 ) 
+        if ( this.openYaxisOffset - this.loots[this.openIndex].mesh!.position.y > 0 ) 
         {
+          this.loots[this.openIndex].mesh!.position.x = this.originPos.x + ( diffenrence.x * ((this.loots[this.openIndex].mesh!.position.y / this.openYaxisOffset)));
+          this.loots[this.openIndex].mesh!.position.z = this.originPos.z + ( diffenrence.z * ((this.loots[this.openIndex].mesh!.position.y / this.openYaxisOffset)));
+
           this.loots[this.openIndex].mesh!.position.y += (this.time.getDelta() * 400);
-          this.loots[this.openIndex].mesh!.rotation.y = this.time.getElapsedTime() * 5
-          this.loots[this.openIndex].mesh!.position.x = this.originX + (delta * (this.loots[this.openIndex].mesh!.position.y / this.openOffset));
+          
+          // While getting to its final position rotate the item
+          this.loots[this.openIndex].mesh!.rotation.y = this.time.getElapsedTime() * 10
         }
         else 
         {

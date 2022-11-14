@@ -81,7 +81,7 @@ export default class ChestItem {
 
   update() {
     if (this.out) {
-      this.mesh!.position.y = Math.cos(Math.sin(-this.chest.time.getElapsedTime())) + this.chest.openOffset
+      this.mesh!.position.y = Math.cos(Math.sin(-this.chest.time.getElapsedTime())) + this.chest.openYaxisOffset
       this.mesh!.rotation.y = this.chest.time.getElapsedTime()
     }
   }
