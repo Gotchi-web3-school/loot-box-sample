@@ -62,7 +62,7 @@ export const sources = [
   {
     name: "contractInterfaceMaterial",
     type: "texture",
-    path: "models/Scene/textures/baked-contract-interface.png"
+    path: "textures/baked/baked-contract-interface.png"
   },
   {
     name: "specularGlossiness",
