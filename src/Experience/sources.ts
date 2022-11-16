@@ -36,9 +36,69 @@ export const sources = [
     path: "scenes/lootBox/steps/steps.gltf"
   },
   {
-    name: "wallsModel",
+    name: "wall1Model",
     type: "lootBoxScene",
-    path: "scenes/lootBox/walls/walls.gltf"
+    path: "scenes/lootBox/walls/wall1.gltf"
+  },
+  {
+    name: "wall2Model",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wall2.gltf"
+  },
+  {
+    name: "wall3Model",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wall3.gltf"
+  },
+  {
+    name: "wall4Model",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wall4.gltf"
+  },
+  {
+    name: "wall5Model",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wall5.gltf"
+  },
+  {
+    name: "wall6Model",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wall6.gltf"
+  },
+  {
+    name: "wall7Model",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wall7.gltf"
+  },
+  {
+    name: "wall8Model",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wall8.gltf"
+  },
+  {
+    name: "wall9Model",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wall9.gltf"
+  },
+  {
+    name: "wall10Model",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wall10.gltf"
+  },
+  {
+    name: "wallDoor1Model",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wallDoor1.gltf"
+  },
+  {
+    name: "wallDoor2Model",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wallDoor2.gltf"
+  },
+  {
+    name: "wallOriginModel",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/wallOrigin.gltf"
   },
 
   /**
