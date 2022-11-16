@@ -61,7 +61,7 @@ function App() {
     <>
       <color args={ ["black"] } attach="background" />
       <EffectComposer >
-        <Bloom mipmapBlur />
+        <Bloom mipmapBlur intensity={ 0.5 } luminanceThreshold={ 1 } />
       </EffectComposer>
       
 

@@ -25,6 +25,7 @@ export default class LootBoxScene {
   // smart-contracts
   smartContracts: {[key: string]: any} = {}
 
+
   constructor() {
     this.experience = Experience.Instance()
     this.scene      = this.experience.scene
@@ -34,6 +35,7 @@ export default class LootBoxScene {
     this.parseModel()
     this.setMaterials()
     this.setSmartContract()
+
   }
   
   parseModel()
@@ -154,6 +156,14 @@ export default class LootBoxScene {
   {
     this.resources.on("texturesMapped", () => 
     {
+      this.lamp.getObjectByName('poleLights').children[0].intensity = 0.4
+      this.lamp.getObjectByName('poleLights').children[1].intensity = 0.4
+      
+      this.lamp.traverse(child => child.isMesh ? child.material.toneMapped = false : "")
+      this.contracts.traverse(child => child.isMesh ? child.material.toneMapped = false : "")
+      this.steps.traverse(child => child.isMesh ? child.material.toneMapped = false : "")
+
+
       this.models.chestSC.children[0].material  = this.materials.items.deployContract
       this.models.chestSC.children[1].material  = this.materials.items.addWhitelist
       this.models.chestSC.children[2].material  = this.materials.items.deposit
@@ -163,6 +173,7 @@ export default class LootBoxScene {
       this.models.chestSC.children[9].visible   = false
       this.models.chestSC.children[10].visible  = false
       this.models.chestSC.children[11].material = this.materials.items.import
+      this.models.chestSC.getObjectByName("chest_network").material = this.materials.items.contractInterfaceMaterial
       this.models.chestSC.getObjectByName("chest_interface").material = this.materials.items.contractInterfaceMaterial
       this.models.chestSC.getObjectByName("chest_inputsScreen").material = this.materials.items.contractInterfaceMaterial
       this.models.chestSC.getObjectByName("chest_metaScreen").material = this.materials.items.contractInterfaceMaterial
@@ -176,6 +187,7 @@ export default class LootBoxScene {
       this.models.erc20SC.children[9].visible   = false
       this.models.erc20SC.children[10].visible  = false
       this.models.erc20SC.children[11].material = this.materials.items.import
+      this.models.erc20SC.getObjectByName("erc20_network").material = this.materials.items.contractInterfaceMaterial
       this.models.erc20SC.getObjectByName("erc20_interface").material = this.materials.items.contractInterfaceMaterial
       this.models.erc20SC.getObjectByName("erc20_inputsScreen").material = this.materials.items.contractInterfaceMaterial
       this.models.erc20SC.getObjectByName("erc20_metaScreen").material = this.materials.items.contractInterfaceMaterial
@@ -193,6 +205,7 @@ export default class LootBoxScene {
       this.models.erc721SC.children[13].visible = false
       this.models.erc721SC.children[14].visible = false
       this.models.erc721SC.children[15].material = this.materials.items.import
+      this.models.erc721SC.getObjectByName("erc721_network").material = this.materials.items.contractInterfaceMaterial
       this.models.erc721SC.getObjectByName("erc721_interface").material = this.materials.items.contractInterfaceMaterial
       this.models.erc721SC.getObjectByName("erc721_inputsScreen").material = this.materials.items.contractInterfaceMaterial
       this.models.erc721SC.getObjectByName("erc721_metaScreen").material = this.materials.items.contractInterfaceMaterial
@@ -210,6 +223,7 @@ export default class LootBoxScene {
       this.models.erc1155SC.children[13].visible = false
       this.models.erc1155SC.children[14].visible = false
       this.models.erc1155SC.children[15].material = this.materials.items.import
+      this.models.erc1155SC.getObjectByName("erc1155_network").material = this.materials.items.contractInterfaceMaterial
       this.models.erc1155SC.getObjectByName("erc1155_interface").material = this.materials.items.contractInterfaceMaterial
       this.models.erc1155SC.getObjectByName("erc1155_inputsScreen").material = this.materials.items.contractInterfaceMaterial
       this.models.erc1155SC.getObjectByName("erc1155_metaScreen").material = this.materials.items.contractInterfaceMaterial

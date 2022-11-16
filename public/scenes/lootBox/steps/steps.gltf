@@ -1332,14 +1332,9 @@
             "doubleSided" : true,
             "emissiveFactor" : [
                 1,
-                0.026266321539878845,
-                0.0025342716835439205
+                0.37645769119262695,
+                0.09023141860961914
             ],
-            "extensions" : {
-                "KHR_materials_emissive_strength" : {
-                    "emissiveStrength" : 9.200000762939453
-                }
-            },
             "name" : "Title",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
@@ -1353,13 +1348,13 @@
         {
             "doubleSided" : true,
             "emissiveFactor" : [
-                0.2843170762062073,
-                0.23243743181228638,
+                0.9999987483024597,
+                0.999998927116394,
                 1
             ],
             "extensions" : {
                 "KHR_materials_emissive_strength" : {
-                    "emissiveStrength" : 80
+                    "emissiveStrength" : 2
                 }
             },
             "name" : "lamp",

@@ -5,29 +5,94 @@
     },
     "extensionsUsed" : [
         "KHR_draco_mesh_compression",
+        "KHR_lights_punctual",
         "KHR_materials_emissive_strength"
     ],
     "extensionsRequired" : [
-        "KHR_draco_mesh_compression"
+        "KHR_draco_mesh_compression",
+        "KHR_lights_punctual"
     ],
+    "extensions" : {
+        "KHR_lights_punctual" : {
+            "lights" : [
+                {
+                    "color" : [
+                        0.9834727048873901,
+                        0.6577721834182739,
+                        1
+                    ],
+                    "intensity" : 1,
+                    "type" : "point",
+                    "name" : "Point.001"
+                },
+                {
+                    "color" : [
+                        0.9911013841629028,
+                        0.26224997639656067,
+                        1
+                    ],
+                    "intensity" : 0.010000000707805157,
+                    "type" : "point",
+                    "name" : "Point.002"
+                }
+            ]
+        }
+    },
     "scene" : 0,
     "scenes" : [
         {
             "name" : "Scene",
             "nodes" : [
-                0,
-                1,
                 2,
                 3,
                 4,
                 5,
                 6,
-                7
+                7,
+                8,
+                9
             ]
         }
     ],
     "nodes" : [
         {
+            "extensions" : {
+                "KHR_lights_punctual" : {
+                    "light" : 0
+                }
+            },
+            "name" : "lamp_light",
+            "rotation" : [
+                -0.01130293682217598,
+                0.7070164680480957,
+                0.7070164680480957,
+                0.01130293682217598
+            ]
+        },
+        {
+            "extensions" : {
+                "KHR_lights_punctual" : {
+                    "light" : 1
+                }
+            },
+            "name" : "lamp_light.001",
+            "rotation" : [
+                -0.01130293682217598,
+                0.7070164680480957,
+                0.7070164680480957,
+                0.01130293682217598
+            ],
+            "translation" : [
+                0.07072406262159348,
+                0,
+                2.2113871574401855
+            ]
+        },
+        {
+            "children" : [
+                0,
+                1
+            ],
             "mesh" : 0,
             "name" : "poleLights",
             "rotation" : [
@@ -52,9 +117,9 @@
                 0.015984710305929184
             ],
             "translation" : [
-                -15.253684997558594,
-                6.148371696472168,
-                3.280117988586426
+                -11.885467529296875,
+                5.663764476776123,
+                2.2822039127349854
             ]
         },
         {
@@ -74,7 +139,7 @@
             "translation" : [
                 -11.981081008911133,
                 1.6152738332748413,
-                2.1599974632263184
+                2.1538801193237305
             ]
         },
         {
@@ -92,7 +157,7 @@
                 0.2035144716501236
             ],
             "translation" : [
-                -11.837060928344727,
+                -11.829446792602539,
                 1.118048906326294,
                 2.2847249507904053
             ]
@@ -112,7 +177,7 @@
                 0.2035144716501236
             ],
             "translation" : [
-                -11.836424827575684,
+                -11.82241153717041,
                 2.718172073364258,
                 2.2847249507904053
             ]
@@ -132,7 +197,7 @@
                 0.2035144716501236
             ],
             "translation" : [
-                -11.83259391784668,
+                -11.819048881530762,
                 3.1791210174560547,
                 2.2847249507904053
             ]
@@ -152,7 +217,7 @@
                 0.1626439243555069
             ],
             "translation" : [
-                -11.853922843933105,
+                -11.846073150634766,
                 0.6753127574920654,
                 2.2847249507904053
             ]
@@ -174,7 +239,7 @@
             "translation" : [
                 -11.981081008911133,
                 2.2007346153259277,
-                2.164266347885132
+                2.1593844890594482
             ]
         }
     ],
@@ -184,21 +249,21 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 0,
+                        "node" : 2,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 0,
+                        "node" : 2,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 0,
+                        "node" : 2,
                         "path" : "scale"
                     }
                 }
@@ -227,26 +292,26 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 1,
+                        "node" : 0,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 1,
+                        "node" : 0,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 1,
+                        "node" : 0,
                         "path" : "scale"
                     }
                 }
             ],
-            "name" : "lamp_body",
+            "name" : "lamp_light",
             "samplers" : [
                 {
                     "input" : 36,
@@ -270,26 +335,26 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 2,
+                        "node" : 1,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 2,
+                        "node" : 1,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 2,
+                        "node" : 1,
                         "path" : "scale"
                     }
                 }
             ],
-            "name" : "lamp_sign_step2",
+            "name" : "lamp_light.001",
             "samplers" : [
                 {
                     "input" : 36,
@@ -332,7 +397,7 @@
                     }
                 }
             ],
-            "name" : "lamp_sign_step1",
+            "name" : "lamp_body",
             "samplers" : [
                 {
                     "input" : 36,
@@ -375,7 +440,7 @@
                     }
                 }
             ],
-            "name" : "lamp_sign_step4",
+            "name" : "lamp_sign_step2",
             "samplers" : [
                 {
                     "input" : 36,
@@ -418,7 +483,7 @@
                     }
                 }
             ],
-            "name" : "lamp_sign_step5",
+            "name" : "lamp_sign_step1",
             "samplers" : [
                 {
                     "input" : 36,
@@ -461,7 +526,7 @@
                     }
                 }
             ],
-            "name" : "lamp_sign_lootBox",
+            "name" : "lamp_sign_step4",
             "samplers" : [
                 {
                     "input" : 36,
@@ -504,7 +569,7 @@
                     }
                 }
             ],
-            "name" : "lamp_sign_step3",
+            "name" : "lamp_sign_step5",
             "samplers" : [
                 {
                     "input" : 36,
@@ -522,19 +587,105 @@
                     "output" : 60
                 }
             ]
+        },
+        {
+            "channels" : [
+                {
+                    "sampler" : 0,
+                    "target" : {
+                        "node" : 8,
+                        "path" : "translation"
+                    }
+                },
+                {
+                    "sampler" : 1,
+                    "target" : {
+                        "node" : 8,
+                        "path" : "rotation"
+                    }
+                },
+                {
+                    "sampler" : 2,
+                    "target" : {
+                        "node" : 8,
+                        "path" : "scale"
+                    }
+                }
+            ],
+            "name" : "lamp_sign_lootBox",
+            "samplers" : [
+                {
+                    "input" : 36,
+                    "interpolation" : "LINEAR",
+                    "output" : 61
+                },
+                {
+                    "input" : 36,
+                    "interpolation" : "LINEAR",
+                    "output" : 62
+                },
+                {
+                    "input" : 36,
+                    "interpolation" : "LINEAR",
+                    "output" : 63
+                }
+            ]
+        },
+        {
+            "channels" : [
+                {
+                    "sampler" : 0,
+                    "target" : {
+                        "node" : 9,
+                        "path" : "translation"
+                    }
+                },
+                {
+                    "sampler" : 1,
+                    "target" : {
+                        "node" : 9,
+                        "path" : "rotation"
+                    }
+                },
+                {
+                    "sampler" : 2,
+                    "target" : {
+                        "node" : 9,
+                        "path" : "scale"
+                    }
+                }
+            ],
+            "name" : "lamp_sign_step3",
+            "samplers" : [
+                {
+                    "input" : 36,
+                    "interpolation" : "LINEAR",
+                    "output" : 64
+                },
+                {
+                    "input" : 36,
+                    "interpolation" : "LINEAR",
+                    "output" : 65
+                },
+                {
+                    "input" : 36,
+                    "interpolation" : "LINEAR",
+                    "output" : 66
+                }
+            ]
         }
     ],
     "materials" : [
         {
             "doubleSided" : true,
             "emissiveFactor" : [
-                1,
-                1,
+                0.9849640130996704,
+                0.4156218469142914,
                 1
             ],
             "extensions" : {
                 "KHR_materials_emissive_strength" : {
-                    "emissiveStrength" : 100
+                    "emissiveStrength" : 2
                 }
             },
             "name" : "Material.004",
@@ -580,7 +731,7 @@
             ],
             "extensions" : {
                 "KHR_materials_emissive_strength" : {
-                    "emissiveStrength" : 39.999996185302734
+                    "emissiveStrength" : 1.5
                 }
             },
             "name" : "Material.009",
@@ -862,27 +1013,27 @@
         },
         {
             "componentType" : 5126,
-            "count" : 1895,
+            "count" : 1925,
             "max" : [
-                -2.2767932415008545,
-                1.296658992767334,
-                2.466381072998047
+                1.0578033924102783,
+                1.781266212463379,
+                1.3613111972808838
             ],
             "min" : [
-                -4.083657741546631,
-                -6.130939483642578,
-                -0.29992803931236267
+                -0.749061107635498,
+                -5.646332263946533,
+                -1.4049979448318481
             ],
             "type" : "VEC3"
         },
         {
             "componentType" : 5126,
-            "count" : 1895,
+            "count" : 1925,
             "type" : "VEC3"
         },
         {
             "componentType" : 5126,
-            "count" : 1895,
+            "count" : 1925,
             "type" : "VEC2"
         },
         {
@@ -894,14 +1045,14 @@
             "componentType" : 5126,
             "count" : 24,
             "max" : [
-                -2.472839832305908,
-                -2.7512757778167725,
-                1.7715182304382324
+                0.8617568016052246,
+                -2.2666685581207275,
+                0.6664483547210693
             ],
             "min" : [
-                -4.066658973693848,
-                -5.584970951080322,
-                0.4575369358062744
+                -0.7320623397827148,
+                -5.100363731384277,
+                -0.6475329399108887
             ],
             "type" : "VEC3"
         },
@@ -1255,6 +1406,42 @@
             "componentType" : 5126,
             "count" : 251,
             "type" : "VEC3"
+        },
+        {
+            "bufferView" : 34,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 35,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 36,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 37,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 38,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 39,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
         }
     ],
     "bufferViews" : [
@@ -1265,168 +1452,198 @@
         },
         {
             "buffer" : 0,
-            "byteLength" : 11429,
+            "byteLength" : 11530,
             "byteOffset" : 8004
         },
         {
             "buffer" : 0,
             "byteLength" : 339,
-            "byteOffset" : 19436
+            "byteOffset" : 19536
         },
         {
             "buffer" : 0,
             "byteLength" : 14271,
-            "byteOffset" : 19776
+            "byteOffset" : 19876
         },
         {
             "buffer" : 0,
             "byteLength" : 6786,
-            "byteOffset" : 34048
+            "byteOffset" : 34148
         },
         {
             "buffer" : 0,
             "byteLength" : 6560,
-            "byteOffset" : 40836
+            "byteOffset" : 40936
         },
         {
             "buffer" : 0,
             "byteLength" : 13723,
-            "byteOffset" : 47396
+            "byteOffset" : 47496
         },
         {
             "buffer" : 0,
             "byteLength" : 7268,
-            "byteOffset" : 61120
+            "byteOffset" : 61220
         },
         {
             "buffer" : 0,
             "byteLength" : 8857,
-            "byteOffset" : 68388
+            "byteOffset" : 68488
         },
         {
             "buffer" : 0,
             "byteLength" : 1004,
-            "byteOffset" : 77248
+            "byteOffset" : 77348
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 78252
+            "byteOffset" : 78352
         },
         {
             "buffer" : 0,
             "byteLength" : 4016,
-            "byteOffset" : 81264
+            "byteOffset" : 81364
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 85280
+            "byteOffset" : 85380
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 88292
+            "byteOffset" : 88392
         },
         {
             "buffer" : 0,
             "byteLength" : 4016,
-            "byteOffset" : 91304
+            "byteOffset" : 91404
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 95320
+            "byteOffset" : 95420
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 98332
+            "byteOffset" : 98432
         },
         {
             "buffer" : 0,
             "byteLength" : 4016,
-            "byteOffset" : 101344
+            "byteOffset" : 101444
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 105360
+            "byteOffset" : 105460
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 108372
+            "byteOffset" : 108472
         },
         {
             "buffer" : 0,
             "byteLength" : 4016,
-            "byteOffset" : 111384
+            "byteOffset" : 111484
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 115400
+            "byteOffset" : 115500
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 118412
+            "byteOffset" : 118512
         },
         {
             "buffer" : 0,
             "byteLength" : 4016,
-            "byteOffset" : 121424
+            "byteOffset" : 121524
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 125440
+            "byteOffset" : 125540
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 128452
+            "byteOffset" : 128552
         },
         {
             "buffer" : 0,
             "byteLength" : 4016,
-            "byteOffset" : 131464
+            "byteOffset" : 131564
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 135480
+            "byteOffset" : 135580
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 138492
+            "byteOffset" : 138592
         },
         {
             "buffer" : 0,
             "byteLength" : 4016,
-            "byteOffset" : 141504
+            "byteOffset" : 141604
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 145520
+            "byteOffset" : 145620
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 148532
+            "byteOffset" : 148632
         },
         {
             "buffer" : 0,
             "byteLength" : 4016,
-            "byteOffset" : 151544
+            "byteOffset" : 151644
         },
         {
             "buffer" : 0,
             "byteLength" : 3012,
-            "byteOffset" : 155560
+            "byteOffset" : 155660
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 158672
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 4016,
+            "byteOffset" : 161684
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 165700
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 168712
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 4016,
+            "byteOffset" : 171724
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 175740
         }
     ],
     "samplers" : [
@@ -1437,7 +1654,7 @@
     ],
     "buffers" : [
         {
-            "byteLength" : 158572,
+            "byteLength" : 178752,
             "uri" : "lamp.bin"
         }
     ]

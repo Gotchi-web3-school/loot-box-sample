@@ -60,7 +60,7 @@ export default class Materials {
     this.items.deployContract       = new THREE.MeshBasicMaterial({ alphaTest: 0.01, map: this.resources.items.deployContractIcon, side: THREE.DoubleSide })
     this.items.deposit              = new THREE.MeshBasicMaterial({ alphaTest: 0.1, map: this.resources.items.depositIcon, side: THREE.DoubleSide })
 
-    this.items.ethConnected         = new THREE.MeshStandardMaterial({ transparent: true, opacity: 0.9, color: "#6b40c8", metalness: 0.7, roughness: 0.5})
+    this.items.ethConnected         = new THREE.MeshStandardMaterial({ transparent: true, opacity: 0.9, color: "#6b40c8", metalness: 0.7, roughness: 0.5, toneMapped: false})
     
     this.items.import               = new THREE.MeshBasicMaterial({ alphaTest: 0.1, map: this.resources.items.importIcon, side: THREE.DoubleSide })
     
@@ -74,9 +74,9 @@ export default class Materials {
     this.items.transferErc721       = new THREE.MeshBasicMaterial({ alphaTest: 0.001, map: this.resources.items.transferErc721Icon, side: THREE.DoubleSide })
     this.items.transferErc1155      = new THREE.MeshBasicMaterial({ alphaTest: 0.001, map: this.resources.items.transferErc1155Icon, side: THREE.DoubleSide })
     this.items.transferOwnership    = new THREE.MeshBasicMaterial({ alphaTest: 0.001, map: this.resources.items.transferOwnershipIcon, side: THREE.DoubleSide })
-    this.items.txPending            = new THREE.MeshStandardMaterial({ color: "orange", transparent: true, opacity: 0.9, metalness: 0.7, roughness: 0.5})
-    this.items.txValided            = new THREE.MeshStandardMaterial({ color: "green", transparent: true, opacity: 0.9, metalness: 0.7, roughness: 0.5})
-    this.items.txFailed             = new THREE.MeshStandardMaterial({ color: "red", transparent: true, opacity: 0.9, metalness: 0.7, roughness: 0.5})
+    this.items.txPending            = new THREE.MeshStandardMaterial({ color: "orange", transparent: true, opacity: 0.9, metalness: 0.7, roughness: 0.5, toneMapped: false})
+    this.items.txValided            = new THREE.MeshStandardMaterial({ color: "green", transparent: true, opacity: 0.9, metalness: 0.7, roughness: 0.5, toneMapped: false})
+    this.items.txFailed             = new THREE.MeshStandardMaterial({ color: "red", transparent: true, opacity: 0.9, metalness: 0.7, roughness: 0.5, toneMapped: false})
 
     this.resources.trigger("texturesMapped")
   }
