@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { extend, useThree, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei"
 import { useControls } from 'leva'
+import { Bloom, EffectComposer } from '@react-three/postprocessing'
 import Experience from "./Experience/Experience";
 import AddWhitelist from "./fiber/AddWhitelist";
 import ApproveERC20 from "./fiber/ApproveERC20";
@@ -48,17 +49,21 @@ function App() {
   useFrame( () => experience?.update() )
 
   const { radius, depth, count, factor, saturation, speed } = useControls('sky', {
-    radius: { value: 64, min: 0, max: 100 },
-    depth: { value: 130, min: 0, max: 500 },
-    count: { value: 9000, min: 0, max: 100000 },
-    factor: { value: 4, min: 0, max: 20 },
-    saturation: { value: 10, min: 0, max: 1 },
-    speed: { value: 3, min: 0, max: 10 },
+    radius:     { value: 64,    min: 0, max: 100    },
+    depth:      { value: 130,   min: 0, max: 500    },
+    count:      { value: 9000,  min: 0, max: 100000 },
+    factor:     { value: 4,     min: 0, max: 20     },
+    saturation: { value: 10,    min: 0, max: 1      },
+    speed:      { value: 3,     min: 0, max: 10     },
   })
   
   return (
     <>
       <color args={ ["black"] } attach="background" />
+      <EffectComposer >
+        <Bloom mipmapBlur />
+      </EffectComposer>
+      
 
       <OrbitControls args={ [root.camera, root.gl.domElement] } ref={controlsRef} />
       {/* <Sky distance={450000} sunPosition={ sunPosition } inclination={0} azimuth={0.25}/> */}
@@ -111,6 +116,7 @@ function App() {
         </group>
 
       </group>
+     
     </>
   );
 }

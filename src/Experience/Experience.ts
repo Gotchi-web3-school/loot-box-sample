@@ -12,7 +12,6 @@ import Sounds from "./Sounds"
 import Controller from "./Controller"
 import { RootState } from "@react-three/fiber"
 import Time from "./Utils/Time"
-import PostProcessing from "./PostProcessing"
 
 export default class Experience {
   private static _instance: Experience | null;
@@ -29,7 +28,6 @@ export default class Experience {
   camera: Camera
   controller: Controller
   world: World
-  postProcessing: PostProcessing
   materials: Materials
   raycaster: Raycaster
   config = { touch: false }
@@ -57,7 +55,6 @@ export default class Experience {
     // Set up the world with all the models & how we will interact with them
     this.world = new World()
     this.materials = new Materials()
-    this.postProcessing = new PostProcessing()
     this.raycaster = new Raycaster()
     
     //config
@@ -69,8 +66,6 @@ export default class Experience {
     this.time.tick()
     this.camera.update()
     this.world.update()
-    console.log("post processing: ", this.postProcessing)
-    this.postProcessing.update()
     this.raycaster.update()
   }
 
