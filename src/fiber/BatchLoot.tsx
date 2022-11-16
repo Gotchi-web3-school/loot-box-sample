@@ -34,9 +34,10 @@ const BatchLoot: React.FC<{group: string, experience: Experience}> = ({ group, e
   const [connected, setConnected]   = useState<boolean>()
   const batchLootRef                = useRef<any>()
 
-console.log(Object.entries(watch()).map(elem => {return elem[0].startsWith("address") ? parseInt(elem[1]) : ""}))
 
 
+
+  
 
   /***********************************|
   |            FUNCTIONS              |
