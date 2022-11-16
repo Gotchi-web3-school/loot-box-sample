@@ -163,6 +163,9 @@ export default class LootBoxScene {
       this.models.chestSC.children[9].visible   = false
       this.models.chestSC.children[10].visible  = false
       this.models.chestSC.children[11].material = this.materials.items.import
+      this.models.chestSC.getObjectByName("chest_interface").material = this.materials.items.contractInterfaceMaterial
+      this.models.chestSC.getObjectByName("chest_inputsScreen").material = this.materials.items.contractInterfaceMaterial
+      this.models.chestSC.getObjectByName("chest_metaScreen").material = this.materials.items.contractInterfaceMaterial
 
       this.models.erc20SC.children[0].material  = this.materials.items.deployContract
       this.models.erc20SC.children[1].material  = this.materials.items.approveErc20
@@ -173,6 +176,9 @@ export default class LootBoxScene {
       this.models.erc20SC.children[9].visible   = false
       this.models.erc20SC.children[10].visible  = false
       this.models.erc20SC.children[11].material = this.materials.items.import
+      this.models.erc20SC.getObjectByName("erc20_interface").material = this.materials.items.contractInterfaceMaterial
+      this.models.erc20SC.getObjectByName("erc20_inputsScreen").material = this.materials.items.contractInterfaceMaterial
+      this.models.erc20SC.getObjectByName("erc20_metaScreen").material = this.materials.items.contractInterfaceMaterial
 
       this.models.erc721SC.children[0].material = this.materials.items.deployContract
       this.models.erc721SC.children[1].material = this.materials.items.approveErc721
@@ -187,6 +193,9 @@ export default class LootBoxScene {
       this.models.erc721SC.children[13].visible = false
       this.models.erc721SC.children[14].visible = false
       this.models.erc721SC.children[15].material = this.materials.items.import
+      this.models.erc721SC.getObjectByName("erc721_interface").material = this.materials.items.contractInterfaceMaterial
+      this.models.erc721SC.getObjectByName("erc721_inputsScreen").material = this.materials.items.contractInterfaceMaterial
+      this.models.erc721SC.getObjectByName("erc721_metaScreen").material = this.materials.items.contractInterfaceMaterial
 
       this.models.erc1155SC.children[0].material = this.materials.items.deployContract
       this.models.erc1155SC.children[1].material = this.materials.items.approveAllErc1155
@@ -201,6 +210,9 @@ export default class LootBoxScene {
       this.models.erc1155SC.children[13].visible = false
       this.models.erc1155SC.children[14].visible = false
       this.models.erc1155SC.children[15].material = this.materials.items.import
+      this.models.erc1155SC.getObjectByName("erc1155_interface").material = this.materials.items.contractInterfaceMaterial
+      this.models.erc1155SC.getObjectByName("erc1155_inputsScreen").material = this.materials.items.contractInterfaceMaterial
+      this.models.erc1155SC.getObjectByName("erc1155_metaScreen").material = this.materials.items.contractInterfaceMaterial
 
       // grass
       this.models.grass.material.map.repeat = new THREE.Vector2(2, 3)

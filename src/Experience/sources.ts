@@ -153,6 +153,7 @@ export const sources = [
     type: "texture",
     path: "textures/alchemicas/fud-material.png"
   },
+
   // Functions icons
   {
     name: "addWhitelistIcon",
