@@ -48,7 +48,7 @@ const ChestDeployer: React.FC<{group: string, experience: Experience}>  = ({ gro
 
   experience.raycaster.on( `click_contract_${group}_function_deploy`, () => { 
     setCurrMode(experience.controller.getCurrentMode())
-    setContract(experience.world.lootBoxScene!.contracts[group])
+    setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected)
   })
 

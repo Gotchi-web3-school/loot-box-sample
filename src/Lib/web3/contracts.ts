@@ -1,1 +1,1 @@
-export const contracts: { [key: string]: string } = {}
+export const smartContracts: { [key: string]: string } = {}

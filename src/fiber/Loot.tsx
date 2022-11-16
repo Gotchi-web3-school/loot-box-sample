@@ -56,7 +56,7 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
   
   const lookInside = async (): Promise<any> => 
   {
-    const contract = experience.world.lootBoxScene!.contracts[group].interface
+    const contract = experience.world.lootBoxScene!.smartContracts[group].interface
     const chest = await contract.connect(experience.world.user?.wallet.signer)
     const res = await chest.look()
     return {item: res[0], tokenIds: res[1], amounts: res[2], type_: res[3]}
@@ -72,7 +72,7 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
 
   experience.raycaster.on( "click_contract_chest_function_loot", async () => { 
     setCurrMode(experience.controller.getCurrentMode())
-    setContract(experience.world.lootBoxScene!.contracts[group])
+    setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected)
     setLoots(await lookInside())
 

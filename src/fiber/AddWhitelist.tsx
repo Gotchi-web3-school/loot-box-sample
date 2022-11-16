@@ -51,7 +51,7 @@ const AddWhitelist: React.FC<{group: string, experience: Experience}> = ({ group
 
   experience.raycaster.on( "click_contract_chest_function_addWhitelist", () => { 
     setCurrMode(experience.controller.getCurrentMode())
-    setContract(experience.world.lootBoxScene!.contracts[group])
+    setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected)
   })
 

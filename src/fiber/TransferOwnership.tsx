@@ -48,9 +48,9 @@ const TransferOwnership: React.FC<{group: string, experience: Experience, props:
 
   experience.raycaster.on( `click_contract_${group}_function_transferOwnership`, () => { 
     setCurrMode(experience.controller.getCurrentMode())
-    setContract(experience.world.lootBoxScene!.contracts[group])
+    setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected)
-    transferOwnershipRef.current.applyQuaternion(experience.world.lootBoxScene!.contracts[group].inputsScreen.quaternion)
+    transferOwnershipRef.current.applyQuaternion(experience.world.lootBoxScene!.smartContracts[group].inputsScreen.quaternion)
   })
 
   

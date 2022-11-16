@@ -13,7 +13,7 @@ export default class LootBoxScene {
   resource: any
   model: any
   models: {[key: string]: any} = {}
-  contracts: {[key: string]: any} = {}
+  smartContracts: {[key: string]: any} = {}
 
   constructor() {
     this.experience = Experience.Instance()
@@ -183,16 +183,16 @@ export default class LootBoxScene {
   {
     this.resources.on("texturesMapped", () => 
     {
-      this.contracts.chest    = new Contract( this.resources.items.chestAbi.abi,     this.models.chestSC,    this.resources.items.chestAbi.bytecode   )
-      this.contracts.erc20    = new Contract( this.resources.items.erc20Abi.abi,     this.models.erc20SC,    this.resources.items.erc20Abi.bytecode   )
-      this.contracts.erc721   = new Contract( this.resources.items.erc721Abi.abi,    this.models.erc721SC,   this.resources.items.erc721Abi.bytecode  )
-      this.contracts.erc1155  = new Contract( this.resources.items.erc1155Abi.abi,   this.models.erc1155SC,  this.resources.items.erc1155Abi.bytecode )
+      this.smartContracts.chest    = new Contract( this.resources.items.chestAbi.abi,     this.models.chestSC,    this.resources.items.chestAbi.bytecode   )
+      this.smartContracts.erc20    = new Contract( this.resources.items.erc20Abi.abi,     this.models.erc20SC,    this.resources.items.erc20Abi.bytecode   )
+      this.smartContracts.erc721   = new Contract( this.resources.items.erc721Abi.abi,    this.models.erc721SC,   this.resources.items.erc721Abi.bytecode  )
+      this.smartContracts.erc1155  = new Contract( this.resources.items.erc1155Abi.abi,   this.models.erc1155SC,  this.resources.items.erc1155Abi.bytecode )
     })
   }
 
   update() {
-    const contracts = Object.entries(this.contracts)
-    for(let i = 0; i < contracts.length; i++)
-      this.contracts[contracts[i][0]].update()
+    const smartContracts = Object.entries(this.smartContracts)
+    for(let i = 0; i < smartContracts.length; i++)
+      this.smartContracts[smartContracts[i][0]].update()
   }
 }

@@ -15,10 +15,10 @@ const Import: React.FC<{group: string, experience: Experience}>  = ({ group, exp
 
   // functions
   const onSubmit = (data) => { 
-    experience.world.lootBoxScene!.contracts[group].attachAddress(data.address)
+    experience.world.lootBoxScene!.smartContracts[group].attachAddress(data.address)
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
-    experience.world.lootBoxScene!.contracts[group].trigger("import " + group)
+    experience.world.lootBoxScene!.smartContracts[group].trigger("import " + group)
   };
   
   // Events
