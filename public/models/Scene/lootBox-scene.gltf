@@ -28987,9 +28987,12 @@
             },
             "name" : "body-smart-contract",
             "pbrMetallicRoughness" : {
-                "baseColorTexture" : {
-                    "index" : 0
-                },
+                "baseColorFactor" : [
+                    0,
+                    0,
+                    0,
+                    1
+                ],
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0
             }
@@ -29034,9 +29037,12 @@
             },
             "name" : "body-smart-contract.002",
             "pbrMetallicRoughness" : {
-                "baseColorTexture" : {
-                    "index" : 1
-                },
+                "baseColorFactor" : [
+                    0,
+                    0,
+                    0,
+                    1
+                ],
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0
             }
@@ -29082,7 +29088,7 @@
             "name" : "wood walls",
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 2
+                    "index" : 0
                 },
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.5
@@ -29159,7 +29165,7 @@
             "name" : "Material.003",
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 3
+                    "index" : 1
                 },
                 "roughnessFactor" : 0.5
             }
@@ -29205,7 +29211,7 @@
             "name" : "Scene_-_Root.001",
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 4
+                    "index" : 2
                 },
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.6000000238418579
@@ -29230,7 +29236,7 @@
             "name" : "color_main",
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 5
+                    "index" : 3
                 },
                 "metallicFactor" : 0.10000000149011612,
                 "roughnessFactor" : 0.5681818127632141
@@ -29339,7 +29345,7 @@
             "name" : "color_main.001",
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 6
+                    "index" : 4
                 },
                 "metallicFactor" : 0.10000000149011612,
                 "roughnessFactor" : 0.5681818127632141
@@ -29412,11 +29418,11 @@
             "doubleSided" : true,
             "name" : "grass",
             "normalTexture" : {
-                "index" : 7
+                "index" : 5
             },
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 8
+                    "index" : 6
                 },
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.11142899841070175
@@ -29427,7 +29433,7 @@
             "name" : "Material.012",
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 9
+                    "index" : 7
                 },
                 "metallicFactor" : 0
             }
@@ -29437,9 +29443,20 @@
             "name" : "road-textures",
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 10
+                    "index" : 8
                 },
                 "metallicFactor" : 0
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "Scene_-_Root.003",
+            "pbrMetallicRoughness" : {
+                "baseColorTexture" : {
+                    "index" : 9
+                },
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.6000000238418579
             }
         },
         {
@@ -29447,7 +29464,7 @@
             "name" : "Scene_-_Root.002",
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 11
+                    "index" : 10
                 },
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.6000000238418579
@@ -33679,7 +33696,7 @@
                         }
                     },
                     "indices" : 260,
-                    "material" : 14,
+                    "material" : 34,
                     "mode" : 4
                 }
             ]
@@ -36579,7 +36596,7 @@
                         }
                     },
                     "indices" : 968,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36604,7 +36621,7 @@
                         }
                     },
                     "indices" : 256,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36629,7 +36646,7 @@
                         }
                     },
                     "indices" : 975,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36654,7 +36671,7 @@
                         }
                     },
                     "indices" : 341,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36679,7 +36696,7 @@
                         }
                     },
                     "indices" : 982,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36704,7 +36721,7 @@
                         }
                     },
                     "indices" : 986,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36729,7 +36746,7 @@
                         }
                     },
                     "indices" : 990,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36754,7 +36771,7 @@
                         }
                     },
                     "indices" : 994,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36779,7 +36796,7 @@
                         }
                     },
                     "indices" : 968,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36804,7 +36821,7 @@
                         }
                     },
                     "indices" : 968,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36829,7 +36846,7 @@
                         }
                     },
                     "indices" : 256,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36854,7 +36871,7 @@
                         }
                     },
                     "indices" : 256,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36879,7 +36896,7 @@
                         }
                     },
                     "indices" : 975,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36904,7 +36921,7 @@
                         }
                     },
                     "indices" : 975,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36929,7 +36946,7 @@
                         }
                     },
                     "indices" : 341,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36954,7 +36971,7 @@
                         }
                     },
                     "indices" : 341,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -36979,7 +36996,7 @@
                         }
                     },
                     "indices" : 982,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -37004,7 +37021,7 @@
                         }
                     },
                     "indices" : 982,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -37029,7 +37046,7 @@
                         }
                     },
                     "indices" : 986,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -37054,7 +37071,7 @@
                         }
                     },
                     "indices" : 986,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -37079,7 +37096,7 @@
                         }
                     },
                     "indices" : 990,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -37104,7 +37121,7 @@
                         }
                     },
                     "indices" : 990,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -37129,7 +37146,7 @@
                         }
                     },
                     "indices" : 994,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -37154,7 +37171,7 @@
                         }
                     },
                     "indices" : 994,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -37179,7 +37196,7 @@
                         }
                     },
                     "indices" : 1046,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -37204,7 +37221,7 @@
                         }
                     },
                     "indices" : 1046,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -37229,7 +37246,7 @@
                         }
                     },
                     "indices" : 1046,
-                    "material" : 34,
+                    "material" : 35,
                     "mode" : 4
                 }
             ]
@@ -37242,19 +37259,11 @@
         },
         {
             "sampler" : 0,
-            "source" : 0
-        },
-        {
-            "sampler" : 0,
             "source" : 1
         },
         {
             "sampler" : 0,
             "source" : 2
-        },
-        {
-            "sampler" : 0,
-            "source" : 1
         },
         {
             "sampler" : 0,
@@ -37274,32 +37283,36 @@
         },
         {
             "sampler" : 0,
+            "source" : 2
+        },
+        {
+            "sampler" : 0,
             "source" : 6
         },
         {
             "sampler" : 0,
-            "source" : 7
+            "source" : 2
         },
         {
             "sampler" : 0,
-            "source" : 1
+            "source" : 2
         }
     ],
     "images" : [
         {
-            "mimeType" : "image/png",
-            "name" : "baked-inputsScreen",
-            "uri" : "textures/baked-inputsScreen.png"
+            "mimeType" : "image/jpeg",
+            "name" : "wood_table_worn_diff_1k",
+            "uri" : "textures/wood_table_worn_diff_1k.jpg"
         },
         {
             "mimeType" : "image/jpeg",
-            "name" : "wood_table_worn_diff_4k",
-            "uri" : "textures/wood_table_worn_diff_4k.jpg"
+            "name" : "granular_concrete_diff_1k",
+            "uri" : "textures/granular_concrete_diff_1k.jpg"
         },
         {
-            "mimeType" : "image/png",
-            "name" : "wood_table_worn_disp_4k",
-            "uri" : "textures/wood_table_worn_disp_4k.png"
+            "mimeType" : "image/jpeg",
+            "name" : "weathered_planks_diff_1k",
+            "uri" : "textures/weathered_planks_diff_1k.jpg"
         },
         {
             "mimeType" : "image/png",
@@ -37318,13 +37331,8 @@
         },
         {
             "mimeType" : "image/jpeg",
-            "name" : "wood_peeling_paint_weathered_diff_4k",
-            "uri" : "textures/wood_peeling_paint_weathered_diff_4k.jpg"
-        },
-        {
-            "mimeType" : "image/jpeg",
-            "name" : "GroundDirtRocky002_COL_1K",
-            "uri" : "textures/GroundDirtRocky002_COL_1K.jpg"
+            "name" : "GroundDirtRocky002_flat",
+            "uri" : "textures/GroundDirtRocky002_flat.jpg"
         }
     ],
     "accessors" : [

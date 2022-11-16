@@ -59,16 +59,6 @@ export const sources = [
     type: "texture",
     path: "textures/alchemicas/fud-material.png"
   },
-  {
-    name: "contractInterfaceMaterial",
-    type: "texture",
-    path: "textures/baked/baked-contract-interface.png"
-  },
-  {
-    name: "specularGlossiness",
-    type: "texture",
-    path: "textures/eth/specularGlossiness.png"
-  },
   // Functions icons
   {
     name: "addWhitelistIcon",
