@@ -56,12 +56,18 @@ function App() {
     saturation: { value: 10,    min: 0, max: 1      },
     speed:      { value: 3,     min: 0, max: 10     },
   })
+
+  const { intensity, luminanceThreshold, luminanceSmoothing } = useControls('bloom', {
+    intensity:            { value: 2,     min: 0, max: 10, step: 0.1 },
+    luminanceThreshold:   { value: 0.9,   min: 0, max: 1             },
+    luminanceSmoothing:   { value: 0.025, min: 0, max: 1             },
+  })
   
   return (
     <>
       <color args={ ["black"] } attach="background" />
       <EffectComposer >
-        <Bloom mipmapBlur intensity={ 0.5 } luminanceThreshold={ 1 } />
+        <Bloom mipmapBlur intensity={ intensity } luminanceThreshold={ luminanceThreshold } luminanceSmoothing={ luminanceSmoothing } />
       </EffectComposer>
       
 
