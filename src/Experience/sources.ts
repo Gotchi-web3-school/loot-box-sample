@@ -1,4 +1,46 @@
 export const sources = [
+
+  /**
+   * Scenes
+   */
+
+  // Lootbox
+  {
+    name: "contractsModel",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/contracts/contracts.gltf"
+  },
+  {
+    name: "floorModel",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/floor/floor.gltf"
+  },
+  {
+    name: "houseModel",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/house/house.gltf"
+  },
+  {
+    name: "lampModel",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/lamp/lamp.gltf"
+  },
+  {
+    name: "natureModel",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/nature/nature.gltf"
+  },
+  {
+    name: "stepsModel",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/steps/steps.gltf"
+  },
+  {
+    name: "wallsModel",
+    type: "lootBoxScene",
+    path: "scenes/lootBox/walls/walls.gltf"
+  },
+
   /**
    * GLTF models
    */
@@ -27,14 +69,6 @@ export const sources = [
     type: "gltfModel",
     path: "models/erc1155.gltf"
   },
-  {
-    name: "sceneModel",
-    type: "gltfModel",
-    path: "models/Scene/lootBox-scene.gltf"
-  },
-  /**
-   * Cube textures
-   */
  
   /**
    * Textures
