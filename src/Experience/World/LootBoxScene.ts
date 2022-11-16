@@ -19,7 +19,7 @@ export default class LootBoxScene {
   lamp:       any
   nature:     any
   steps:      any
-  walls:      any
+  walls:      {[key: string]: any} = {}
   models:     {[key: string]: any} = {}
 
   // smart-contracts
@@ -31,14 +31,6 @@ export default class LootBoxScene {
     this.materials  = this.experience.materials
     this.resources  = this.experience.resources
 
-    this.contracts  = this.resources.items.contractsModel
-    this.floor      = this.resources.items.floorModel
-    this.house      = this.resources.items.houseModel
-    this.lamp       = this.resources.items.lampModel
-    this.nature     = this.resources.items.natureModel
-    this.steps      = this.resources.items.stepsModel
-    this.walls      = this.resources.items.wallsModel
-
     this.parseModel()
     this.setMaterials()
     this.setSmartContract()
@@ -46,6 +38,28 @@ export default class LootBoxScene {
   
   parseModel()
   {
+
+    this.contracts            = this.resources.items.contractsModel.scene
+    this.floor                = this.resources.items.floorModel.scene
+    this.house                = this.resources.items.houseModel.scene
+    this.lamp                 = this.resources.items.lampModel.scene
+    this.nature               = this.resources.items.natureModel.scene
+    this.steps                = this.resources.items.stepsModel.scene
+
+    this.walls["wall1"]       = this.resources.items.wall1Model.scene
+    this.walls["wall2"]       = this.resources.items.wall2Model.scene
+    this.walls["wall3"]       = this.resources.items.wall3Model.scene
+    this.walls["wall4"]       = this.resources.items.wall4Model.scene
+    this.walls["wall5"]       = this.resources.items.wall5Model.scene
+    this.walls["wall6"]       = this.resources.items.wall6Model.scene
+    this.walls["wall7"]       = this.resources.items.wall7Model.scene
+    this.walls["wall8"]       = this.resources.items.wall8Model.scene
+    this.walls["wall9"]       = this.resources.items.wall9Model.scene
+    this.walls["wall10"]      = this.resources.items.wall10Model.scene
+    this.walls["wallDoor1"]   = this.resources.items.wallDoor1Model.scene
+    this.walls["wallDoor2"]   = this.resources.items.wallDoor2Model.scene
+    this.walls["wallOrigin"]  = this.resources.items.wallOriginModel.scene
+    this.scene.add(this.floor, this.house, this.lamp, this.nature, this.steps, ...Object.values(this.walls))
     
     // Chest.sol
     this.models.chestSC = new THREE.Group()
@@ -209,8 +223,6 @@ export default class LootBoxScene {
 
   update() 
   {
-    const smartContracts = Object.entries(this.smartContracts)
-    for(let i = 0; i < smartContracts.length; i++)
-      this.smartContracts[smartContracts[i][0]].update()
+    for( const contract of Object.values(this.smartContracts) ) { contract.update() }
   }
 }
