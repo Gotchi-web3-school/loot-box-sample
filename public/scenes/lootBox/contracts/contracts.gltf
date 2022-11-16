@@ -7,11 +7,59 @@
         "KHR_draco_mesh_compression",
         "KHR_materials_specular",
         "KHR_materials_ior",
-        "KHR_materials_emissive_strength"
+        "KHR_materials_emissive_strength",
+        "KHR_lights_punctual"
     ],
     "extensionsRequired" : [
-        "KHR_draco_mesh_compression"
+        "KHR_draco_mesh_compression",
+        "KHR_lights_punctual"
     ],
+    "extensions" : {
+        "KHR_lights_punctual" : {
+            "lights" : [
+                {
+                    "color" : [
+                        1,
+                        1,
+                        1
+                    ],
+                    "intensity" : 0,
+                    "type" : "point",
+                    "name" : "Point.004"
+                },
+                {
+                    "color" : [
+                        1,
+                        1,
+                        1
+                    ],
+                    "intensity" : 0,
+                    "type" : "point",
+                    "name" : "Point.006"
+                },
+                {
+                    "color" : [
+                        1,
+                        1,
+                        1
+                    ],
+                    "intensity" : 0,
+                    "type" : "point",
+                    "name" : "Point.003"
+                },
+                {
+                    "color" : [
+                        1,
+                        1,
+                        1
+                    ],
+                    "intensity" : 0,
+                    "type" : "point",
+                    "name" : "Point.005"
+                }
+            ]
+        }
+    },
     "scene" : 0,
     "scenes" : [
         {
@@ -33,9 +81,7 @@
                 13,
                 14,
                 15,
-                16,
                 17,
-                18,
                 19,
                 20,
                 21,
@@ -51,7 +97,6 @@
                 31,
                 32,
                 33,
-                34,
                 35,
                 36,
                 37,
@@ -68,7 +113,6 @@
                 48,
                 49,
                 50,
-                51,
                 52,
                 53,
                 54,
@@ -78,7 +122,11 @@
                 58,
                 59,
                 60,
-                61
+                61,
+                62,
+                63,
+                64,
+                65
             ]
         }
     ],
@@ -145,26 +193,6 @@
         },
         {
             "mesh" : 3,
-            "name" : "erc1155_network",
-            "rotation" : [
-                0,
-                -0.999929666519165,
-                0,
-                0.011863918974995613
-            ],
-            "scale" : [
-                0.1778648942708969,
-                0.5129098296165466,
-                0.5129098296165466
-            ],
-            "translation" : [
-                -16.0788631439209,
-                0.885349690914154,
-                -13.521629333496094
-            ]
-        },
-        {
-            "mesh" : 4,
             "name" : "contract_erc1155_function_deploy",
             "rotation" : [
                 -0.4995718002319336,
@@ -184,7 +212,7 @@
             ]
         },
         {
-            "mesh" : 4,
+            "mesh" : 3,
             "name" : "contract_erc1155_function_import",
             "rotation" : [
                 -0.5009722113609314,
@@ -204,7 +232,7 @@
             ]
         },
         {
-            "mesh" : 4,
+            "mesh" : 3,
             "name" : "contract_erc1155_function_setApprovalForAll",
             "rotation" : [
                 -0.4937800168991089,
@@ -224,7 +252,7 @@
             ]
         },
         {
-            "mesh" : 4,
+            "mesh" : 3,
             "name" : "contract_erc1155_function_mint",
             "rotation" : [
                 -0.4937800168991089,
@@ -244,7 +272,7 @@
             ]
         },
         {
-            "mesh" : 4,
+            "mesh" : 3,
             "name" : "contract_erc1155_function_mintBatch",
             "rotation" : [
                 -0.4937800168991089,
@@ -264,7 +292,7 @@
             ]
         },
         {
-            "mesh" : 4,
+            "mesh" : 3,
             "name" : "contract_erc1155_function_safeTransferFrom",
             "rotation" : [
                 -0.4937800168991089,
@@ -284,7 +312,7 @@
             ]
         },
         {
-            "mesh" : 4,
+            "mesh" : 3,
             "name" : "contract_erc1155_function_safeBatchTransferFrom",
             "rotation" : [
                 -0.4937800168991089,
@@ -304,7 +332,7 @@
             ]
         },
         {
-            "mesh" : 4,
+            "mesh" : 3,
             "name" : "contract_erc1155_function_burn",
             "rotation" : [
                 -0.4937800168991089,
@@ -324,7 +352,7 @@
             ]
         },
         {
-            "mesh" : 4,
+            "mesh" : 3,
             "name" : "contract_erc1155_function_burnBatch",
             "rotation" : [
                 -0.4937800168991089,
@@ -344,7 +372,7 @@
             ]
         },
         {
-            "mesh" : 4,
+            "mesh" : 3,
             "name" : "contract_erc1155_function_transferOwnership",
             "rotation" : [
                 -0.4937800168991089,
@@ -364,7 +392,7 @@
             ]
         },
         {
-            "mesh" : 4,
+            "mesh" : 3,
             "name" : "contract_erc1155_function_renounceOwnership",
             "rotation" : [
                 -0.4937800168991089,
@@ -384,7 +412,7 @@
             ]
         },
         {
-            "mesh" : 5,
+            "mesh" : 4,
             "name" : "erc1155_inputsScreen",
             "rotation" : [
                 -0.0030777386855334044,
@@ -404,7 +432,7 @@
             ]
         },
         {
-            "mesh" : 6,
+            "mesh" : 5,
             "name" : "erc1155_metaScreen",
             "rotation" : [
                 0.4249151945114136,
@@ -424,6 +452,75 @@
             ]
         },
         {
+            "extensions" : {
+                "KHR_lights_punctual" : {
+                    "light" : 0
+                }
+            },
+            "name" : "erc1155_network_light",
+            "rotation" : [
+                -0.00838901475071907,
+                -0.7070570588111877,
+                -0.7070569396018982,
+                0.008389019407331944
+            ],
+            "scale" : [
+                0.17786484956741333,
+                0.5129096508026123,
+                0.5129095911979675
+            ],
+            "translation" : [
+                -8.702278137207031e-06,
+                0,
+                2.384185791015625e-06
+            ]
+        },
+        {
+            "children" : [
+                16
+            ],
+            "mesh" : 6,
+            "name" : "erc1155_network",
+            "rotation" : [
+                0,
+                -0.999929666519165,
+                0,
+                0.011863918974995613
+            ],
+            "scale" : [
+                0.1778648942708969,
+                0.5129098296165466,
+                0.5129098296165466
+            ],
+            "translation" : [
+                -16.090890884399414,
+                1.3187180757522583,
+                -13.337318420410156
+            ]
+        },
+        {
+            "extensions" : {
+                "KHR_lights_punctual" : {
+                    "light" : 1
+                }
+            },
+            "name" : "erc20_network_light",
+            "rotation" : [
+                -0.7071068286895752,
+                0,
+                0,
+                0.7071068286895752
+            ],
+            "translation" : [
+                -28.651187896728516,
+                -0.03629493713378906,
+                -14.780174255371094
+            ]
+        },
+        {
+            "children" : [
+                18
+            ],
             "mesh" : 7,
             "name" : "erc20_network",
             "rotation" : [
@@ -718,6 +815,28 @@
             ]
         },
         {
+            "extensions" : {
+                "KHR_lights_punctual" : {
+                    "light" : 2
+                }
+            },
+            "name" : "chest_network_light",
+            "rotation" : [
+                -0.7071068286895752,
+                0,
+                0,
+                0.7071068286895752
+            ],
+            "translation" : [
+                1.471802830696106,
+                -0.0324249267578125,
+                15.487907409667969
+            ]
+        },
+        {
+            "children" : [
+                34
+            ],
             "mesh" : 16,
             "name" : "chest_network",
             "rotation" : [
@@ -1038,6 +1157,28 @@
             ]
         },
         {
+            "extensions" : {
+                "KHR_lights_punctual" : {
+                    "light" : 3
+                }
+            },
+            "name" : "erc721_network_light",
+            "rotation" : [
+                -0.7071068286895752,
+                0,
+                0,
+                0.7071068286895752
+            ],
+            "translation" : [
+                -20.023237228393555,
+                0.0015087127685546875,
+                -19.45016860961914
+            ]
+        },
+        {
+            "children" : [
+                51
+            ],
             "mesh" : 26,
             "name" : "erc721_network",
             "rotation" : [
@@ -1472,7 +1613,7 @@
                     }
                 }
             ],
-            "name" : "erc1155_network",
+            "name" : "contract_erc1155_function_deploy",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1515,7 +1656,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc1155_function_deploy",
+            "name" : "contract_erc1155_function_import",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1558,7 +1699,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc1155_function_import",
+            "name" : "contract_erc1155_function_setApprovalForAll",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1601,7 +1742,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc1155_function_setApprovalForAll",
+            "name" : "contract_erc1155_function_mint",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1644,7 +1785,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc1155_function_mint",
+            "name" : "contract_erc1155_function_mintBatch",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1687,7 +1828,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc1155_function_mintBatch",
+            "name" : "contract_erc1155_function_safeTransferFrom",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1730,7 +1871,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc1155_function_safeTransferFrom",
+            "name" : "contract_erc1155_function_safeBatchTransferFrom",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1773,7 +1914,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc1155_function_safeBatchTransferFrom",
+            "name" : "contract_erc1155_function_burn",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1816,7 +1957,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc1155_function_burn",
+            "name" : "contract_erc1155_function_burnBatch",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1859,7 +2000,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc1155_function_burnBatch",
+            "name" : "contract_erc1155_function_transferOwnership",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1902,7 +2043,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc1155_function_transferOwnership",
+            "name" : "contract_erc1155_function_renounceOwnership",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1945,7 +2086,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc1155_function_renounceOwnership",
+            "name" : "erc1155_inputsScreen",
             "samplers" : [
                 {
                     "input" : 115,
@@ -1988,7 +2129,7 @@
                     }
                 }
             ],
-            "name" : "erc1155_inputsScreen",
+            "name" : "erc1155_metaScreen",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2012,26 +2153,26 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 16,
+                        "node" : 17,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 16,
+                        "node" : 17,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 16,
+                        "node" : 17,
                         "path" : "scale"
                     }
                 }
             ],
-            "name" : "erc1155_metaScreen",
+            "name" : "erc1155_network",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2055,26 +2196,26 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 17,
+                        "node" : 16,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 17,
+                        "node" : 16,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 17,
+                        "node" : 16,
                         "path" : "scale"
                     }
                 }
             ],
-            "name" : "erc20_network",
+            "name" : "erc1155_network_light",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2098,26 +2239,26 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 18,
+                        "node" : 19,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 18,
+                        "node" : 19,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 18,
+                        "node" : 19,
                         "path" : "scale"
                     }
                 }
             ],
-            "name" : "erc20_interface",
+            "name" : "erc20_network",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2141,26 +2282,26 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 19,
+                        "node" : 18,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 19,
+                        "node" : 18,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 19,
+                        "node" : 18,
                         "path" : "scale"
                     }
                 }
             ],
-            "name" : "erc20_title",
+            "name" : "erc20_network_light",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2203,7 +2344,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc20_function_deploy",
+            "name" : "erc20_interface",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2246,7 +2387,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc20_function_import",
+            "name" : "erc20_title",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2289,7 +2430,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc20_function_approve",
+            "name" : "contract_erc20_function_deploy",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2332,7 +2473,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc20_function_mint",
+            "name" : "contract_erc20_function_import",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2375,7 +2516,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc20_function_transfer",
+            "name" : "contract_erc20_function_approve",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2418,7 +2559,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc20_function_burn",
+            "name" : "contract_erc20_function_mint",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2461,7 +2602,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc20_function_transferOwnership",
+            "name" : "contract_erc20_function_transfer",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2504,7 +2645,7 @@
                     }
                 }
             ],
-            "name" : "erc20_inputsScreen",
+            "name" : "contract_erc20_function_burn",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2547,7 +2688,7 @@
                     }
                 }
             ],
-            "name" : "erc20_metaScreen",
+            "name" : "contract_erc20_function_transferOwnership",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2590,7 +2731,7 @@
                     }
                 }
             ],
-            "name" : "erc20_sol",
+            "name" : "erc20_inputsScreen",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2633,7 +2774,7 @@
                     }
                 }
             ],
-            "name" : "chest_sol",
+            "name" : "erc20_metaScreen",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2676,7 +2817,7 @@
                     }
                 }
             ],
-            "name" : "chest_interface",
+            "name" : "erc20_sol",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2719,7 +2860,7 @@
                     }
                 }
             ],
-            "name" : "chest_network",
+            "name" : "chest_sol",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2762,7 +2903,7 @@
                     }
                 }
             ],
-            "name" : "contract_chest_function_deploy",
+            "name" : "chest_interface",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2786,26 +2927,26 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 34,
+                        "node" : 35,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 34,
+                        "node" : 35,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 34,
+                        "node" : 35,
                         "path" : "scale"
                     }
                 }
             ],
-            "name" : "contract_chest_function_import",
+            "name" : "chest_network",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2829,26 +2970,26 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 35,
+                        "node" : 34,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 35,
+                        "node" : 34,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 35,
+                        "node" : 34,
                         "path" : "scale"
                     }
                 }
             ],
-            "name" : "contract_chest_function_addWhitelist",
+            "name" : "chest_network_light",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2891,7 +3032,7 @@
                     }
                 }
             ],
-            "name" : "contract_chest_function_batchDeposit",
+            "name" : "contract_chest_function_deploy",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2934,7 +3075,7 @@
                     }
                 }
             ],
-            "name" : "contract_chest_function_loot",
+            "name" : "contract_chest_function_import",
             "samplers" : [
                 {
                     "input" : 115,
@@ -2977,7 +3118,7 @@
                     }
                 }
             ],
-            "name" : "contract_chest_function_batchLoot",
+            "name" : "contract_chest_function_addWhitelist",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3020,7 +3161,7 @@
                     }
                 }
             ],
-            "name" : "contract_chest_function_transferOwnership",
+            "name" : "contract_chest_function_batchDeposit",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3063,7 +3204,7 @@
                     }
                 }
             ],
-            "name" : "chest_inputsScreen",
+            "name" : "contract_chest_function_loot",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3106,7 +3247,7 @@
                     }
                 }
             ],
-            "name" : "chest_metaScreen",
+            "name" : "contract_chest_function_batchLoot",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3149,7 +3290,7 @@
                     }
                 }
             ],
-            "name" : "clickMe",
+            "name" : "contract_chest_function_transferOwnership",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3192,7 +3333,7 @@
                     }
                 }
             ],
-            "name" : "arrowClickMe",
+            "name" : "chest_inputsScreen",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3235,7 +3376,7 @@
                     }
                 }
             ],
-            "name" : "chest_title",
+            "name" : "chest_metaScreen",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3278,7 +3419,7 @@
                     }
                 }
             ],
-            "name" : "erc721_sol",
+            "name" : "clickMe",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3321,7 +3462,7 @@
                     }
                 }
             ],
-            "name" : "erc721_interface",
+            "name" : "arrowClickMe",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3364,7 +3505,7 @@
                     }
                 }
             ],
-            "name" : "erc721_title",
+            "name" : "chest_title",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3407,7 +3548,7 @@
                     }
                 }
             ],
-            "name" : "erc721_network",
+            "name" : "erc721_sol",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3450,7 +3591,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc721_function_deploy",
+            "name" : "erc721_interface",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3493,7 +3634,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc721_function_import",
+            "name" : "erc721_title",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3517,26 +3658,26 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 51,
+                        "node" : 52,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 51,
+                        "node" : 52,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 51,
+                        "node" : 52,
                         "path" : "scale"
                     }
                 }
             ],
-            "name" : "contract_erc721_function_approve",
+            "name" : "erc721_network",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3560,26 +3701,26 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 52,
+                        "node" : 51,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 52,
+                        "node" : 51,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 52,
+                        "node" : 51,
                         "path" : "scale"
                     }
                 }
             ],
-            "name" : "contract_erc721_function_setApprovalForAll",
+            "name" : "erc721_network_light",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3622,7 +3763,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc721_function_safeMint",
+            "name" : "contract_erc721_function_deploy",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3665,7 +3806,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc721_function_safeTransferFrom",
+            "name" : "contract_erc721_function_import",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3708,7 +3849,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc721_function_burn",
+            "name" : "contract_erc721_function_approve",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3751,7 +3892,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc721_function_transferOwnership",
+            "name" : "contract_erc721_function_setApprovalForAll",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3794,7 +3935,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc721_function_renounceOwnership",
+            "name" : "contract_erc721_function_safeMint",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3837,7 +3978,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc721_function_8",
+            "name" : "contract_erc721_function_safeTransferFrom",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3880,7 +4021,7 @@
                     }
                 }
             ],
-            "name" : "contract_erc721_function_9",
+            "name" : "contract_erc721_function_burn",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3923,7 +4064,7 @@
                     }
                 }
             ],
-            "name" : "erc721_inputsScreen",
+            "name" : "contract_erc721_function_transferOwnership",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3966,7 +4107,7 @@
                     }
                 }
             ],
-            "name" : "erc721_metaScreen",
+            "name" : "contract_erc721_function_renounceOwnership",
             "samplers" : [
                 {
                     "input" : 115,
@@ -3982,6 +4123,178 @@
                     "input" : 115,
                     "interpolation" : "LINEAR",
                     "output" : 301
+                }
+            ]
+        },
+        {
+            "channels" : [
+                {
+                    "sampler" : 0,
+                    "target" : {
+                        "node" : 62,
+                        "path" : "translation"
+                    }
+                },
+                {
+                    "sampler" : 1,
+                    "target" : {
+                        "node" : 62,
+                        "path" : "rotation"
+                    }
+                },
+                {
+                    "sampler" : 2,
+                    "target" : {
+                        "node" : 62,
+                        "path" : "scale"
+                    }
+                }
+            ],
+            "name" : "contract_erc721_function_8",
+            "samplers" : [
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 302
+                },
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 303
+                },
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 304
+                }
+            ]
+        },
+        {
+            "channels" : [
+                {
+                    "sampler" : 0,
+                    "target" : {
+                        "node" : 63,
+                        "path" : "translation"
+                    }
+                },
+                {
+                    "sampler" : 1,
+                    "target" : {
+                        "node" : 63,
+                        "path" : "rotation"
+                    }
+                },
+                {
+                    "sampler" : 2,
+                    "target" : {
+                        "node" : 63,
+                        "path" : "scale"
+                    }
+                }
+            ],
+            "name" : "contract_erc721_function_9",
+            "samplers" : [
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 305
+                },
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 306
+                },
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 307
+                }
+            ]
+        },
+        {
+            "channels" : [
+                {
+                    "sampler" : 0,
+                    "target" : {
+                        "node" : 64,
+                        "path" : "translation"
+                    }
+                },
+                {
+                    "sampler" : 1,
+                    "target" : {
+                        "node" : 64,
+                        "path" : "rotation"
+                    }
+                },
+                {
+                    "sampler" : 2,
+                    "target" : {
+                        "node" : 64,
+                        "path" : "scale"
+                    }
+                }
+            ],
+            "name" : "erc721_inputsScreen",
+            "samplers" : [
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 308
+                },
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 309
+                },
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 310
+                }
+            ]
+        },
+        {
+            "channels" : [
+                {
+                    "sampler" : 0,
+                    "target" : {
+                        "node" : 65,
+                        "path" : "translation"
+                    }
+                },
+                {
+                    "sampler" : 1,
+                    "target" : {
+                        "node" : 65,
+                        "path" : "rotation"
+                    }
+                },
+                {
+                    "sampler" : 2,
+                    "target" : {
+                        "node" : 65,
+                        "path" : "scale"
+                    }
+                }
+            ],
+            "name" : "erc721_metaScreen",
+            "samplers" : [
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 311
+                },
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 312
+                },
+                {
+                    "input" : 115,
+                    "interpolation" : "LINEAR",
+                    "output" : 313
                 }
             ]
         }
@@ -4210,7 +4523,7 @@
             ]
         },
         {
-            "name" : "Cube.003",
+            "name" : "Plane.047",
             "primitives" : [
                 {
                     "attributes" : {
@@ -4229,13 +4542,12 @@
                         }
                     },
                     "indices" : 19,
-                    "material" : 2,
                     "mode" : 4
                 }
             ]
         },
         {
-            "name" : "Plane.047",
+            "name" : "Plane.012",
             "primitives" : [
                 {
                     "attributes" : {
@@ -4254,12 +4566,13 @@
                         }
                     },
                     "indices" : 23,
+                    "material" : 4,
                     "mode" : 4
                 }
             ]
         },
         {
-            "name" : "Plane.012",
+            "name" : "Plane.016",
             "primitives" : [
                 {
                     "attributes" : {
@@ -4277,20 +4590,20 @@
                             }
                         }
                     },
-                    "indices" : 27,
+                    "indices" : 23,
                     "material" : 4,
                     "mode" : 4
                 }
             ]
         },
         {
-            "name" : "Plane.016",
+            "name" : "Cube.004",
             "primitives" : [
                 {
                     "attributes" : {
-                        "POSITION" : 28,
-                        "NORMAL" : 29,
-                        "TEXCOORD_0" : 30
+                        "POSITION" : 27,
+                        "NORMAL" : 28,
+                        "TEXCOORD_0" : 29
                     },
                     "extensions" : {
                         "KHR_draco_mesh_compression" : {
@@ -4302,8 +4615,8 @@
                             }
                         }
                     },
-                    "indices" : 27,
-                    "material" : 4,
+                    "indices" : 30,
+                    "material" : 2,
                     "mode" : 4
                 }
             ]
@@ -4402,7 +4715,7 @@
                             }
                         }
                     },
-                    "indices" : 23,
+                    "indices" : 19,
                     "mode" : 4
                 }
             ]
@@ -4426,7 +4739,7 @@
                             }
                         }
                     },
-                    "indices" : 27,
+                    "indices" : 23,
                     "material" : 4,
                     "mode" : 4
                 }
@@ -4451,7 +4764,7 @@
                             }
                         }
                     },
-                    "indices" : 27,
+                    "indices" : 23,
                     "material" : 4,
                     "mode" : 4
                 }
@@ -4596,7 +4909,7 @@
                             }
                         }
                     },
-                    "indices" : 23,
+                    "indices" : 19,
                     "mode" : 4
                 }
             ]
@@ -4620,7 +4933,7 @@
                             }
                         }
                     },
-                    "indices" : 27,
+                    "indices" : 23,
                     "material" : 4,
                     "mode" : 4
                 }
@@ -4645,7 +4958,7 @@
                             }
                         }
                     },
-                    "indices" : 27,
+                    "indices" : 23,
                     "material" : 4,
                     "mode" : 4
                 }
@@ -4845,7 +5158,7 @@
                             }
                         }
                     },
-                    "indices" : 23,
+                    "indices" : 19,
                     "mode" : 4
                 }
             ]
@@ -4869,7 +5182,7 @@
                             }
                         }
                     },
-                    "indices" : 27,
+                    "indices" : 23,
                     "material" : 4,
                     "mode" : 4
                 }
@@ -4894,7 +5207,7 @@
                             }
                         }
                     },
-                    "indices" : 27,
+                    "indices" : 23,
                     "material" : 4,
                     "mode" : 4
                 }
@@ -5024,36 +5337,6 @@
         },
         {
             "componentType" : 5126,
-            "count" : 423,
-            "max" : [
-                0.30785784125328064,
-                1.0444526672363281,
-                -0.24148735404014587
-            ],
-            "min" : [
-                -0.12348586320877075,
-                0.6583873629570007,
-                -0.4758845865726471
-            ],
-            "type" : "VEC3"
-        },
-        {
-            "componentType" : 5126,
-            "count" : 423,
-            "type" : "VEC3"
-        },
-        {
-            "componentType" : 5126,
-            "count" : 423,
-            "type" : "VEC2"
-        },
-        {
-            "componentType" : 5123,
-            "count" : 1422,
-            "type" : "SCALAR"
-        },
-        {
-            "componentType" : 5126,
             "count" : 4,
             "max" : [
                 1.002042531967163,
@@ -5136,6 +5419,36 @@
             "componentType" : 5126,
             "count" : 44,
             "type" : "VEC2"
+        },
+        {
+            "componentType" : 5126,
+            "count" : 423,
+            "max" : [
+                0.21567192673683167,
+                0.19953154027462006,
+                0.11719859391450882
+            ],
+            "min" : [
+                -0.21567177772521973,
+                -0.18653376400470734,
+                -0.1171986386179924
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "componentType" : 5126,
+            "count" : 423,
+            "type" : "VEC3"
+        },
+        {
+            "componentType" : 5126,
+            "count" : 423,
+            "type" : "VEC2"
+        },
+        {
+            "componentType" : 5123,
+            "count" : 1422,
+            "type" : "SCALAR"
         },
         {
             "componentType" : 5126,
@@ -6924,6 +7237,78 @@
             "componentType" : 5126,
             "count" : 251,
             "type" : "VEC3"
+        },
+        {
+            "bufferView" : 219,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 220,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 221,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 222,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 223,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 224,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 225,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 226,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 227,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 228,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 229,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 230,
+            "componentType" : 5126,
+            "count" : 251,
+            "type" : "VEC3"
         }
     ],
     "bufferViews" : [
@@ -6949,23 +7334,23 @@
         },
         {
             "buffer" : 0,
-            "byteLength" : 3378,
+            "byteLength" : 181,
             "byteOffset" : 68172
         },
         {
             "buffer" : 0,
-            "byteLength" : 181,
-            "byteOffset" : 71552
-        },
-        {
-            "buffer" : 0,
             "byteLength" : 508,
-            "byteOffset" : 71736
+            "byteOffset" : 68356
         },
         {
             "buffer" : 0,
             "byteLength" : 510,
-            "byteOffset" : 72244
+            "byteOffset" : 68864
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3378,
+            "byteOffset" : 69376
         },
         {
             "buffer" : 0,
@@ -8021,11 +8406,71 @@
             "buffer" : 0,
             "byteLength" : 3012,
             "byteOffset" : 891616
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 894628
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 4016,
+            "byteOffset" : 897640
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 901656
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 904668
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 4016,
+            "byteOffset" : 907680
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 911696
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 914708
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 4016,
+            "byteOffset" : 917720
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 921736
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 924748
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 4016,
+            "byteOffset" : 927760
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3012,
+            "byteOffset" : 931776
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 894628,
+            "byteLength" : 934788,
             "uri" : "contracts.bin"
         }
     ]

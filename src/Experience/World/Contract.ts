@@ -262,6 +262,9 @@ export default class Contract extends EventEmitter {
     this.interface = new ethers.Contract(contractAddress, this.abi)
     this._address = contractAddress
     this.network.material = this.materials.items.ethConnected
+    this.network.children[0].intensity = 2
+    this.network.children[0].distance = 5
+    this.network.children[0].color.copy(this.materials.items.ethConnected.color)
 
     // this._setAddress(this._address)
   }
@@ -302,15 +305,21 @@ export default class Contract extends EventEmitter {
   _txSuccess(): void
   {
     this.network.material = this.materials.items.txValided
-    setTimeout(() => this.network.material = this.materials.items.ethConnected, 10000)
+    this.network.children[0].color.copy(this.materials.items.txValided.color)
+    setTimeout(() => {
+      this.network.material = this.materials.items.ethConnected
+      this.network.children[0].color.copy(this.materials.items.ethConnected.color)
+    }, 10000)
   }
 
   _txPending(): void
   {
     this.network.material = this.materials.items.txPending
+    this.network.children[0].color.copy(this.materials.items.txPending.color)
   }
   _txFailed(): void
   {
     this.network.material = this.materials.items.txFailed
+    this.network.children[0].color.copy(this.materials.items.txFailed.color)
   }
 }
