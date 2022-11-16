@@ -24,7 +24,7 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "forest_fround",
+            "name" : "forest_ground",
             "scale" : [
                 -37.26871109008789,
                 -12.568632125854492,
@@ -105,7 +105,7 @@
                     }
                 }
             ],
-            "name" : "forest_fround",
+            "name" : "forest_ground",
             "samplers" : [
                 {
                     "input" : 16,

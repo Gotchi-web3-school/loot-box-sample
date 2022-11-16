@@ -144,7 +144,7 @@ export default class LootBoxScene {
 
     // Models
     this.models.clickMe = this.contracts.getObjectByName("clickMe")
-    this.models.grass   = this.floor.getObjectByName("grass")
+    this.models.grass   = this.floor.getObjectByName("forest_ground")
     this.models.road    = this.floor.getObjectByName("road")
 
     this.scene.add(this.contracts)
