@@ -68,6 +68,8 @@ export default class Resources extends EventEmitter {
     for (const source of this.sources) {
       if (source.type === "gltfModel")
         this.loaders.gltfLoader.load(source.path, (file: unknown) => this.sourcesLoaded(source, file))
+      if (source.type === "lootBoxScene")
+        this.loaders.gltfLoader.load(source.path, (file: unknown) => this.sourcesLoaded(source, file))
       if (source.type === "texture")
         this.loaders.textureLoader.load(source.path, (file: unknown) => this.sourcesLoaded(source, file))
       if (source.type === "image")

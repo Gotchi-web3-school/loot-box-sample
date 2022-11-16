@@ -1,26 +1,43 @@
 import * as THREE from "three";
 import Experience from "../Experience";
-import Resources from "../Utils/Resources";
-import Materials from "../Utils/Materials";
-import Contract from "./Contract";
+import Resources  from "../Utils/Resources";
+import Materials  from "../Utils/Materials";
+import Contract   from "./Contract";
 
 export default class LootBoxScene {
   // Class
   experience: Experience
-  scene: THREE.Scene
-  resources: Resources
-  materials: Materials
-  resource: any
-  model: any
-  models: {[key: string]: any} = {}
+  scene:      THREE.Scene
+  resources:  Resources
+  materials:  Materials
+
+  // Models
+  resource:   any
+  contracts:  any
+  floor:      any
+  house:      any
+  lamp:       any
+  nature:     any
+  steps:      any
+  walls:      any
+  models:     {[key: string]: any} = {}
+
+  // smart-contracts
   smartContracts: {[key: string]: any} = {}
 
   constructor() {
     this.experience = Experience.Instance()
-    this.scene = this.experience.scene
-    this.resources = this.experience.resources
-    this.resource = this.resources.items.sceneModel
-    this.materials = this.experience.materials
+    this.scene      = this.experience.scene
+    this.materials  = this.experience.materials
+    this.resources  = this.experience.resources
+
+    this.contracts  = this.resources.items.contractsModel
+    this.floor      = this.resources.items.floorModel
+    this.house      = this.resources.items.houseModel
+    this.lamp       = this.resources.items.lampModel
+    this.nature     = this.resources.items.natureModel
+    this.steps      = this.resources.items.stepsModel
+    this.walls      = this.resources.items.wallsModel
 
     this.parseModel()
     this.setMaterials()
@@ -29,118 +46,118 @@ export default class LootBoxScene {
   
   parseModel()
   {
-    this.model = this.resource.scene
     
     // Chest.sol
     this.models.chestSC = new THREE.Group()
     this.models.chestSC.name = "chestSC"
-    this.models.chestSC.add(this.model.getObjectByName("contract_chest_function_deploy"))
-    this.models.chestSC.add(this.model.getObjectByName("contract_chest_function_addWhitelist"))
-    this.models.chestSC.add(this.model.getObjectByName("contract_chest_function_batchDeposit"))
-    this.models.chestSC.add(this.model.getObjectByName("contract_chest_function_loot"))
-    this.models.chestSC.add(this.model.getObjectByName("contract_chest_function_batchLoot"))
-    this.models.chestSC.add(this.model.getObjectByName("contract_chest_function_transferOwnership"))
-    this.models.chestSC.add(this.model.getObjectByName("chest_sol"))
-    // this.models.chestSC.add(this.model.getObjectByName("chest_placeHolder"))
-    this.models.chestSC.add(this.model.getObjectByName("chest_network"))
-    this.models.chestSC.add(this.model.getObjectByName("chest_interface"))
-    this.models.chestSC.add(this.model.getObjectByName("chest_inputsScreen"))
-    this.models.chestSC.add(this.model.getObjectByName("chest_metaScreen"))
-    this.models.chestSC.add(this.model.getObjectByName("contract_chest_function_import"))
+    this.models.chestSC.add(this.contracts.getObjectByName("contract_chest_function_deploy"))
+    this.models.chestSC.add(this.contracts.getObjectByName("contract_chest_function_addWhitelist"))
+    this.models.chestSC.add(this.contracts.getObjectByName("contract_chest_function_batchDeposit"))
+    this.models.chestSC.add(this.contracts.getObjectByName("contract_chest_function_loot"))
+    this.models.chestSC.add(this.contracts.getObjectByName("contract_chest_function_batchLoot"))
+    this.models.chestSC.add(this.contracts.getObjectByName("contract_chest_function_transferOwnership"))
+    this.models.chestSC.add(this.contracts.getObjectByName("chest_sol"))
+    // this.models.chestSC.add(this.contracts.getObjectByName("chest_placeHolder"))
+    this.models.chestSC.add(this.contracts.getObjectByName("chest_network"))
+    this.models.chestSC.add(this.contracts.getObjectByName("chest_interface"))
+    this.models.chestSC.add(this.contracts.getObjectByName("chest_inputsScreen"))
+    this.models.chestSC.add(this.contracts.getObjectByName("chest_metaScreen"))
+    this.models.chestSC.add(this.contracts.getObjectByName("contract_chest_function_import"))
     this.scene.add(this.models.chestSC)
     
     // erc20.sol
     this.models.erc20SC = new THREE.Group()
     this.models.erc20SC.name = "erc20SC"
-    this.models.erc20SC.add(this.model.getObjectByName("contract_erc20_function_deploy"))
-    this.models.erc20SC.add(this.model.getObjectByName("contract_erc20_function_approve"))
-    this.models.erc20SC.add(this.model.getObjectByName("contract_erc20_function_transfer"))
-    this.models.erc20SC.add(this.model.getObjectByName("contract_erc20_function_mint"))
-    this.models.erc20SC.add(this.model.getObjectByName("contract_erc20_function_burn"))
-    this.models.erc20SC.add(this.model.getObjectByName("contract_erc20_function_transferOwnership"))
-    this.models.erc20SC.add(this.model.getObjectByName("erc20_sol"))
-    // this.models.erc20SC.add(this.model.getObjectByName("erc20_placeHolder"))
-    this.models.erc20SC.add(this.model.getObjectByName("erc20_network"))
-    this.models.erc20SC.add(this.model.getObjectByName("erc20_interface"))
-    this.models.erc20SC.add(this.model.getObjectByName("erc20_inputsScreen"))
-    this.models.erc20SC.add(this.model.getObjectByName("erc20_metaScreen"))
-    this.models.erc20SC.add(this.model.getObjectByName("contract_erc20_function_import"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("contract_erc20_function_deploy"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("contract_erc20_function_approve"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("contract_erc20_function_transfer"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("contract_erc20_function_mint"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("contract_erc20_function_burn"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("contract_erc20_function_transferOwnership"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("erc20_sol"))
+    // this.models.erc20SC.add(this.contracts.getObjectByName("erc20_placeHolder"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("erc20_network"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("erc20_interface"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("erc20_inputsScreen"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("erc20_metaScreen"))
+    this.models.erc20SC.add(this.contracts.getObjectByName("contract_erc20_function_import"))
     this.scene.add(this.models.erc20SC)
     
     // erc721.sol
     this.models.erc721SC = new THREE.Group()
     this.models.erc721SC.name = "erc721SC"
-    this.models.erc721SC.add(this.model.getObjectByName("contract_erc721_function_deploy"))
-    this.models.erc721SC.add(this.model.getObjectByName("contract_erc721_function_approve"))
-    this.models.erc721SC.add(this.model.getObjectByName("contract_erc721_function_setApprovalForAll"))
-    this.models.erc721SC.add(this.model.getObjectByName("contract_erc721_function_safeTransferFrom"))
-    this.models.erc721SC.add(this.model.getObjectByName("contract_erc721_function_safeMint"))
-    this.models.erc721SC.add(this.model.getObjectByName("contract_erc721_function_burn"))
-    this.models.erc721SC.add(this.model.getObjectByName("contract_erc721_function_transferOwnership"))
-    this.models.erc721SC.add(this.model.getObjectByName("contract_erc721_function_renounceOwnership"))
-    this.models.erc721SC.add(this.model.getObjectByName("contract_erc721_function_8"))
-    this.models.erc721SC.add(this.model.getObjectByName("contract_erc721_function_9"))
-    this.models.erc721SC.add(this.model.getObjectByName("erc721_sol"))
-    // this.models.erc721SC.add(this.model.getObjectByName("erc721_placeHolder"))
-    this.models.erc721SC.add(this.model.getObjectByName("erc721_network"))
-    this.models.erc721SC.add(this.model.getObjectByName("erc721_interface"))
-    this.models.erc721SC.add(this.model.getObjectByName("erc721_inputsScreen"))
-    this.models.erc721SC.add(this.model.getObjectByName("erc721_metaScreen"))
-    this.models.erc721SC.add(this.model.getObjectByName("contract_erc721_function_import"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("contract_erc721_function_deploy"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("contract_erc721_function_approve"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("contract_erc721_function_setApprovalForAll"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("contract_erc721_function_safeTransferFrom"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("contract_erc721_function_safeMint"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("contract_erc721_function_burn"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("contract_erc721_function_transferOwnership"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("contract_erc721_function_renounceOwnership"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("contract_erc721_function_8"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("contract_erc721_function_9"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("erc721_sol"))
+    // this.models.erc721SC.add(this.contracts.getObjectByName("erc721_placeHolder"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("erc721_network"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("erc721_interface"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("erc721_inputsScreen"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("erc721_metaScreen"))
+    this.models.erc721SC.add(this.contracts.getObjectByName("contract_erc721_function_import"))
     this.scene.add(this.models.erc721SC)
     
     // erc1155.sol
     this.models.erc1155SC = new THREE.Group()
     this.models.erc1155SC.name = "erc1155SC"
-    this.models.erc1155SC.add(this.model.getObjectByName("contract_erc1155_function_deploy"))
-    this.models.erc1155SC.add(this.model.getObjectByName("contract_erc1155_function_setApprovalForAll"))
-    this.models.erc1155SC.add(this.model.getObjectByName("contract_erc1155_function_safeTransferFrom"))
-    this.models.erc1155SC.add(this.model.getObjectByName("contract_erc1155_function_safeBatchTransferFrom"))
-    this.models.erc1155SC.add(this.model.getObjectByName("contract_erc1155_function_mint"))
-    this.models.erc1155SC.add(this.model.getObjectByName("contract_erc1155_function_mintBatch"))
-    this.models.erc1155SC.add(this.model.getObjectByName("contract_erc1155_function_burn"))
-    this.models.erc1155SC.add(this.model.getObjectByName("contract_erc1155_function_burnBatch"))
-    this.models.erc1155SC.add(this.model.getObjectByName("contract_erc1155_function_transferOwnership"))
-    this.models.erc1155SC.add(this.model.getObjectByName("contract_erc1155_function_renounceOwnership"))
-    this.models.erc1155SC.add(this.model.getObjectByName("erc1155_sol"))
-    // this.models.erc1155SC.add(this.model.getObjectByName("erc1155_placeHolder"))
-    this.models.erc1155SC.add(this.model.getObjectByName("erc1155_network"))
-    this.models.erc1155SC.add(this.model.getObjectByName("erc1155_interface"))
-    this.models.erc1155SC.add(this.model.getObjectByName("erc1155_inputsScreen"))
-    this.models.erc1155SC.add(this.model.getObjectByName("erc1155_metaScreen"))
-    this.models.erc1155SC.add(this.model.getObjectByName("contract_erc1155_function_import"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("contract_erc1155_function_deploy"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("contract_erc1155_function_setApprovalForAll"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("contract_erc1155_function_safeTransferFrom"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("contract_erc1155_function_safeBatchTransferFrom"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("contract_erc1155_function_mint"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("contract_erc1155_function_mintBatch"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("contract_erc1155_function_burn"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("contract_erc1155_function_burnBatch"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("contract_erc1155_function_transferOwnership"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("contract_erc1155_function_renounceOwnership"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("erc1155_sol"))
+    // this.models.erc1155SC.add(this.contracts.getObjectByName("erc1155_placeHolder"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("erc1155_network"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("erc1155_interface"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("erc1155_inputsScreen"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("erc1155_metaScreen"))
+    this.models.erc1155SC.add(this.contracts.getObjectByName("contract_erc1155_function_import"))
     
     this.scene.add(this.models.erc1155SC)
 
     // Models
-    this.models.clickMe = this.model.getObjectByName("clickMe")
-    this.models.grass = this.model.getObjectByName("grass")
-    this.models.road = this.model.getObjectByName("road")
+    this.models.clickMe = this.contracts.getObjectByName("clickMe")
+    this.models.grass   = this.floor.getObjectByName("grass")
+    this.models.road    = this.floor.getObjectByName("road")
 
-    this.scene.add(this.model)
+    this.scene.add(this.contracts)
   }
 
   setMaterials()
   {
-    this.resources.on("texturesMapped", () => {
-      this.models.chestSC.children[0].material = this.materials.items.deployContract
-      this.models.chestSC.children[1].material = this.materials.items.addWhitelist
-      this.models.chestSC.children[2].material = this.materials.items.deposit
-      this.models.chestSC.children[3].material = this.materials.items.loot
-      this.models.chestSC.children[4].material = this.materials.items.batchLoot
-      this.models.chestSC.children[5].material = this.materials.items.transferOwnership
-      this.models.chestSC.children[9].visible = false
-      this.models.chestSC.children[10].visible = false
+    this.resources.on("texturesMapped", () => 
+    {
+      this.models.chestSC.children[0].material  = this.materials.items.deployContract
+      this.models.chestSC.children[1].material  = this.materials.items.addWhitelist
+      this.models.chestSC.children[2].material  = this.materials.items.deposit
+      this.models.chestSC.children[3].material  = this.materials.items.loot
+      this.models.chestSC.children[4].material  = this.materials.items.batchLoot
+      this.models.chestSC.children[5].material  = this.materials.items.transferOwnership
+      this.models.chestSC.children[9].visible   = false
+      this.models.chestSC.children[10].visible  = false
       this.models.chestSC.children[11].material = this.materials.items.import
 
-      this.models.erc20SC.children[0].material = this.materials.items.deployContract
-      this.models.erc20SC.children[1].material = this.materials.items.approveErc20
-      this.models.erc20SC.children[2].material = this.materials.items.transferErc20
-      this.models.erc20SC.children[3].material = this.materials.items.mintErc20
-      this.models.erc20SC.children[4].material = this.materials.items.burnErc20
-      this.models.erc20SC.children[5].material = this.materials.items.transferOwnership
-      this.models.erc20SC.children[9].visible = false
-      this.models.erc20SC.children[10].visible = false
+      this.models.erc20SC.children[0].material  = this.materials.items.deployContract
+      this.models.erc20SC.children[1].material  = this.materials.items.approveErc20
+      this.models.erc20SC.children[2].material  = this.materials.items.transferErc20
+      this.models.erc20SC.children[3].material  = this.materials.items.mintErc20
+      this.models.erc20SC.children[4].material  = this.materials.items.burnErc20
+      this.models.erc20SC.children[5].material  = this.materials.items.transferOwnership
+      this.models.erc20SC.children[9].visible   = false
+      this.models.erc20SC.children[10].visible  = false
       this.models.erc20SC.children[11].material = this.materials.items.import
 
       this.models.erc721SC.children[0].material = this.materials.items.deployContract
@@ -190,7 +207,8 @@ export default class LootBoxScene {
     })
   }
 
-  update() {
+  update() 
+  {
     const smartContracts = Object.entries(this.smartContracts)
     for(let i = 0; i < smartContracts.length; i++)
       this.smartContracts[smartContracts[i][0]].update()
