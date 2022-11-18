@@ -71,39 +71,40 @@ export default class Contract extends EventEmitter {
    * @param bytecode  Needed to deploy this contract
    * @param address   If contract is already deployed
    */
-  constructor(abi: string[] & Object[], meshes: THREE.Group, bytecode: string, address?: string)
+  constructor(abi: string[] & Object[], meshes: THREE.Mesh, bytecode: string, address?: string)
   {
     super()
 
-    this.experience = Experience.Instance()
-    this.scene = this.experience.scene
-    this.factory = this.experience.factory
-    this.raycaster = this.experience.raycaster
-    this.root = this.experience.root
-    this.materials = this.experience.materials
-    this.resources = this.experience.resources
-    this.sounds = this.experience.sounds
+    this.experience   = Experience.Instance()
+    this.scene        = this.experience.scene
+    this.factory      = this.experience.factory
+    this.raycaster    = this.experience.raycaster
+    this.root         = this.experience.root
+    this.materials    = this.experience.materials
+    this.resources    = this.experience.resources
+    this.sounds       = this.experience.sounds
     
     
-    this.abi = abi
-    this.model = meshes
-    this.inputsScreen = meshes.children.find(child => child.name.split('_').pop() === "inputsScreen")
-    this.metaScreen = meshes.children.find(child => child.name.split('_').pop() === "metaScreen")
-    this.network = meshes.children.find(child => child.name.split('_').pop() === "network")
-    this.deployer = new ethers.ContractFactory(abi, bytecode, this.user?.wallet.signer)
+    this.abi            = abi
+    this.model          = meshes
+    this.inputsScreen   = meshes.children.find(child => child.name.split('_').pop() === "inputsScreen")
+    this.metaScreen     = meshes.children.find(child => child.name.split('_').pop() === "metaScreen")
+    this.network        = meshes.children.find(child => child.name.split('_').pop() === "network")
+    this.deployer       = new ethers.ContractFactory(abi, bytecode, this.user?.wallet.signer)
     
     if (address) 
     { 
       this.interface = new ethers.Contract(address, abi)
       this._address = address
     }
-    
+
     this.parseFunctions()
     this.setEvents()
   }
 
 
   
+
 
   
   /**
@@ -148,6 +149,18 @@ export default class Contract extends EventEmitter {
     }
   }
 
+
+
+
+
+  /**
+   * @name setPostProcessing
+   * @notice set all the meshes their postProcessing settings
+   */
+  // private setPostProcessing()
+  // {
+  //   this.model.layers.
+  // }
 
 
 
@@ -210,12 +223,12 @@ export default class Contract extends EventEmitter {
       } 
     }
 
-    this.raycaster.on("mouse_enter_" + this.metaScreen.name.split("_")[0], () => {
-      this.model.getObjectByName(this.metaScreen.name.split("_")[0] + "_sol").layers.enable(1)
+    this.raycaster.on("mouse_enter_" + this.model.name, () => {
+      this.model.layers.enable(1)
     })
 
-    this.raycaster.on("mouse_leave_" + this.metaScreen.name.split("_")[0], () => {
-      this.model.getObjectByName(this.metaScreen.name.split("_")[0] + "_sol").layers.disable(1)
+    this.raycaster.on("mouse_leave_" + this.model.name, () => {
+      this.model.layers.disable(1)
     })
   }
 

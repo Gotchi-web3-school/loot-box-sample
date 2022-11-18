@@ -225,19 +225,19 @@ export default class Raycaster extends EventEmitter{
           switch(this.currentIntersect!.name.split("_")[0]) 
           {
 
-            case "chest":
+            case "chestSC":
               this.controller.worldControls.chestSC()
             break
 
-            case "erc20":
+            case "erc20SC":
               this.controller.worldControls.erc20SC()
             break
 
-            case "erc721":
+            case "erc721SC":
               this.controller.worldControls.erc721SC()
             break
 
-            case "erc1155":
+            case "erc1155SC":
               this.controller.worldControls.erc1155SC()
             break
 
