@@ -1,5 +1,6 @@
 import * as THREE         from "three";
 import { BigNumberish }   from "ethers";
+import { RootState }      from "@react-three/fiber";
 import Contract           from "./Contract";
 import ChestItem          from "./ChestItem";
 import Experience         from "../Experience";
@@ -14,6 +15,7 @@ import { Vector3 } from "three";
 export default class Chest {
   // Class
   experience: Experience
+  root: RootState
   raycaster: Raycaster
   scene: THREE.Scene
   resources: Resources        
@@ -25,6 +27,7 @@ export default class Chest {
   // Scene
   chestModel: any
   chestScene: THREE.Group
+  chestStructure: THREE.Object3D
   resource: any
   originPos: THREE.Vector3 = new THREE.Vector3()
   animation: {[key: string]: any} = {}
@@ -37,18 +40,20 @@ export default class Chest {
 
   constructor() 
   {
-    this.experience = Experience.Instance()
-    this.raycaster  = this.experience.raycaster
-    this.scene      = this.experience.scene
-    this.resources  = this.experience.resources
-    this.preLoader  = this.experience.preLoader 
-    this.materials  = this.experience.materials
-    this.time       = this.experience.root.clock
-    this.sounds     = this.experience.sounds
+    this.experience     = Experience.Instance()
+    this.root           = this.experience.root
+    this.raycaster      = this.experience.raycaster
+    this.scene          = this.experience.scene
+    this.resources      = this.experience.resources
+    this.preLoader      = this.experience.preLoader 
+    this.materials      = this.experience.materials
+    this.time           = this.experience.root.clock
+    this.sounds         = this.experience.sounds
 
-    this.chestModel = this.resources.items.chestModel
-    this.chestScene = this.chestModel.scene
-    this.resource   = this.resources.items.scene
+    this.chestModel     = this.resources.items.chestModel
+    this.chestScene     = this.chestModel.scene
+    this.chestStructure = this.chestScene.getObjectByName("Object_7")!
+    this.resource       = this.resources.items.scene
 
 
     this.setGLTF()
@@ -61,6 +66,11 @@ export default class Chest {
     this.chestModel.scene.position.copy(new THREE.Vector3(1.64, 0, 8.76))
     this.chestModel.scene.rotation.y = -(Math.PI * 0.25)
     this.originPos.copy(this.chestModel.scene.position)
+
+    this.chestStructure.layers.enable(1)
+    this.chestStructure.layers.disableAll()
+    
+    this.chestStructure.name = "chestContainer"
 
     this.scene.add(this.chestModel.scene)
   }
@@ -77,18 +87,32 @@ export default class Chest {
 
   setEvent()
   {
+    this.preLoader.on("start", () => {
+  
+      this.contract = this.experience.world.lootBoxScene?.smartContracts.chest
+  
+      this.experience.world.lootBoxScene?.smartContracts.chest.on("import chest", async () => {
+        const IContract = this.contract!.interface!.connect(this.experience.world.user?.wallet.signer)
+        const loots = await IContract.callStatic.look()
+        this.setLoots(loots)
+      })
+  
+    })
+
+    
     this.raycaster.on("clickChest", () => 
     {
       let action = this.animation.action.current
-      let open = this.sounds.openChest
-      let close = this.sounds.closeChest
-      let loots = this.loots
+      let open   = this.sounds.openChest
+      let close  = this.sounds.closeChest
+      let loots  = this.loots
 
+      // Close chest
       if (action.paused) 
       {
         action.paused = false
         close.play()
-
+        
         setTimeout(() => action.stop(), 500)
         
         for(const loot of loots) {
@@ -97,6 +121,7 @@ export default class Chest {
         }
         this.openIndex = 0;
       }
+      // Open chest
       else 
       {
         action.play()
@@ -105,19 +130,16 @@ export default class Chest {
       }
     })
 
-    this.preLoader.on("start", () => {
 
-      this.contract = this.experience.world.lootBoxScene?.smartContracts.chest
 
-      this.experience.world.lootBoxScene?.smartContracts.chest.on("import chest", async () => {
-        const IContract = this.contract!.interface!.connect(this.experience.world.user?.wallet.signer)
-        const loots = await IContract.callStatic.look()
-        this.setLoots(loots)
-      })
 
+    this.raycaster.on("mouse_enter_" + this.chestStructure.name, () => {
+      this.chestStructure.layers.enable(1)
     })
 
-
+    this.raycaster.on("mouse_leave_" + this.chestStructure.name, () => {
+      this.chestStructure.layers.disable(1)
+    })
   }
 
   setLoots(loots: {items: string[], tokenIds: BigNumberish[], amounts: BigNumberish[], type_: number[]}) 

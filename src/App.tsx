@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { extend, useThree, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei"
 import { useControls } from 'leva'
-import { Bloom, EffectComposer } from '@react-three/postprocessing'
+import { Bloom, EffectComposer, Outline } from '@react-three/postprocessing'
 import Experience from "./Experience/Experience";
 import AddWhitelist from "./fiber/AddWhitelist";
 import ApproveERC20 from "./fiber/ApproveERC20";
@@ -31,13 +31,17 @@ function App() {
   const [experience, setExperience] = useState<Experience>()
   const root = useThree()
   const controlsRef = useRef<any>()
+  const starsRef = useRef<any>()
   const inputsFunctionRef = useRef<any>()
+  const outLineRef = useRef<any>()
+  const composerRef = useRef<any>()
   const chestRef = useRef<any>()
   const erc20Ref = useRef<any>()
   const erc721Ref = useRef<any>()
 
   useEffect(() => {
     root.controls = controlsRef.current
+    root["outlineHover"] = outLineRef.current
     root["chest"] = chestRef.current
     root["erc20"] = erc20Ref.current
     root["erc721"] = erc721Ref.current
@@ -46,39 +50,56 @@ function App() {
 
   }, [root])
 
-  useFrame( () => experience?.update() )
+
+  useFrame( () => { experience?.update() } )
 
   const { radius, depth, count, factor, saturation, speed } = useControls('sky', {
+
     radius:     { value: 64,    min: 0, max: 100    },
     depth:      { value: 130,   min: 0, max: 500    },
     count:      { value: 9000,  min: 0, max: 100000 },
     factor:     { value: 4,     min: 0, max: 20     },
     saturation: { value: 10,    min: 0, max: 1      },
     speed:      { value: 3,     min: 0, max: 10     },
+
   })
 
   const { intensity, luminanceThreshold, luminanceSmoothing } = useControls('bloom', {
+
     intensity:            { value: 2,     min: 0, max: 10, step: 0.1 },
     luminanceThreshold:   { value: 0.9,   min: 0, max: 1             },
     luminanceSmoothing:   { value: 0.025, min: 0, max: 1             },
+
   })
-  
+
+
+
   return (
     <>
       <color args={ ["black"] } attach="background" />
-      <EffectComposer >
-        <Bloom mipmapBlur intensity={ intensity } luminanceThreshold={ luminanceThreshold } luminanceSmoothing={ luminanceSmoothing } />
-      </EffectComposer>
+      <OrbitControls args={ [root.camera, root.gl.domElement] } ref={controlsRef} />
+      <Stars ref={starsRef} radius={radius} depth={depth} count={count} factor={factor} saturation={saturation} speed={speed} />
       
 
-      <OrbitControls args={ [root.camera, root.gl.domElement] } ref={controlsRef} />
-      {/* <Sky distance={450000} sunPosition={ sunPosition } inclination={0} azimuth={0.25}/> */}
-      <Stars radius={radius} depth={depth} count={count} factor={factor} saturation={saturation} speed={speed} />
+      <EffectComposer ref={composerRef} autoClear={false}>
+        <Outline
+            ref={outLineRef}
+            selection={[]}
+            selectionLayer={ 1 }
+            xRay
+            edgeStrength={2.5}
+            visibleEdgeColor={0xffffff}
+            hiddenEdgeColor={0x22090a}
+         />
+      
+        <Bloom mipmapBlur intensity={ intensity } luminanceThreshold={ luminanceThreshold } luminanceSmoothing={ luminanceSmoothing } />
+      </EffectComposer>
 
 
+    
       <group ref={inputsFunctionRef} >
         
-        <group ref={chestRef}>
+        <group ref={chestRef} >
           { experience &&
             <>
               <ChestDeployer     group={"chest"} experience={experience} />

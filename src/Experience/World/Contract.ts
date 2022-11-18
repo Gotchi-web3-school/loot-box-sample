@@ -178,7 +178,6 @@ export default class Contract extends EventEmitter {
 
           mesh.material = this.functions[funcName].lib.materials.default
           mesh.scale.copy(this.functions[funcName].lib.scales.default)
-
         })
 
         // Clicked on functions
@@ -210,6 +209,14 @@ export default class Contract extends EventEmitter {
       
       } 
     }
+
+    this.raycaster.on("mouse_enter_" + this.metaScreen.name.split("_")[0], () => {
+      this.model.getObjectByName(this.metaScreen.name.split("_")[0] + "_sol").layers.enable(1)
+    })
+
+    this.raycaster.on("mouse_leave_" + this.metaScreen.name.split("_")[0], () => {
+      this.model.getObjectByName(this.metaScreen.name.split("_")[0] + "_sol").layers.disable(1)
+    })
   }
 
 

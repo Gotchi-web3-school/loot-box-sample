@@ -11,6 +11,7 @@ import Resources from "./Resources";
 import Controller from "../Controller";
 import EventEmitter from "./EventEmitter";
 
+
 export default class Raycaster extends EventEmitter{
   // Class
   experience: Experience
@@ -31,7 +32,7 @@ export default class Raycaster extends EventEmitter{
   // Ray caster
   raycaster = new THREE.Raycaster()
   intersectsObjects?: THREE.Intersection[]
-  objectsToTest: THREE.Object3D[] = []
+  objectsToTest: any[] = []
   currentIntersect?: THREE.Object3D | null = null
   currentIntersectParent?: THREE.Object3D<THREE.Event> | null = null
   cursorDown = new THREE.Vector2()
@@ -39,6 +40,7 @@ export default class Raycaster extends EventEmitter{
 
   // hovering
   currentHover: string | null = null
+  hovering?: THREE.Object3D
 
   // Hibox
   hitboxes: THREE.Box3[] = []
@@ -66,21 +68,10 @@ export default class Raycaster extends EventEmitter{
       this.user = this.world.user
       this.lootBoxScene = this.world.lootBoxScene
       
-      this.setHitbox()
       this.setObjectToTest()
       this.setWindowListener()
     })
 
-  }
-  
-  private setHitbox()
-  {
-      this.hitboxes.push(new THREE.Box3().setFromObject(this.lootBoxScene?.models.chestSC))
-      this.hitboxes.push(new THREE.Box3().setFromObject(this.lootBoxScene?.models.erc20SC))
-      this.hitboxes.push(new THREE.Box3().setFromObject(this.lootBoxScene?.models.erc721SC))
-      this.hitboxes.push(new THREE.Box3().setFromObject(this.lootBoxScene?.models.erc1155SC))
-  
-      if (this.debug.active) { this.hitboxDebug = new HitboxDebug() }    
   }
 
   private setObjectToTest()
@@ -110,12 +101,11 @@ export default class Raycaster extends EventEmitter{
     // chest
     this.world!.chest!.chestScene.traverse((obj3d: THREE.Object3D) => 
     {
-      if (obj3d instanceof THREE.SkinnedMesh)
-      {
-        obj3d.parent!.name = "chest"
-        this.objectsToTest.push(obj3d)
-      }
+      if (obj3d instanceof THREE.SkinnedMesh) { this.objectsToTest.push(obj3d) }
     })
+
+    this.experience.root["outlineHover"].selection.set(this.objectsToTest)
+    this.disableAllLayers()
   }
 
   private setWindowListener()
@@ -138,9 +128,71 @@ export default class Raycaster extends EventEmitter{
     })
 
     // Click listener
-    window.addEventListener('pointerup', (event) => this.click)
+    window.addEventListener('mousemove', (event) => this.hover())
       
   }
+
+
+
+
+
+
+
+
+
+
+  /***********************************|
+  |               HOVER               |
+  |__________________________________*/
+
+  hover(): void
+  {
+    this.raycaster.setFromCamera(this.mouse, this.camera.instance)
+    const obj = this.raycaster.intersectObjects(this.objectsToTest)
+
+   if (obj.length) 
+   {
+      if (this.hovering === undefined) 
+      {
+        let nameEnter = obj[0].object?.name.split('_')[0] ?? obj[0].object.uuid
+        this.trigger("mouse_enter_" + nameEnter)
+      }
+      else if (this.hovering.uuid !== obj[0].object.uuid) 
+      {
+        let nameLeaving = this.hovering.name.split('_')[0] ?? obj[0].object.uuid
+        this.trigger("mouse_leave_" + nameLeaving)
+
+        let nameEnter = obj[0].object?.name.split('_')[0] ?? obj[0].object.uuid
+        this.trigger("mouse_enter_" + nameEnter)
+      }
+
+      this.hovering = obj[0].object
+   } 
+   else
+   {
+      if (this.hovering !== undefined) 
+      {
+        let nameLeaving = this.hovering.name.split('_')[0] ?? obj[0].object.uuid
+        this.trigger("mouse_leave_" + nameLeaving)
+
+        this.hovering = undefined
+      }
+   }
+
+  }
+
+
+
+
+
+
+
+
+
+
+  /***********************************|
+  |             CLICK                 |
+  |__________________________________*/
 
   click(): void
   {
@@ -151,7 +203,6 @@ export default class Raycaster extends EventEmitter{
     
     if (this.intersectsObjects.length) {
       this.currentIntersect = this.intersectsObjects[ 0 ].object
-      this.currentIntersectParent = this.intersectsObjects[ 0 ].object.parent
     }
 
     // if (ethers.utils.isAddress(this.intersectsObjects[0]?.object.name ?? ""))
@@ -163,35 +214,34 @@ export default class Raycaster extends EventEmitter{
     // }
 
     switch (this.controller.getCurrentMode()) 
-    {
-      
+    {      
       /***********************************|
       |             0.WORLD               |
       |__________________________________*/
       case undefined:
 
-        if (this.intersectsObjects.length && this.currentIntersectParent) 
+        if (this.intersectsObjects.length) 
         {
-          switch(this.currentIntersectParent.name) 
+          switch(this.currentIntersect!.name.split("_")[0]) 
           {
 
-            case "chestSC":
+            case "chest":
               this.controller.worldControls.chestSC()
             break
 
-            case "erc20SC":
+            case "erc20":
               this.controller.worldControls.erc20SC()
             break
 
-            case "erc721SC":
+            case "erc721":
               this.controller.worldControls.erc721SC()
             break
 
-            case "erc1155SC":
+            case "erc1155":
               this.controller.worldControls.erc1155SC()
             break
 
-            case "chest":
+            case "chestContainer":
               this.trigger("clickChest")
             break
 
@@ -320,6 +370,15 @@ export default class Raycaster extends EventEmitter{
       }
 
     }
+  }
+
+
+  /**
+   * Disable layers of all the 3Dobject to clear postprocessing effects
+   */
+  disableAllLayers()
+  {
+    this.objectsToTest.forEach(object => object.layers.disableAll())
   }
 
   update()
