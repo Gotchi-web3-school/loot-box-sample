@@ -70,7 +70,7 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
   |             EVENTS                |
   |__________________________________*/
 
-  experience.raycaster.on( "click_contract_chest_function_loot", async () => { 
+  experience.raycaster.on( "click_chestSC_function_loot", async () => { 
     setCurrMode(experience.controller.getCurrentMode())
     setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected)
@@ -101,7 +101,7 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
                 <Box>
                   <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >Loot</Text>
                   <Box as="button" fontSize={"10px"} position={"fixed"} top="20px" right="20px" onClick={() =>{
-                    experience.controller.chestContractControls.main()
+                    experience.controller.chestSCContractControls.main()
                     setCurrMode(experience.controller.getCurrentMode())
                   }}
                   >

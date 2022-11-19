@@ -48,7 +48,7 @@ const SetApprovalForAll: React.FC<{group: string, experience: Experience, props:
   |             EVENTS                |
   |__________________________________*/
 
-  experience.raycaster.on( `click_contract_${group}_function_setApprovalForAll`, () => { 
+  experience.raycaster.on( `click_${group}_function_setApprovalForAll`, () => { 
     setCurrMode(experience.controller.getCurrentMode())
     setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected) 

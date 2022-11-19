@@ -166,10 +166,10 @@ export default class LootBoxScene {
   {
     this.resources.on("texturesMapped", () => 
     {
-      this.smartContracts.chest    = new Contract( this.resources.items.chestAbi.abi,     this.models.chestSC,    this.resources.items.chestAbi.bytecode   )
-      this.smartContracts.erc20    = new Contract( this.resources.items.erc20Abi.abi,     this.models.erc20SC,    this.resources.items.erc20Abi.bytecode   )
-      this.smartContracts.erc721   = new Contract( this.resources.items.erc721Abi.abi,    this.models.erc721SC,   this.resources.items.erc721Abi.bytecode  )
-      this.smartContracts.erc1155  = new Contract( this.resources.items.erc1155Abi.abi,   this.models.erc1155SC,  this.resources.items.erc1155Abi.bytecode )
+      this.smartContracts.chestSC    = new Contract( this.resources.items.chestAbi.abi,     this.models.chestSC,    this.resources.items.chestAbi.bytecode   )
+      this.smartContracts.erc20SC    = new Contract( this.resources.items.erc20Abi.abi,     this.models.erc20SC,    this.resources.items.erc20Abi.bytecode   )
+      this.smartContracts.erc721SC   = new Contract( this.resources.items.erc721Abi.abi,    this.models.erc721SC,   this.resources.items.erc721Abi.bytecode  )
+      this.smartContracts.erc1155SC  = new Contract( this.resources.items.erc1155Abi.abi,   this.models.erc1155SC,  this.resources.items.erc1155Abi.bytecode )
     })
   }
 

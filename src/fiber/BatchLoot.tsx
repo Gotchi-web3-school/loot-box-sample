@@ -74,7 +74,7 @@ const BatchLoot: React.FC<{group: string, experience: Experience}> = ({ group, e
   |             EVENTS                |
   |__________________________________*/
 
-  experience.raycaster.on( "click_contract_chest_function_batchLoot", async () => { 
+  experience.raycaster.on( "click_chestSC_function_batchLoot", async () => { 
     setCurrMode(experience.controller.getCurrentMode())
     setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected)
@@ -105,7 +105,7 @@ const BatchLoot: React.FC<{group: string, experience: Experience}> = ({ group, e
                 <Box>
                   <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >BatchLoot</Text>
                   <Box as="button" fontSize={"10px"} position={"fixed"} top="20px" right="20px" onClick={() =>{
-                    experience.controller.chestContractControls.main()
+                    experience.controller.chestSCContractControls.main()
                     setCurrMode(experience.controller.getCurrentMode())
                   }}
                   >

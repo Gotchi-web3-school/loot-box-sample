@@ -47,7 +47,7 @@ const BurnERC721: React.FC<{ group: string, experience: Experience, props: any }
   |             EVENTS                |
   |__________________________________*/
 
-  experience.raycaster.on( `click_contract_${group}_function_burn`, () => { 
+  experience.raycaster.on( `click_${group}_function_burn`, () => { 
     setCurrMode(experience.controller.getCurrentMode())
     setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected) 

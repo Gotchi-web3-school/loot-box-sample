@@ -46,7 +46,7 @@ const ERC721Deployer: React.FC<{group: string, experience: Experience}>  = ({ gr
   |             EVENTS                |
   |__________________________________*/
 
-  experience.raycaster.on( `click_contract_${group}_function_deploy`, () => { 
+  experience.raycaster.on( `click_${group}_function_deploy`, () => { 
     setCurrMode(experience.controller.getCurrentMode())
     setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected)
@@ -77,7 +77,7 @@ const ERC721Deployer: React.FC<{group: string, experience: Experience}>  = ({ gr
                 <Box>
                   <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >Deploy {group}</Text>
                   <Box as='button' fontSize={"10px"} position={"fixed"} top="20wpx" right="20px" onClick={() => {
-                    experience.controller.erc721ContractControls.main()
+                    experience.controller.erc721SCContractControls.main()
                     setCurrMode(experience.controller.getCurrentMode())
                   }}
                   >

@@ -22,7 +22,7 @@ const Import: React.FC<{group: string, experience: Experience}>  = ({ group, exp
   };
   
   // Events
-  experience.raycaster.on( `click_contract_${group}_function_import`, () => { 
+  experience.raycaster.on( `click_${group}_function_import`, () => { 
     setCurrMode(experience.controller.getCurrentMode()) 
   })
 

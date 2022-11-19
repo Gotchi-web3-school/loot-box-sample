@@ -47,7 +47,7 @@ const ApproveERC20: React.FC<{group: string, experience: Experience}>  = ({ grou
   |             EVENTS                |
   |__________________________________*/
 
-  experience.raycaster.on( `click_contract_${group}_function_approve`, () => { 
+  experience.raycaster.on( `click_${group}_function_approve`, () => { 
     setCurrMode(experience.controller.getCurrentMode())
     setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected) 
