@@ -189,10 +189,6 @@ export default class Contract extends EventEmitter {
         this.experience.raycaster.on( "click_" + mesh.name, (event) => {
           
           const funcName = mesh.name.split('_').pop()
-
-          console.log(mesh.name)
-          console.log("mode", this.experience.controller.getMode())
-          console.log(this.functions[funcName].contractFunctions)
           
           if (funcName === "deploy" || funcName === "import") 
           {
@@ -275,6 +271,7 @@ export default class Contract extends EventEmitter {
 
   public attachAddress(contractAddress: string): void
   {
+    console.log("network: ", this.model)
     this.interface = new ethers.Contract(contractAddress, this.abi)
     this._address = contractAddress
     this.network.material = this.materials.items.ethConnected
