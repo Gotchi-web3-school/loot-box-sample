@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { MeshStandardMaterial } from "three";
 import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry.js";
 import Experience from "../Experience";
 import Resources from "./Resources";
@@ -69,48 +70,57 @@ export default class Factory {
     return textGeometry
   }
 
-  public createErc20Mesh(address: string, name: string): THREE.Group
+  public createErc20Mesh(address: string, name: string = "erc20"): THREE.Mesh<TextGeometry, MeshStandardMaterial>
   {
     const token = this.erc20.scene.clone()
     token.name = address
 
     const nameGeometry = this.createTextGeometry(name, { size: 0.5 })
 
-    token.getObjectByName("erc20_nameF").geometry.copy(nameGeometry)
-    token.getObjectByName("erc20_nameB").geometry.copy(nameGeometry)
+    token.getObjectByName("chestItem_erc20_nameF").geometry.copy(nameGeometry)
+    token.getObjectByName("chestItem_erc20_nameB").geometry.copy(nameGeometry)
 
-    return token
+    token.children[0].material = new THREE.MeshStandardMaterial().copy(token.children[0].material)
+    token.children[0].material.toneMapped = false
+
+    return token.children[0]
   }
 
-  public createErc721Mesh(address: string, name: string, id: string): THREE.Group
+  public createErc721Mesh(address: string, id: string, name: string = "erc721"): THREE.Mesh<TextGeometry, MeshStandardMaterial>
   {
     const token = this.erc721.scene.clone()
     
     const nameGeometry = this.createTextGeometry(name, { size: 0.05, height: 0.02 })
     const idGeometry = this.createTextGeometry(id, { size: 0.05, height: 0.02 })
 
-    token.getObjectByName("erc721_name").geometry.dispose()
-    token.getObjectByName("erc721_id").geometry.dispose()
+    token.getObjectByName("chestItem_erc721_name").geometry.dispose()
+    token.getObjectByName("chestItem_erc721_id").geometry.dispose()
 
-    token.getObjectByName("erc721_name").geometry = nameGeometry
-    token.getObjectByName("erc721_id").geometry = idGeometry
+    token.getObjectByName("chestItem_erc721_name").geometry = nameGeometry
+    token.getObjectByName("chestItem_erc721_id").geometry = idGeometry
 
-    return token
+    token.children[0].material = new THREE.MeshStandardMaterial().copy(token.children[0].material)
+    token.children[0].material.toneMapped = false
+
+    return token.children[0]
   }
 
-  public createErc1155Mesh(address: string, name: string = "erc1155", id: string): THREE.Group
+  public createErc1155Mesh(address: string, id: string, name: string = "erc1155"): THREE.Mesh<TextGeometry, MeshStandardMaterial>
   {
     const token = this.erc1155.scene.clone()
     
     const nameGeometry = this.createTextGeometry(name, { size: 0.05, height: 0.02 })
     const idGeometry = this.createTextGeometry(id, { size: 0.05, height: 0.02 })
 
-    token.getObjectByName("erc1155_name").geometry.dispose()
-    token.getObjectByName("erc1155_id").geometry.dispose()
+    token.getObjectByName("chestItem_erc1155_name").geometry.dispose()
+    token.getObjectByName("chestItem_erc1155_id").geometry.dispose()
 
-    token.getObjectByName("erc1155_name").geometry = nameGeometry
-    token.getObjectByName("erc1155_id").geometry = idGeometry
+    token.getObjectByName("chestItem_erc1155_name").geometry = nameGeometry
+    token.getObjectByName("chestItem_erc1155_id").geometry = idGeometry
 
-    return token
+    token.children[0].material = new THREE.MeshStandardMaterial().copy(token.children[0].material)
+    token.children[0].material.toneMapped = false
+
+    return token.children[0]
   }
 }
