@@ -115,36 +115,24 @@ export default class Contract extends EventEmitter {
   {
     for(const mesh of this.model.children)
     {
-      if (mesh.name.split('_')[2] === "function")
+      if (mesh.name.split('_')[1] === "function" && mesh.name.split('_').length === 3)
       { 
         const name = mesh.name.split('_').pop()
         this.functions[name] = {front: {}, contractFunctions: {}, lib: {}}
         
-        // set lib
-        this.functions[name].lib.materials = { default: mesh.material }
+        // set lib, needed while hovering in & out of function
+        this.functions[name].lib.materials = { default: mesh.material                        }
         this.functions[name].lib.scales    = { default: new THREE.Vector3().copy(mesh.scale) }
         
         // set front
-        this.functions[name].front.body = mesh
-        this.functions[name].front.title = this.factory.createTextMesh(name)
-        this.model.add( this.functions[name].front.title)
+        this.functions[name].front.body   = mesh
+        const text = this.model.getObjectByName(`${mesh.name}_text`)
+        console.log("text: ", text)
+        text.geometry.copy(this.factory.createTextGeometry(name, {size: 0.02}))
 
-        const multiplier = name.length > 5 ? (5 / name.length) * 1.2 : 1 
-        this.functions[name].front.title.scale.copy(mesh.scale).multiply(new Vector3(multiplier, multiplier, 0.5))
-
-        this.functions[name].front.title.position.copy(this.functions[name].front.body.position)
-        this.functions[name].front.title.position.y -= 
-          ( Math.abs(mesh.scale.dot(new Vector3(1, this.functions[name].front.title.position.y), 1)) )
-
-        this.functions[name].front.title
-        .applyQuaternion(this.model.children.find((mesh: any) => mesh.name.split('_').pop() === "interface").quaternion)
-
-        // set HTML form function of the current contract
-        const contractName = mesh.name.split('_')[1]
-        this.functions[name].contractFunctions = 
-          this.experience.root[contractName]?.children.find((mesh: any) => mesh.name === contractName + ' ' + name )
-
-        this.scene.add(this.functions[name].front.title)
+        const multiplier = name.length > 6 ? (6 / name.length) * 1.6 : 1
+        text.scale.multiply(new Vector3(multiplier, multiplier, 0.05))
+      
       }
     }
   }
@@ -174,7 +162,7 @@ export default class Contract extends EventEmitter {
   {
     for(const mesh of this.model.children)
     {
-      if (mesh.name.split('_')[2] === "function")
+      if (mesh.name.split('_')[1] === "function")
       {
         // Hovering function
         this.experience.raycaster.on( "enter" + mesh.name, () => {

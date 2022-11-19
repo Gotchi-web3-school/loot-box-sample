@@ -76,11 +76,6 @@ export default class LootBoxScene {
     this.models.grass   = this.floor.getObjectByName("forest_ground")
     this.models.road    = this.floor.getObjectByName("road")
 
-    console.log(this.models.chestSC)
-    console.log(this.models.erc20SC)
-    console.log(this.models.erc721SC)
-    console.log(this.models.erc1155SC)
-    
     this.scene.add(this.floor, this.contracts, this.house, this.lamp, this.nature, this.steps, ...Object.values(this.walls))
   }
 
@@ -163,7 +158,6 @@ export default class LootBoxScene {
       this.models.grass.material.wrapS      = THREE.RepeatWrapping
       this.models.grass.material.wrapT      = THREE.RepeatWrapping
 
-      console.log(this.materials.items)
       
     })
   }
