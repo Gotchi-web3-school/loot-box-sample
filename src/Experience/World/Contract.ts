@@ -91,7 +91,7 @@ export default class Contract extends EventEmitter {
     this.metaScreen     = meshes.children.find(child => child.name.split('_').pop() === "metaScreen")
     this.network        = meshes.children.find(child => child.name.split('_').pop() === "network")
     this.deployer       = new ethers.ContractFactory(abi, bytecode, this.user?.wallet.signer)
-    
+
     if (address) 
     { 
       this.interface = new ethers.Contract(address, abi)
@@ -123,15 +123,20 @@ export default class Contract extends EventEmitter {
         // set lib, needed while hovering in & out of function
         this.functions[name].lib.materials = { default: mesh.material                        }
         this.functions[name].lib.scales    = { default: new THREE.Vector3().copy(mesh.scale) }
+      
         
         // set front
         this.functions[name].front.body   = mesh
         const text = this.model.getObjectByName(`${mesh.name}_text`)
-        console.log("text: ", text)
         text.geometry.copy(this.factory.createTextGeometry(name, {size: 0.02}))
 
         const multiplier = name.length > 6 ? (6 / name.length) * 1.6 : 1
         text.scale.multiply(new Vector3(multiplier, multiplier, 0.05))
+
+        // set HTML form function of the current contract
+        const contractName = mesh.name.split('_')[0]
+        this.functions[name].contractFunctions = 
+          this.experience.root[contractName]?.children.find((mesh: any) => mesh.name === contractName + ' ' + name )
       
       }
     }
@@ -168,8 +173,7 @@ export default class Contract extends EventEmitter {
         this.experience.raycaster.on( "enter" + mesh.name, () => {
 
           this.sounds.playFuncHover("hover2")
-          mesh.scale.x *= 1.1
-          mesh.scale.z *= 1.1
+          mesh.scale.multiplyScalar(1.2)
 
         })
         // Leave hovering function
@@ -182,9 +186,13 @@ export default class Contract extends EventEmitter {
         })
 
         // Clicked on functions
-        this.experience.raycaster.on( "click" + mesh.name, (event) => {
+        this.experience.raycaster.on( "click_" + mesh.name, (event) => {
           
           const funcName = mesh.name.split('_').pop()
+
+          console.log(mesh.name)
+          console.log("mode", this.experience.controller.getMode())
+          console.log(this.functions[funcName].contractFunctions)
           
           if (funcName === "deploy" || funcName === "import") 
           {

@@ -252,7 +252,8 @@ export default class Camera {
       
     
       const direction = this.experience.world.lootBoxScene?.smartContracts[target].inputsScreen.getWorldDirection(new Vector3())
-      const targetPos = this.experience.world.lootBoxScene?.smartContracts[target].inputsScreen.position
+      const targetPos = this.experience.world.lootBoxScene?.smartContracts[target].inputsScreen.getWorldPosition(new Vector3())
+      
       const cameraPos = new THREE.Vector3().addVectors(targetPos, direction.multiplyScalar(1.4))
 
       gsap.to( this.instance.position, { duration: duration, ease: "power1.out", x: cameraPos.x, y: cameraPos.y, z: cameraPos.z } )
@@ -275,7 +276,7 @@ export default class Camera {
       
       // Get the directional view of our target to place the camera jus in front of it
       const direction = this.experience.world.lootBoxScene?.smartContracts[target].metaScreen.getWorldDirection(new Vector3())
-      const targetPos = this.experience.world.lootBoxScene?.smartContracts[target].metaScreen.position
+      const targetPos = this.experience.world.lootBoxScene?.smartContracts[target].metaScreen.getWorldPosition(new Vector3())
       const cameraPos = new THREE.Vector3().addVectors(targetPos, direction.multiplyScalar(1.2))
 
       // Smooth animation when positioning the camera
