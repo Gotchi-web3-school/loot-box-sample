@@ -34,6 +34,7 @@ function App() {
   const starsRef = useRef<any>()
   const inputsFunctionRef = useRef<any>()
   const outLineRef = useRef<any>()
+  const outLineChestRef = useRef<any>()
   const composerRef = useRef<any>()
   const chestRef = useRef<any>()
   const erc20Ref = useRef<any>()
@@ -42,6 +43,7 @@ function App() {
   useEffect(() => {
     root.controls = controlsRef.current
     root["outlineHover"] = outLineRef.current
+    root["outlineChestHover"] = outLineChestRef.current
     root["chestSC"] = chestRef.current
     root["erc20SC"] = erc20Ref.current
     root["erc721SC"] = erc721Ref.current
@@ -89,6 +91,16 @@ function App() {
             xRay
             edgeStrength={2.5}
             visibleEdgeColor={0xffffff}
+            hiddenEdgeColor={0x22090a}
+         />
+        <Outline
+            ref={outLineChestRef}
+            selection={[]}
+            selectionLayer={ 2 }
+            xRay
+            edgeStrength={5}
+            blur={true}
+            visibleEdgeColor={0x7aaeff}
             hiddenEdgeColor={0x22090a}
          />
       

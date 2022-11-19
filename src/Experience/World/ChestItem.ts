@@ -7,6 +7,7 @@ import Chest from "./Chest";
 import Factory from "../Utils/Factory"
 
 type Loot = {
+  index: number
   address: string
   id: BigNumberish
   amount: BigNumberish
@@ -75,8 +76,11 @@ export default class ChestItem {
 
       default:
         console.error("Error with the type of item");
+        return (1);
     }
-    this.scene.add(this.mesh!)
+
+    this.mesh.name = `chest_${this.item.index}_chestItem` 
+    this.scene.add(this.mesh)
   }
 
   update() {

@@ -147,23 +147,27 @@ export default class Raycaster extends EventEmitter{
 
   hover(): void
   {
+    let parentName;
+
     this.raycaster.setFromCamera(this.mouse, this.camera.instance)
     const obj = this.raycaster.intersectObjects(this.objectsToTest)
 
+    console.log("mode: ", this.controller.getCurrentMode())
+    
    if (obj.length && this.controller.getCurrentMode() === undefined) 
    {
       if (this.hovering === undefined) 
       {
-        let nameEnter = obj[0].object?.name.split('_')[0] ?? obj[0].object.uuid
-        this.trigger("mouse_enter_" + nameEnter)
+        parentName = obj[0].object?.name.split('_')[0] ?? obj[0].object.uuid
+        this.trigger("mouse_enter_" + parentName, [obj[0].object?.name])
       }
       else if (this.hovering.uuid !== obj[0].object.uuid) 
       {
-        let nameLeaving = this.hovering.name.split('_')[0] ?? obj[0].object.uuid
-        this.trigger("mouse_leave_" + nameLeaving)
+        parentName = this.hovering.name.split('_')[0] ?? obj[0].object.uuid
+        this.trigger("mouse_leave_" + parentName, [this.hovering.name])
 
-        let nameEnter = obj[0].object?.name.split('_')[0] ?? obj[0].object.uuid
-        this.trigger("mouse_enter_" + nameEnter)
+        parentName = obj[0].object?.name.split('_')[0] ?? obj[0].object.uuid
+        this.trigger("mouse_enter_" + parentName, [obj[0].object?.name])
       }
 
       this.hovering = obj[0].object
@@ -172,8 +176,8 @@ export default class Raycaster extends EventEmitter{
    {
       if (this.hovering !== undefined) 
       {
-        let nameLeaving = this.hovering.name.split('_')[0] ?? obj[0].object.uuid
-        this.trigger("mouse_leave_" + nameLeaving)
+        let parentName = this.hovering.name.split('_')[0] ?? obj[0].object.uuid
+        this.trigger("mouse_leave_" + parentName, [this.hovering.name])
 
         this.hovering = undefined
       }
