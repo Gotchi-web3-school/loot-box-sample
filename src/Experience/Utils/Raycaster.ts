@@ -105,7 +105,7 @@ export default class Raycaster extends EventEmitter{
     })
 
     this.experience.root["outlineHover"].selection.set(this.objectsToTest)
-    this.disableAllLayers()
+    this.disableLayer(1)
   }
 
   private setWindowListener()
@@ -152,7 +152,6 @@ export default class Raycaster extends EventEmitter{
     this.raycaster.setFromCamera(this.mouse, this.camera.instance)
     const obj = this.raycaster.intersectObjects(this.objectsToTest)
 
-    console.log("mode: ", this.controller.getCurrentMode())
     
    if (obj.length && this.controller.getCurrentMode() === undefined) 
    {
@@ -245,8 +244,8 @@ export default class Raycaster extends EventEmitter{
               this.controller.worldControls.erc1155SC()
             break
 
-            case "chestContainer":
-              this.trigger("clickChest")
+            case "chest":
+              this.trigger("click_chest")
             break
 
             default:
@@ -380,9 +379,9 @@ export default class Raycaster extends EventEmitter{
   /**
    * Disable layers of all the 3Dobject to clear postprocessing effects
    */
-  disableAllLayers()
+  disableLayer(num: number)
   {
-    this.objectsToTest.forEach(object => object.layers.disableAll())
+    this.objectsToTest.forEach(object => object.layers.disable(num))
   }
 
   update()
