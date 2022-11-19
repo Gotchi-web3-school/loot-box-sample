@@ -97,7 +97,6 @@ function App() {
             ref={outLineChestRef}
             selection={[]}
             selectionLayer={ 2 }
-            xRay
             edgeStrength={5}
             blur={true}
             visibleEdgeColor={0x7aaeff}

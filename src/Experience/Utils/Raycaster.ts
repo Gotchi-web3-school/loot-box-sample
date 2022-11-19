@@ -225,6 +225,7 @@ export default class Raycaster extends EventEmitter{
 
         if (this.intersectsObjects.length) 
         {
+
           switch(this.currentIntersect!.name.split("_")[0]) 
           {
 
@@ -246,6 +247,10 @@ export default class Raycaster extends EventEmitter{
 
             case "chest":
               this.trigger("click_chest")
+            break
+
+            case "chestItem" + this.currentIntersect!.name.split("_")[0].at(-1):
+              this.trigger("select_" + this.currentIntersect!.name.split("_")[0])
             break
 
             default:

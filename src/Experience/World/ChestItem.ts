@@ -34,6 +34,7 @@ export default class ChestItem {
   scene: THREE.Scene
 
   out: boolean = false
+  locked: boolean = false
   resources: Resources
   materials: Materials
   contract: ethers.Contract
@@ -105,22 +106,41 @@ export default class ChestItem {
 
     this.raycaster.on(`mouse_enter_chestItem${this.item.index}`, (obj3dName: string) => {
 
-      console.log(obj3dName)
-      this.mesh!.layers.enable(2)
-      this.mesh!.material.emissiveIntensity = 5
-      this.mesh!.material.emissive = new THREE.Color("#FF773D")
+      if (this.locked === false) 
+      {
+        this.mesh!.layers.enable(2)
+        this.mesh!.material.emissiveIntensity = 5
+        this.mesh!.material.emissive = new THREE.Color("#FF773D")
+      }
       
     })
     
     this.raycaster.on(`mouse_leave_chestItem${this.item.index}`, (obj3dName: string) => {
       
-      this.mesh!.layers.disable(2)
-      this.mesh!.material.emissiveIntensity = 0
-      this.mesh!.material.emissive = new THREE.Color("#61FCFF")
+      if (this.locked === false)
+      {
+        this.mesh!.layers.disable(2)
+        this.mesh!.material.emissiveIntensity = 0
+        this.mesh!.material.emissive = new THREE.Color("#61FCFF")
+      }
       
     })
 
-    this.raycaster.on("selectChestItem", (args: string) => {
+    this.raycaster.on(`select_chestItem${this.item.index}`, (args: string) => {
+
+      if (this.chest.selected[this.mesh.uuid])
+      {
+        this.mesh!.material.emissiveIntensity = 0
+        delete this.chest.selected[this.mesh.uuid]
+        this.locked = false
+      }
+      else
+      {
+        this.chest.selected[this.mesh.uuid] = this.mesh
+        this.mesh!.material.emissiveIntensity = 2
+        this.mesh!.material.emissive = new THREE.Color("#61FCFF")
+        this.locked = true
+      }
 
     })
   }

@@ -33,6 +33,7 @@ export default class Chest {
   animation: {[key: string]: any} = {}
   openYaxisOffset: number = 1.3
   openIndex: number = 0
+  selected: ChestItem[] = []
 
   // blockchain
   contract?: Contract
