@@ -34,12 +34,12 @@ export default class Chest {
   openYaxisOffset: number = 1.3
   openIndex: number = 0
 
-  // PostProcessing
-  outlineChest: any
-  
   // blockchain
   contract?: Contract
   loots: ChestItem[] = []
+
+   // PostProcessing
+   outlineChest: any
 
   constructor() 
   {
@@ -58,8 +58,7 @@ export default class Chest {
     this.chestStructure = this.chestScene.getObjectByName("Object_7")!
     this.resource       = this.resources.items.scene
 
-    this.outlineChest   = this.experience.root["outlineChestHover"]
-
+    this.outlineChest  = this.experience.root["outlineChestHover"]
 
     this.setGLTF()
     this.setAnimation()
@@ -105,7 +104,7 @@ export default class Chest {
     })
 
     
-    this.raycaster.on("clickChest", () => 
+    this.raycaster.on("click_chest", () => 
     {
       let action = this.animation.action.current
       let open   = this.sounds.openChest
@@ -135,56 +134,31 @@ export default class Chest {
       }
     })
 
-    this.raycaster.on("selectChestItem", (args: string) => {
-
-    })
-
-
 
 
     this.raycaster.on("mouse_enter_chest", (obj3dName: string) => {
 
-      const parsedName = obj3dName.split('_').pop() // parsing name of object being hovered
-
-      switch(parsedName) {
-        case "chest":
-          this.chestStructure.layers.enable(1) // This will enable the outline effect of oering object
-        break
-
-        case "chestItem":
-          let index = parseInt(obj3dName.split('_')[1]) // parsing the index of item in chest
-          this.loots[index].mesh!.layers.enable(2) // This will enable the outline effect of oering object
-        break
-      }
+      this.chestStructure.layers.enable(1) // This will enable the outline effect of oering object
 
     })
 
     this.raycaster.on("mouse_leave_chest", (obj3dName: string) => {
 
-      const parsedName = obj3dName.split('_').pop() // parsing name of object being hovered
+      this.chestStructure.layers.disable(1) // This will enable the outline effect of oering object
 
-      switch(parsedName) {
-        case "chest":
-          this.chestStructure.layers.disable(1) // This will enable the outline effect of oering object
-        break
-
-        case "chestItem":
-          let index = parseInt(obj3dName.split('_')[1]) // parsing the index of item in chest
-          this.loots[index].mesh!.layers.disable(2) // This will enable the outline effect of oering object
-        break
-      }
     })
   }
 
-  setLoots(loots: {items: string[], tokenIds: BigNumberish[], amounts: BigNumberish[], type_: number[]}) 
+  async setLoots(loots: {items: string[], tokenIds: BigNumberish[], amounts: BigNumberish[], type_: number[]}) 
   {
-    const chestItems: ChestItem[] = []
+    const chestItems: any[] = []
+    
     for (let i = 0; i < loots.items.length; i++) 
     {
       chestItems.push(
 
         new ChestItem(this, {
-          index: i,
+          index: i.toString(),
           address: loots.items[i],
           id: loots.tokenIds[i],
           amount: loots.amounts[i],
@@ -193,9 +167,11 @@ export default class Chest {
 
       )
     }
-
-    chestItems.forEach((item: ChestItem) => this.outlineChest.add(item.mesh))
     this.loots = chestItems
+
+    // Set selction for layer 2 & disable all object3d's layer
+    this.outlineChest.selection.set(this.raycaster.objectsToTest)
+    this.raycaster.objectsToTest.forEach(object3D => object3D.layers.disable(2))
   }
 
   refreshLoots()
@@ -245,6 +221,7 @@ export default class Chest {
       this.loots.forEach((loot: ChestItem) => loot.update())
     }
   }
+
 
   update() 
   {

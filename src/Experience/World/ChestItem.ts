@@ -5,9 +5,12 @@ import Materials from "../Utils/Materials";
 import { ethers, BigNumberish } from "ethers";
 import Chest from "./Chest";
 import Factory from "../Utils/Factory"
+import Raycaster from "../Utils/Raycaster";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
+import { MeshStandardMaterial } from "three";
 
 type Loot = {
-  index: number
+  index: string
   address: string
   id: BigNumberish
   amount: BigNumberish
@@ -21,23 +24,28 @@ const interfaceType = {
 }
 
 export default class ChestItem {
-   // Class
-   experience: Experience
-   factory: Factory
-   chest: Chest
-   time: THREE.Clock
-   item: Loot
-   scene: THREE.Scene
+  // Class
+  experience: Experience
+  factory: Factory
+  raycaster: Raycaster
+  chest: Chest
+  time: THREE.Clock
+  item: Loot
+  scene: THREE.Scene
 
-   out: boolean = false
-   resources: Resources
-   materials: Materials
-   contract: ethers.Contract
-   mesh?: THREE.Group
+  out: boolean = false
+  resources: Resources
+  materials: Materials
+  contract: ethers.Contract
+  mesh: THREE.Mesh<TextGeometry, MeshStandardMaterial> = new THREE.Mesh()
+
+  // PostProcessing
+  outlineChest: any
 
   constructor(chest: Chest, item: Loot) {
     this.experience = Experience.Instance()
     this.factory = this.experience.factory
+    this.raycaster = this.experience.raycaster
     this.chest = chest
     this.time = this.experience.root.clock
     this.item = item
@@ -48,39 +56,73 @@ export default class ChestItem {
     let abi = this.resources.items[`${interfaceType[item.type]}Abi`].abi
     this.contract = new ethers.Contract(item.address, abi, this.experience.world.user?.wallet.signer)
 
+    this.outlineChest  = this.experience.root["outlineChestHover"]
+
     this.setMesh(item)
+    this.setEvents()
   }
 
-  async setMesh(item: Loot)
+  setMesh(item: Loot)
   {
-    let name;
-
-    if (item.type !== 3) name = await this.contract.symbol()
-
     switch(item.type) 
     {
       case 1:
-        this.mesh = this.factory.createErc20Mesh(item.address, name)
+        this.mesh = this.factory.createErc20Mesh(item.address)
+
         this.mesh.position.copy(this.chest.chestModel.scene.position)
-      break
+        this.mesh.name = `chestItem${this.item.index}_erc20`
+        this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.item.index}`))
+        break
         
       case 2:
-        this.mesh = this.factory.createErc721Mesh(item.address, name, item.id.toString())
-        this.mesh.position.copy(this.chest.chestModel.scene.position)
-      break
+        this.mesh = this.factory.createErc721Mesh(item.address, item.id.toString())
 
-      case 3:
-        this.mesh = this.factory.createErc1155Mesh(item.address, name, item.id.toString())
         this.mesh.position.copy(this.chest.chestModel.scene.position)
+        this.mesh.name = `chestItem${this.item.index}_erc721`
+        this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.item.index}`))
+      break
+        
+      case 3:
+        this.mesh = this.factory.createErc1155Mesh(item.address, item.id.toString())
+
+        this.mesh.position.copy(this.chest.chestModel.scene.position)
+        this.mesh.name = `chestItem${this.item.index}_erc1155`
+        this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.item.index}`))
       break
 
       default:
         console.error("Error with the type of item");
-        return (1);
+        return
     }
 
-    this.mesh.name = `chest_${this.item.index}_chestItem` 
+    this.raycaster.objectsToTest.push(this.mesh)
+    this.mesh.children.forEach(item => this.raycaster.objectsToTest.push(item))
+
     this.scene.add(this.mesh)
+  }
+
+  setEvents() {
+
+    this.raycaster.on(`mouse_enter_chestItem${this.item.index}`, (obj3dName: string) => {
+
+      console.log(obj3dName)
+      this.mesh!.layers.enable(2)
+      this.mesh!.material.emissiveIntensity = 5
+      this.mesh!.material.emissive = new THREE.Color("#FF773D")
+      
+    })
+    
+    this.raycaster.on(`mouse_leave_chestItem${this.item.index}`, (obj3dName: string) => {
+      
+      this.mesh!.layers.disable(2)
+      this.mesh!.material.emissiveIntensity = 0
+      this.mesh!.material.emissive = new THREE.Color("#61FCFF")
+      
+    })
+
+    this.raycaster.on("selectChestItem", (args: string) => {
+
+    })
   }
 
   update() {
