@@ -89,9 +89,9 @@ export default class Chest {
   {
     this.preLoader.on("start", () => {
   
-      this.contract = this.experience.world.lootBoxScene?.smartContracts.chest
+      this.contract = this.experience.world.lootBoxScene?.smartContracts.chestSC
   
-      this.experience.world.lootBoxScene?.smartContracts.chest.on("import chest", async () => {
+      this.experience.world.lootBoxScene?.smartContracts.chestSC.on("import chest", async () => {
         const IContract = this.contract!.interface!.connect(this.experience.world.user?.wallet.signer)
         const loots = await IContract.callStatic.look()
         this.setLoots(loots)

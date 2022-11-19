@@ -42,9 +42,9 @@ function App() {
   useEffect(() => {
     root.controls = controlsRef.current
     root["outlineHover"] = outLineRef.current
-    root["chest"] = chestRef.current
-    root["erc20"] = erc20Ref.current
-    root["erc721"] = erc721Ref.current
+    root["chestSC"] = chestRef.current
+    root["erc20SC"] = erc20Ref.current
+    root["erc721SC"] = erc721Ref.current
 
     setExperience(Experience.Instance(root, controlsRef.current))
 
@@ -102,13 +102,13 @@ function App() {
         <group ref={chestRef} >
           { experience &&
             <>
-              <ChestDeployer     group={"chest"} experience={experience} />
-              <Import            group={"chest"} experience={experience} />
-              <AddWhitelist      group={"chest"} experience={experience} />
-              <BatchDeposit      group={"chest"} experience={experience} />
-              <Loot              group={"chest"} experience={experience} />
-              <BatchLoot         group={"chest"} experience={experience} />
-              <TransferOwnership group={"chest"} experience={experience} props={{ rotation: [0, 0.64, 0] }} />
+              <ChestDeployer     group={"chestSC"} experience={experience} />
+              <Import            group={"chestSC"} experience={experience} />
+              <AddWhitelist      group={"chestSC"} experience={experience} />
+              <BatchDeposit      group={"chestSC"} experience={experience} />
+              <Loot              group={"chestSC"} experience={experience} />
+              <BatchLoot         group={"chestSC"} experience={experience} />
+              <TransferOwnership group={"chestSC"} experience={experience} props={{ rotation: [0, 0.64, 0] }} />
             </>
           }
         </group>
@@ -116,13 +116,13 @@ function App() {
         <group ref={erc20Ref}>
           { experience &&
             <>
-              <ERC20Deployer     group={"erc20"} experience={experience} />
-              <Import            group={"erc20"} experience={experience} />
-              <ApproveERC20      group={"erc20"} experience={experience} />
-              <MintERC20         group={"erc20"} experience={experience} />
-              <BurnERC20         group={"erc20"} experience={experience} />
-              <TransferErc20     group={"erc20"} experience={experience} />
-              <TransferOwnership group={"erc20"} experience={experience} props={{ rotation: [ 0, Math.PI, 0 ] }} />
+              <ERC20Deployer     group={"erc20SC"} experience={experience} />
+              <Import            group={"erc20SC"} experience={experience} />
+              <ApproveERC20      group={"erc20SC"} experience={experience} />
+              <MintERC20         group={"erc20SC"} experience={experience} />
+              <BurnERC20         group={"erc20SC"} experience={experience} />
+              <TransferErc20     group={"erc20SC"} experience={experience} />
+              <TransferOwnership group={"erc20SC"} experience={experience} props={{ rotation: [ 0, Math.PI, 0 ] }} />
             </>
           }
         </group>
@@ -130,14 +130,14 @@ function App() {
         <group ref={erc721Ref}>
           { experience &&
             <>
-              <ERC721Deployer          group={"erc721"} experience={experience} />
-              <Import                  group={"erc721"} experience={experience} />
-              <ApproveERC721           group={"erc721"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <SetApprovalForAll       group={"erc721"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <SafeMintERC721          group={"erc721"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <SafeTransferFromErc721  group={"erc721"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <BurnERC721              group={"erc721"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <TransferOwnership       group={"erc721"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <ERC721Deployer          group={"erc721SC"} experience={experience} />
+              <Import                  group={"erc721SC"} experience={experience} />
+              <ApproveERC721           group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <SetApprovalForAll       group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <SafeMintERC721          group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <SafeTransferFromErc721  group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <BurnERC721              group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <TransferOwnership       group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
             </>
           }
         </group>

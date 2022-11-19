@@ -150,7 +150,7 @@ export default class Raycaster extends EventEmitter{
     this.raycaster.setFromCamera(this.mouse, this.camera.instance)
     const obj = this.raycaster.intersectObjects(this.objectsToTest)
 
-   if (obj.length) 
+   if (obj.length && this.controller.getCurrentMode() === undefined) 
    {
       if (this.hovering === undefined) 
       {
@@ -259,12 +259,12 @@ export default class Raycaster extends EventEmitter{
         if ( this.intersectsObjects.length && (this.currentIntersect?.name.split('_').pop() === "deploy" ||
                                                this.currentIntersect?.name.split('_').pop() === "import") )
         {
-          this.controller.chestContractControls.metaScreen()
+          this.controller.chestSCContractControls.metaScreen()
           this.trigger("click_" + this.currentIntersect.name)
         }
-        else if (this.intersectsObjects.length && this.currentIntersect?.name.split('_')[2] === "function" ) 
+        else if (this.intersectsObjects.length && this.currentIntersect?.name.split('_')[1] === "function" ) 
         {
-          this.controller.chestContractControls.inputsScreen()
+          this.controller.chestSCContractControls.inputsScreen()
           this.trigger("click_" + this.currentIntersect.name)
         } 
         else
@@ -281,12 +281,12 @@ export default class Raycaster extends EventEmitter{
         if ( this.intersectsObjects.length && (this.currentIntersect?.name.split('_').pop() === "deploy" ||
                                                this.currentIntersect?.name.split('_').pop() === "import") )
         {
-          this.controller.erc20ContractControls.metaScreen()
+          this.controller.erc20SCContractControls.metaScreen()
           this.trigger("click_" + this.currentIntersect.name)
         }
-        else if (this.intersectsObjects.length && this.currentIntersect?.name.split('_')[2] === "function" ) 
+        else if (this.intersectsObjects.length && this.currentIntersect?.name.split('_')[1] === "function" ) 
         {
-          this.controller.erc20ContractControls.inputsScreen()
+          this.controller.erc20SCContractControls.inputsScreen()
           this.trigger("click_" + this.currentIntersect.name)
         } 
         else
@@ -303,12 +303,12 @@ export default class Raycaster extends EventEmitter{
         if ( this.intersectsObjects.length && (this.currentIntersect?.name.split('_').pop() === "deploy" ||
                                                this.currentIntersect?.name.split('_').pop() === "import") )
         {
-          this.controller.erc721ContractControls.metaScreen()
+          this.controller.erc721SCContractControls.metaScreen()
           this.trigger("click_" + this.currentIntersect.name)
         }
-        else if (this.intersectsObjects.length && this.currentIntersect?.name.split('_')[2] === "function" ) 
+        else if (this.intersectsObjects.length && this.currentIntersect?.name.split('_')[1] === "function" ) 
         {
-          this.controller.erc721ContractControls.inputsScreen()
+          this.controller.erc721SCContractControls.inputsScreen()
           this.trigger("click_" + this.currentIntersect.name)
         } 
         else
@@ -354,7 +354,7 @@ export default class Raycaster extends EventEmitter{
 
     if (this.controller.isLocked() === false) {
       
-      if (this.intersectsObjects.length && this.intersectsObjects[0].object.name.split('_')[2] === "function" && this.currentHover === null) 
+      if (this.intersectsObjects.length && this.intersectsObjects[0].object.name.split('_')[1] === "function" && this.currentHover === null && this.intersectsObjects[0].object.name.split('_').length === 3) 
       {
         let funcName = this.intersectsObjects[0].object.name
         this.trigger("enter" + funcName)

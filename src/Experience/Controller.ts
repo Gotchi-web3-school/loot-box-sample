@@ -23,9 +23,9 @@ export default class Controller
 
   // controls
   worldControls:           {[key: string]: () => {}} = {}
-  chestContractControls:   {[key: string]: () => {}} = {}
-  erc20ContractControls:   {[key: string]: () => {}} = {}
-  erc721ContractControls:  {[key: string]: () => {}} = {}
+  chestSCContractControls:   {[key: string]: () => {}} = {}
+  erc20SCContractControls:   {[key: string]: () => {}} = {}
+  erc721SCContractControls:  {[key: string]: () => {}} = {}
   erc1155ContractControls: {[key: string]: () => {}} = {}
   camControls:             {[key: string]: (...args) => {}} = {}
 
@@ -130,27 +130,27 @@ export default class Controller
 
   setChestContractControls() 
   {
-    this.chestContractControls.inputsScreen = async () => 
+    this.chestSCContractControls.inputsScreen = async () => 
     {
       if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) === "chestContract")
       {
         this.sounds.playClick()
         this.logic.mode.push('inputsScreen')
-        this.camControls.toInputsScreen("chest") // Give the groupe name's of the targeted model
+        this.camControls.toInputsScreen("chestSC") // Give the groupe name's of the targeted model
       }
     }
 
-    this.chestContractControls.metaScreen = async () => 
+    this.chestSCContractControls.metaScreen = async () => 
     {
       if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) === "chestContract")
       {
         this.sounds.playClick()
         this.logic.mode.push('metaScreen')
-        this.camControls.toMetaScreen("chest") // Give the groupe name's of the targeted model
+        this.camControls.toMetaScreen("chestSC") // Give the groupe name's of the targeted model
       }
     }
 
-    this.chestContractControls.main = async () => 
+    this.chestSCContractControls.main = async () => 
     {
       if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) !== "chestContract")
       {
@@ -165,27 +165,27 @@ export default class Controller
 
   setErc20ContractControls() 
   {
-    this.erc20ContractControls.inputsScreen = async () => 
+    this.erc20SCContractControls.inputsScreen = async () => 
     {
       if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) === "erc20Contract")
       {
         this.sounds.playClick()
         this.logic.mode.push('inputsScreen')
-        this.camControls.toInputsScreen("erc20") // Give the groupe name's of the targeted model
+        this.camControls.toInputsScreen("erc20SC") // Give the groupe name's of the targeted model
       }
     }
 
-    this.erc20ContractControls.metaScreen = async () => 
+    this.erc20SCContractControls.metaScreen = async () => 
     {
       if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) === "erc20Contract")
       {
         this.sounds.playClick()
         this.logic.mode.push('metaScreen')
-        this.camControls.toMetaScreen("erc20") // Give the groupe name's of the targeted model
+        this.camControls.toMetaScreen("erc20SC") // Give the groupe name's of the targeted model
       }
     }
 
-    this.erc20ContractControls.main = async () => 
+    this.erc20SCContractControls.main = async () => 
     {
       if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) !== "erc20Contract")
       {
@@ -200,27 +200,27 @@ export default class Controller
 
   setErc721ContractControls() 
   {
-    this.erc721ContractControls.inputsScreen = async () => 
+    this.erc721SCContractControls.inputsScreen = async () => 
     {
       if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) === "erc721Contract")
       {
         this.sounds.playClick()
         this.logic.mode.push('inputsScreen')
-        this.camControls.toInputsScreen("erc721") // Give the groupe name's of the targeted model
+        this.camControls.toInputsScreen("erc721SC") // Give the groupe name's of the targeted model
       }
     }
 
-    this.erc721ContractControls.metaScreen = async () => 
+    this.erc721SCContractControls.metaScreen = async () => 
     {
       if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) === "erc721Contract")
       {
         this.sounds.playClick()
         this.logic.mode.push('metaScreen')
-        this.camControls.toMetaScreen("erc721") // Give the groupe name's of the targeted model
+        this.camControls.toMetaScreen("erc721SC") // Give the groupe name's of the targeted model
       }
     }
 
-    this.erc721ContractControls.main = async () => 
+    this.erc721SCContractControls.main = async () => 
     {
       if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) !== "erc721Contract")
       {
