@@ -133,7 +133,7 @@ function App() {
               <MintERC20         group={"erc20SC"} experience={experience} />
               <BurnERC20         group={"erc20SC"} experience={experience} />
               <TransferErc20     group={"erc20SC"} experience={experience} />
-              <TransferOwnership group={"erc20SC"} experience={experience} props={{ rotation: [ 0, Math.PI, 0 ] }} />
+              <TransferOwnership group={"erc20SC"} experience={experience} props={{  }} />
             </>
           }
         </group>
@@ -148,7 +148,7 @@ function App() {
               <SafeMintERC721          group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
               <SafeTransferFromErc721  group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
               <BurnERC721              group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <TransferOwnership       group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <TransferOwnership       group={"erc721SC"} experience={experience} props={{ }} />
             </>
           }
         </group>

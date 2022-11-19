@@ -69,7 +69,7 @@ const TransferOwnership: React.FC<{group: string, experience: Experience, props:
             center
             distanceFactor={5}
             position={ [ 0, 1.66, 0 ] }
-            rotation={ props.rotation }
+            rotation={ props?.rotation }
             transform
           >
             <ChakraProvider>

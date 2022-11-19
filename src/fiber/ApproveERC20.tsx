@@ -69,7 +69,6 @@ const ApproveERC20: React.FC<{group: string, experience: Experience}>  = ({ grou
             center
             distanceFactor={5}
             position={ [ 0, 1.67, 0 ] }
-            rotation={ [ 0, Math.PI, 0 ] }
             transform
           >
             <ChakraProvider>
