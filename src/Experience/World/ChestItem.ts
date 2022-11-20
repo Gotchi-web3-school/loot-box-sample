@@ -132,7 +132,6 @@ export default class ChestItem {
       {
         this.mesh!.material.emissiveIntensity = 0
         delete this.chest.selected[this.mesh.uuid]
-        console.log("lengh of selected: ", Object.values(this.chest.selected).length)
         if ( Object.values(this.chest.selected).length === 0 ) this.chest.lootSelectedButton.material.color = new THREE.Color("#5E5E5E") 
         this.locked = false
       }
