@@ -1,6 +1,6 @@
 import * as THREE         from "three";
+import * as ethers        from "ethers";
 import gsap               from "gsap";
-import { BigNumberish }   from "ethers";
 import { RootState }      from "@react-three/fiber";
 import Contract           from "./Contract";
 import ChestItem          from "./ChestItem";
@@ -13,7 +13,7 @@ import PreLoader          from "../PreLoader";
 import Factory            from "../Utils/Factory";
 import { batchLootTx }    from "../../Lib/web3/transactions";
 
-type Loots = {items: string[], tokenIds: BigNumberish[], amounts: BigNumberish[], type_: number[]} 
+type Loots = {items: string[], tokenIds: ethers.BigNumberish[], amounts: ethers.BigNumberish[], type_: number[]} 
 
 export default class Chest {
   // Class
@@ -32,20 +32,20 @@ export default class Chest {
   chestModel: any
   chestScene: THREE.Group
   chestStructure: THREE.Object3D
-  lootAllButton?: any
-  lootSelectedButton?: any
-  resource: any
-  originPos: THREE.Vector3 = new THREE.Vector3()
-  animation: {[key: string]: any} = {}
-  openYaxisOffset: number = 1.3
-  selected: ChestItem[] = []
-  locked: boolean = false
-  openned: boolean = false
+  lootAllButton: any                      = undefined
+  lootSelectedButton: any                 = undefined
+  resource: any     
+  originPos: THREE.Vector3                = new THREE.Vector3()
+  animation: {[key: string]: any}         = {}
+  openYaxisOffset: number                 = 1.3
+  selected: { [key: string]: ChestItem }  = {}
+  locked: boolean                         = false
+  openned: boolean                        = false
 
   // blockchain
-  contract?: Contract
-  lootsRaw: Loots = {items: [], tokenIds: [], amounts: [], type_: []} 
-  loots: ChestItem[] = []
+  contract: Contract | undefined  = undefined
+  lootsRaw: Loots                 = {items: [], tokenIds: [], amounts: [], type_: []} 
+  loots: ChestItem[]              = []
 
   // PostProcessing
   outlineChest: any
@@ -117,7 +117,7 @@ export default class Chest {
     this.animation.action.current = this.animation.action.open
   }
 
-  async setLoots(loots: {items: string[], tokenIds: BigNumberish[], amounts: BigNumberish[], type_: number[]}) 
+  async setLoots(loots: {items: string[], tokenIds: ethers.BigNumberish[], amounts: string[], type_: number[]}) 
   {
     const chestItems: any[] = []
     
@@ -163,11 +163,15 @@ export default class Chest {
   
       this.contract = this.experience.world.lootBoxScene?.smartContracts.chestSC
   
-      this.experience.world.lootBoxScene?.smartContracts.chestSC.on("import chest", async () => {
+      this.experience.world.lootBoxScene?.smartContracts.chestSC.on("import chestSC", async () => {
+
+        this.contract   = this.experience.world.lootBoxScene?.smartContracts.chestSC
         const IContract = this.contract!.interface!.connect(this.experience.world.user?.wallet.signer)
-        const loots = await IContract.callStatic.look()
-        this.lootsRaw = loots
+        const loots     = await IContract.callStatic.look()
+        this.lootsRaw   = loots
+
         this.setLoots(loots)
+        
       })
   
     })
@@ -201,31 +205,34 @@ export default class Chest {
     
     this.raycaster.on("click_button", async (obj3dName: string) => 
     {
-      let buttonName  = obj3dName.split('_')[1]
-      let signer      = this.experience.world.user?.wallet.signer
-      let contract    = this.experience.world.lootBoxScene?.contracts.chestSC
-      let args: Loots = { items: [], tokenIds: [], amounts: [], type_: [] } 
+      let buttonName      = obj3dName.split('_')[1]
+      let signer          = this.experience.world.user?.wallet.signer
+      let contract        = this.contract
+      let args: any       = { items: [], tokenIds: [], amounts: []} 
+      let types: number[]  = []
       
       this.clickButtonAnimation(this[`${buttonName}Button`])
       
       if (buttonName === "lootAll")
       {
         args = this.lootsRaw
+        types = args["type_"]
+        delete args["type_"]
 
-        const tx = await batchLootTx(signer, contract.interface, args, args.type_)
-        contract.handleTxs(tx)
+        const tx = await batchLootTx(signer, contract!.interface!, args, types)
+        contract!.handleTxs(tx)
       }
-      else if (buttonName === "lootSelected" && this.selected.length)
+      else if (buttonName === "lootSelected" && Object.values(this.selected).length > 0)
       {
-        for (const loot of this.selected) {
+        for (const loot of Object.values(this.selected)) {
           args.items.push(loot.item.address)
           args.tokenIds.push(loot.item.id)
           args.amounts.push(loot.item.amount)
-          args.type_.push(loot.item.type)
+          types.push(loot.item.type)
         }
         
-        const tx = await batchLootTx(signer, contract.interface, args, args.type_)
-        contract.handleTxs(tx)
+        const tx = await batchLootTx(signer, contract!.interface!, args, types)
+        contract!.handleTxs(tx)
       }
     })
 

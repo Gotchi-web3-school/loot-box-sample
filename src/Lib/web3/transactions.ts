@@ -730,23 +730,23 @@ export const batchLootTx = async(
   try {
     console.log("\t\tBATCH LOOT")
     console.log("///////////////////////////////////////////////")
-    console.log("address: ", args.addresses)
-    console.log("id: ", args.ids)
-    console.log("amount: ", args.amounts)
-    console.log("type: ", types)
+    console.log("address: ", args.items)
+    console.log("id: ",      args.tokenIds)
+    console.log("amount: ",  args.amounts)
+    console.log("type: ",    types)
     console.log("///////////////////////////////////////////////")
     
     // Check if token is a ERC20 if yes parse the amount with its decimals
     for(let i = 0; i < types.length; i++)
     {
-      if (types[i] === 1) 
+      if (types[i] === 1 && (args.amounts[i] instanceof ethers.BigNumber) === false) 
       {
-        const contract = ERC20.attach(args.addresses[i])
+        const contract = ERC20.attach(args.items[i])
         args.amounts[i] = ethers.utils.parseUnits(args.amounts[i], await contract.decimals());
       }
     }
 
-    console.log(args)
+
     //Estimation of the gas cost
     const gas = await contract.estimateGas.batchLoot(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))

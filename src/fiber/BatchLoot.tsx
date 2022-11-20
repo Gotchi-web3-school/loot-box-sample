@@ -45,14 +45,14 @@ const BatchLoot: React.FC<{group: string, experience: Experience}> = ({ group, e
 
   const onSubmit = async (data) => 
   {
-    const indexes: string[] = Object.entries(data).filter((elem) => elem[0].startsWith("address")).map((elem: any) => elem[1]).slice(0, batch.length + 1)
+    const indexes: string[]   = Object.entries(data).filter((elem) => elem[0].startsWith("address")).map((elem: any) => elem[1]).slice(0, batch.length + 1)
 
     const addresses: string[] = indexes.map(type => loots.item[parseInt(type)])
-    const ids: string[] = Object.entries(data).filter((elem) => elem[0].startsWith("id")).map((elem: any) => elem[1]).slice(0, batch.length + 1)
-    const amounts: string[] = Object.entries(data).filter((elem) => elem[0].startsWith("amount")).map((elem: any) => elem[1]).slice(0, batch.length + 1)
-    const types: number[] = indexes.map(type => loots.type_[parseInt(type)])
+    const ids: string[]       = Object.entries(data).filter((elem) => elem[0].startsWith("id")).map((elem: any)     => elem[1]).slice(0, batch.length + 1)
+    const amounts: string[]   = Object.entries(data).filter((elem) => elem[0].startsWith("amount")).map((elem: any) => elem[1]).slice(0, batch.length + 1)
+    const types: number[]     = indexes.map(type => loots.type_[parseInt(type)])
 
-    const args = { addresses: addresses, ids: ids, amounts: amounts }
+    const args = { items: addresses, tokenIds: ids, amounts: amounts }
     const tx = await batchLootTx(user?.wallet.signer, contract?.interface!, args, types)
 
     contract!.handleTxs(tx)
