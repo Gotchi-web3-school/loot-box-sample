@@ -21,7 +21,8 @@ export const deployTx = async(
 
   const contractFactory = deployer.connect(signer)
 
-  try {  
+  try { 
+    console.log("")
     console.info("DEPLOY " + contractName.toUpperCase())
     console.log("///////////////////////////////////////////////")
     console.log("name: " + args.name)
@@ -90,6 +91,7 @@ export const deployErc20Tx = async(
   const contractFactory = deployer.connect(signer)
 
   try {  
+    console.log("")
     console.info("DEPLOY ERC20")
     console.log("///////////////////////////////////////////////")
     console.log("name: " + args.name)
@@ -128,6 +130,7 @@ export const deployErc721Tx = async(
   const contractFactory = deployer.connect(signer)
 
   try {  
+    console.log("")
     console.info("DEPLOY ERC721")
     console.log("///////////////////////////////////////////////")
     console.log("name: " + args.name)
@@ -164,6 +167,7 @@ export const addWhitelistTx = async(
   const contract = IContract.connect(signer)
 
   try {
+    console.log("")
     console.log("ADD WHITELIST")
     console.log("///////////////////////////////////////////////")
     console.log("tokens: ", args)
@@ -205,6 +209,7 @@ export const batchDepositTx = async(
   const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
 
   try {
+    console.log("")
     console.log("BATCH DEPOSIT")
     console.log("///////////////////////////////////////////////")
     console.log("addresses: ", args[0])
@@ -255,6 +260,7 @@ export const transferOwnershipTx = async(
   const contract = IContract.connect(signer)
 
   try {
+    console.log("")
     console.log("BATCH DEPOSIT")
     console.log("///////////////////////////////////////////////")
     console.log("address: ", args)
@@ -294,6 +300,7 @@ export const approveERC20Tx = async(
     
 
   try {
+    console.log("")
     console.log("APPROVE")
     console.log("///////////////////////////////////////////////")
     console.log("address: ", args.address)
@@ -335,6 +342,7 @@ export const approveERC721Tx = async(
     
 
   try {
+    console.log("")
     console.log("APPROVE")
     console.log("///////////////////////////////////////////////")
     console.log("address: ", args.address)
@@ -419,6 +427,7 @@ export const mintERC20Tx = async(
     
 
   try {
+    console.log("")
     console.log("\t\t\tMINT")
     console.log("///////////////////////////////////////////////")
     console.log("to: ", args.address)
@@ -460,6 +469,7 @@ export const safeMintERC721Tx = async(
     
 
   try {
+    console.log("")
     console.log("\t\t\tMINT")
     console.log("///////////////////////////////////////////////")
     console.log("to: ", args.to)
@@ -501,6 +511,7 @@ export const transferERC20Tx = async(
     const contract = IContract.connect(signer)
 
   try {
+    console.log("")
     console.log("\t\t\tTRANSFER")
     console.log("///////////////////////////////////////////////")
     console.log("address: ", args.address)
@@ -548,6 +559,7 @@ export const safeTransferFromErc721Tx = async(
     console.log(contract)
 
   try {
+    console.log("")
     console.log("\tSAFE TRANSFER FROM")
     console.log("///////////////////////////////////////////////")
     console.log("from: ", args.from)
@@ -594,6 +606,7 @@ export const burnERC20Tx = async(
     
 
   try {
+    console.log("")
     console.log("\t\t\tBURN")
     console.log("///////////////////////////////////////////////")
     console.log("address: ", args.amount)
@@ -634,6 +647,7 @@ export const burnERC721Tx = async(
     
 
   try {
+    console.log("")
     console.log("\t\t\tBURN")
     console.log("///////////////////////////////////////////////")
     console.log("address: ", args.id)
@@ -676,6 +690,7 @@ export const lootTx = async(
     const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
     
   try {
+    console.log("")
     console.log("\t\t\tLOOT")
     console.log("///////////////////////////////////////////////")
     console.log("address: ", args.address)
