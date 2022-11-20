@@ -31,8 +31,8 @@ export default class Chest {
   chestModel: any
   chestScene: THREE.Group
   chestStructure: THREE.Object3D
-  lootAllButton?: THREE.Mesh
-  lootSelectedButton?: THREE.Mesh
+  lootAllButton?: any
+  lootSelectedButton?: any
   resource: any
   originPos: THREE.Vector3 = new THREE.Vector3()
   animation: {[key: string]: any} = {}
@@ -94,10 +94,14 @@ export default class Chest {
     this.lootSelectedButton = this.resources.items.buttonLootSelected.scene.children[0]
 
     this.lootAllButton!.position.copy(this.chestScene.position)
+    this.lootAllButton!.children[0].material.toneMapped = false
     this.chestScene.getWorldQuaternion(this.lootAllButton!.quaternion)
+
     this.lootSelectedButton!.position.copy(this.chestScene.position)
+    this.lootSelectedButton!.children[0].material.toneMapped = false
     this.chestScene.getWorldQuaternion(this.lootSelectedButton!.quaternion)
 
+    this.raycaster.objectsToTest.push(this.lootAllButton, this.lootSelectedButton)
     this.scene.add(this.lootAllButton!, this.lootSelectedButton!)
   }
 
@@ -110,6 +114,45 @@ export default class Chest {
     this.animation.action.open = this.animation.mixer.clipAction(this.chestModel.animations[0])
     this.animation.action.current = this.animation.action.open
   }
+
+  async setLoots(loots: {items: string[], tokenIds: BigNumberish[], amounts: BigNumberish[], type_: number[]}) 
+  {
+    const chestItems: any[] = []
+    
+    for (let i = 0; i < loots.items.length; i++) 
+    {
+      chestItems.push(
+
+        new ChestItem(this, {
+          index: i.toString(),
+          address: loots.items[i],
+          id: loots.tokenIds[i],
+          amount: loots.amounts[i],
+          type: loots.type_[i],
+        })
+
+      )
+    }
+    this.loots = chestItems
+
+    // Set selction for layer 2 & disable all object3d's layer
+    this.outlineChest.selection.set(this.raycaster.objectsToTest)
+    this.raycaster.objectsToTest.forEach(object3D => object3D.layers.disable(2))
+  }
+
+
+
+
+
+
+
+
+
+
+  /***********************************|
+  |              Events               |
+  |__________________________________*/
+
 
   setEvent()
   {
@@ -164,32 +207,28 @@ export default class Chest {
       this.chestStructure.layers.disable(1) // This will enable the outline effect of oering object
 
     })
-  }
 
-  async setLoots(loots: {items: string[], tokenIds: BigNumberish[], amounts: BigNumberish[], type_: number[]}) 
-  {
-    const chestItems: any[] = []
+    this.raycaster.on("mouse_enter_button", (obj3dName: string) => {
+
+      let buttonName = obj3dName.split('_')[1]
+
+      this[`${buttonName}Button`].layers.enable(1)
+      this[`${buttonName}Button`].children[0].material.emissiveIntensity = 10
+      this[`${buttonName}Button`].children[0].material.emissive = new THREE.Color("#CE48E7")
+      
+    })
     
-    for (let i = 0; i < loots.items.length; i++) 
-    {
-      chestItems.push(
+    this.raycaster.on("mouse_leave_button", (obj3dName: string) => {
+      
+      let buttonName = obj3dName.split('_')[1]
+      
+      this[`${buttonName}Button`].layers.disable(1)
+      this[`${buttonName}Button`].children[0].material.emissiveIntensity = 1
+      this[`${buttonName}Button`].children[0].material.emissive = new THREE.Color("#FFFFFF")
 
-        new ChestItem(this, {
-          index: i.toString(),
-          address: loots.items[i],
-          id: loots.tokenIds[i],
-          amount: loots.amounts[i],
-          type: loots.type_[i],
-        })
-
-      )
-    }
-    this.loots = chestItems
-
-    // Set selction for layer 2 & disable all object3d's layer
-    this.outlineChest.selection.set(this.raycaster.objectsToTest)
-    this.raycaster.objectsToTest.forEach(object3D => object3D.layers.disable(2))
+    })
   }
+
 
   refreshLoots()
   {
@@ -210,9 +249,6 @@ export default class Chest {
   |__________________________________*/
 
 
-
-
-
   async openAnimation() 
   {
     if (this.animation.action.current.paused) 
@@ -231,9 +267,9 @@ export default class Chest {
         for(let i = 0; i < this.loots.length; i++ ) 
         {
           // Calculing final position of current item
-          let finalPos = new THREE.Vector3().copy(this.originPos)                                                     // chest pos
-          finalPos.add( new THREE.Vector3().addScalar(i - ( this.loots.length / 2 ) + 0.5).multiply(chestDirection) ) // X axis
-          finalPos.add(new THREE.Vector3(0, Math.cos(Math.sin(-this.time.getElapsedTime())) + this.openYaxisOffset, 0))                                                 // Y axis
+          let finalPos = new THREE.Vector3().copy(this.originPos)                                                       // chest pos
+          finalPos.add( new THREE.Vector3().addScalar(i - ( this.loots.length / 2 ) + 0.5).multiply(chestDirection) )   // X axis
+          finalPos.add(new THREE.Vector3(0, Math.cos(Math.sin(-this.time.getElapsedTime())) + this.openYaxisOffset, 0)) // Y axis                                                // Y axis
 
           let itemPos = this.loots[i].mesh!.position
           let itemRotation = this.loots[i].mesh!.rotation
@@ -257,8 +293,11 @@ export default class Chest {
         /************************************************************************************************************************ */
         
         let pos = new THREE.Vector3().copy(this.originPos)
+        let scale = new THREE.Vector3().copy(this.lootAllButton!.scale)
         gsap.to(this.lootAllButton!.position,       { duration: 1, ease: "power1.out", x: pos.x, y: pos.y + 1, z: pos.z })
+        gsap.to(this.lootAllButton!.scale,          { duration: 1, ease: "power1.out", x: scale.x + 0.1, y: scale.y + 0.1, z: scale.z + 0.1 })
         gsap.to(this.lootSelectedButton!.position,  { duration: 1, ease: "power1.out", x: pos.x, y: pos.y + 1, z: pos.z })
+        gsap.to(this.lootSelectedButton!.scale,     { duration: 1, ease: "power1.out", x: scale.x + 0.1, y: scale.y + 0.1, z: scale.z + 0.1 })
         
         await this.sleep(1100)
 
@@ -278,6 +317,7 @@ export default class Chest {
     }
   }
 
+
   closeAnimation()
   {
     for(const loot of this.loots) {
@@ -285,8 +325,21 @@ export default class Chest {
       loot.out = false
     }
     this.lootAllButton?.position.copy(this.originPos)
+    this.lootAllButton?.scale.subScalar(0.1)
     this.lootSelectedButton?.position.copy(this.originPos)
+    this.lootSelectedButton?.scale.subScalar(0.1)
+    
     this.openned = false
+  }
+
+  async clickButtonAnimation(button: THREE.Mesh)
+  {
+    let initScale = new Vector3().copy(button.scale)
+    gsap.to(button.scale, { duration: 1, ease: "power1.out", x: button.scale.x, y: button.scale.y, z: 0.1 })
+
+    await this.sleep(1100)
+    
+    gsap.to(button.scale,  { duration: 1, ease: "power1.out", x: button.scale.x, y: button.scale.y, z: initScale.z })
   }
 
 
