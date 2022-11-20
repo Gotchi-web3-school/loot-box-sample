@@ -737,10 +737,10 @@ export const batchLootTx = async(
   IContract: ethers.Contract,
   args: { [ key: string ]: any[] },
   types: number[]
-  ) => {
+) => {
 
-    const contract = IContract.connect(signer)
-    const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
+  const contract = IContract.connect(signer)
+  const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
     
   try {
     console.log("")

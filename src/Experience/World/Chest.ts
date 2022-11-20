@@ -334,19 +334,21 @@ export default class Chest {
 
         // 2. Button animation
         /************************************************************************************************************************ */
-        
-        let pos = new THREE.Vector3().copy(this.originPos)
-        let scale = new THREE.Vector3().copy(this.lootAllButton!.scale)
-        gsap.to(this.lootAllButton!.position,       { duration: 1, ease: "power1.out", x: pos.x, y: pos.y + 1, z: pos.z })
-        gsap.to(this.lootAllButton!.scale,          { duration: 1, ease: "power1.out", x: scale.x + 0.1, y: scale.y + 0.1, z: scale.z + 0.1 })
-        gsap.to(this.lootSelectedButton!.position,  { duration: 1, ease: "power1.out", x: pos.x, y: pos.y + 1, z: pos.z })
-        gsap.to(this.lootSelectedButton!.scale,     { duration: 1, ease: "power1.out", x: scale.x + 0.1, y: scale.y + 0.1, z: scale.z + 0.1 })
-        
-        await this.sleep(1100)
-
-        pos.copy(this.lootAllButton!.position)
-        gsap.to(this.lootAllButton!.position,       { duration: 0.4, ease: "power1.out", x: pos.x + chestDirection.x, y: pos.y, z: pos.z + chestDirection.z })
-        gsap.to(this.lootSelectedButton!.position,  { duration: 0.4, ease: "power1.out", x: pos.x - chestDirection.x, y: pos.y, z: pos.z - chestDirection.z })
+        if (Object.values(this.selected).length > 0) 
+        {
+          let pos = new THREE.Vector3().copy(this.originPos)
+          let scale = new THREE.Vector3().copy(this.lootAllButton!.scale)
+          gsap.to(this.lootAllButton!.position,       { duration: 1, ease: "power1.out", x: pos.x, y: pos.y + 1, z: pos.z })
+          gsap.to(this.lootAllButton!.scale,          { duration: 1, ease: "power1.out", x: scale.x + 0.1, y: scale.y + 0.1, z: scale.z + 0.1 })
+          gsap.to(this.lootSelectedButton!.position,  { duration: 1, ease: "power1.out", x: pos.x, y: pos.y + 1, z: pos.z })
+          gsap.to(this.lootSelectedButton!.scale,     { duration: 1, ease: "power1.out", x: scale.x + 0.1, y: scale.y + 0.1, z: scale.z + 0.1 })
+          
+          await this.sleep(1100)
+  
+          pos.copy(this.lootAllButton!.position)
+          gsap.to(this.lootAllButton!.position,       { duration: 0.4, ease: "power1.out", x: pos.x + chestDirection.x, y: pos.y, z: pos.z + chestDirection.z })
+          gsap.to(this.lootSelectedButton!.position,  { duration: 0.4, ease: "power1.out", x: pos.x - chestDirection.x, y: pos.y, z: pos.z - chestDirection.z })
+        }
         
         /************************************************************************************************************************ */
         
