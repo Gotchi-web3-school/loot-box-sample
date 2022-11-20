@@ -216,7 +216,6 @@ export default class Raycaster extends EventEmitter{
     //   alert("Address copied: " + this.currentIntersect!.name);
     // }
 
-    console.log()
 
     switch (this.controller.getCurrentMode()) 
     {      
