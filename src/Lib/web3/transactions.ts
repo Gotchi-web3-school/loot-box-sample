@@ -223,7 +223,7 @@ export const batchDepositTx = async(
       try {
         const erc20Contract = ERC20.attach(args[0][i])
         const nb = await erc20Contract.decimals()
-        ethers.utils.parseUnits(args[2][i], nb);
+        args[2][i] = ethers.utils.parseUnits(args[2][i], nb);
       } catch (error) {/* not a ERC20 */}
     }
 
