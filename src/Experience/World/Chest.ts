@@ -1,5 +1,4 @@
 import * as THREE         from "three";
-import { Vector3 }        from "three";
 import gsap               from "gsap";
 import { BigNumberish }   from "ethers";
 import { RootState }      from "@react-three/fiber";
@@ -12,7 +11,9 @@ import Raycaster          from "../Utils/Raycaster";
 import Sounds             from "../Sounds";
 import PreLoader          from "../PreLoader";
 import Factory            from "../Utils/Factory";
+import { batchLootTx }    from "../../Lib/web3/transactions";
 
+type Loots = {items: string[], tokenIds: BigNumberish[], amounts: BigNumberish[], type_: number[]} 
 
 export default class Chest {
   // Class
@@ -43,6 +44,7 @@ export default class Chest {
 
   // blockchain
   contract?: Contract
+  lootsRaw: Loots = {items: [], tokenIds: [], amounts: [], type_: []} 
   loots: ChestItem[] = []
 
   // PostProcessing
@@ -66,7 +68,7 @@ export default class Chest {
     this.chestStructure = this.chestScene.getObjectByName("Object_7")!
     this.resource       = this.resources.items.scene
 
-    this.outlineChest  = this.experience.root["outlineChestHover"]
+    this.outlineChest   = this.experience.root["outlineChestHover"]
 
     this.setGLTF()
     this.setLootButton()
@@ -90,7 +92,7 @@ export default class Chest {
 
   setLootButton()
   {
-    this.lootAllButton = this.resources.items.buttonLootAll.scene.children[0]
+    this.lootAllButton      = this.resources.items.buttonLootAll.scene.children[0]
     this.lootSelectedButton = this.resources.items.buttonLootSelected.scene.children[0]
 
     this.lootAllButton!.position.copy(this.chestScene.position)
@@ -164,6 +166,7 @@ export default class Chest {
       this.experience.world.lootBoxScene?.smartContracts.chestSC.on("import chest", async () => {
         const IContract = this.contract!.interface!.connect(this.experience.world.user?.wallet.signer)
         const loots = await IContract.callStatic.look()
+        this.lootsRaw = loots
         this.setLoots(loots)
       })
   
@@ -196,11 +199,34 @@ export default class Chest {
     })
 
     
-    this.raycaster.on("click_button", (obj3dName: string) => 
+    this.raycaster.on("click_button", async (obj3dName: string) => 
     {
-      let buttonName = obj3dName.split('_')[1]
-
+      let buttonName  = obj3dName.split('_')[1]
+      let signer      = this.experience.world.user?.wallet.signer
+      let contract    = this.experience.world.lootBoxScene?.contracts.chestSC
+      let args: Loots = { items: [], tokenIds: [], amounts: [], type_: [] } 
+      
       this.clickButtonAnimation(this[`${buttonName}Button`])
+      
+      if (buttonName === "lootAll")
+      {
+        args = this.lootsRaw
+
+        const tx = await batchLootTx(signer, contract.interface, args, args.type_)
+        contract.handleTxs(tx)
+      }
+      else if (buttonName === "lootSelected" && this.selected.length)
+      {
+        for (const loot of this.selected) {
+          args.items.push(loot.item.address)
+          args.tokenIds.push(loot.item.id)
+          args.amounts.push(loot.item.amount)
+          args.type_.push(loot.item.type)
+        }
+        
+        const tx = await batchLootTx(signer, contract.interface, args, args.type_)
+        contract.handleTxs(tx)
+      }
     })
 
 
@@ -267,7 +293,7 @@ export default class Chest {
         this.locked = true
 
 
-        let chestDirection = this.chestScene.getWorldDirection(new Vector3()) // Getting the dirrection of our chest (looking at)
+        let chestDirection = this.chestScene.getWorldDirection(new THREE.Vector3()) // Getting the dirrection of our chest (looking at)
         chestDirection.x = -chestDirection.x                                  // rotate this direction by 90deg
 
         // 1. Items animation
@@ -344,7 +370,7 @@ export default class Chest {
 
   async clickButtonAnimation(button: THREE.Mesh)
   {
-    let initScale = new Vector3().copy(button.scale)
+    let initScale = new THREE.Vector3().copy(button.scale)
     gsap.to(button.scale, { duration: 0.1, ease: "power1.out", x: button.scale.x, y: button.scale.y, z: 0.03 })
 
     await this.sleep(100)
