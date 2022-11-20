@@ -216,6 +216,8 @@ export default class Raycaster extends EventEmitter{
     //   alert("Address copied: " + this.currentIntersect!.name);
     // }
 
+    console.log()
+
     switch (this.controller.getCurrentMode()) 
     {      
       /***********************************|
@@ -279,7 +281,7 @@ export default class Raycaster extends EventEmitter{
           this.controller.chestSCContractControls.inputsScreen()
           this.trigger("click_" + this.currentIntersect.name)
         } 
-        else
+        else if (this.intersectsObjects.length === 0 || this.currentIntersect?.name.split('_')[0] !== "chestSC")
         {
           this.controller.worldControls.goBack()
         } 
@@ -301,7 +303,7 @@ export default class Raycaster extends EventEmitter{
           this.controller.erc20SCContractControls.inputsScreen()
           this.trigger("click_" + this.currentIntersect.name)
         } 
-        else
+        else if (this.intersectsObjects.length === 0 || this.currentIntersect?.name.split('_')[0] !== "erc20SC")
         {
           this.controller.worldControls.goBack()
         } 
@@ -323,7 +325,7 @@ export default class Raycaster extends EventEmitter{
           this.controller.erc721SCContractControls.inputsScreen()
           this.trigger("click_" + this.currentIntersect.name)
         } 
-        else
+        else if (this.intersectsObjects.length === 0 || this.currentIntersect?.name.split('_')[0] !== "erc721SC")
         {
           this.controller.worldControls.goBack()
         } 
@@ -335,7 +337,9 @@ export default class Raycaster extends EventEmitter{
       case "erc1155Contract":
         if (this.intersectsObjects.length) {
 
-        } else {
+        } 
+        else if (this.intersectsObjects.length === 0 || this.currentIntersect?.name.split('_')[0] !== "erc1155SC")
+        {
           this.controller.worldControls.goBack()
         }
 
