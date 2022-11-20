@@ -21,7 +21,7 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "button-lootSelected_text",
+            "name" : "button_lootSelected_text",
             "rotation" : [
                 0.7071068286895752,
                 0,
@@ -125,7 +125,7 @@
                     }
                 }
             ],
-            "name" : "button-lootSelected_text",
+            "name" : "button_lootSelected_text",
             "samplers" : [
                 {
                     "input" : 8,
@@ -149,9 +149,9 @@
         {
             "doubleSided" : true,
             "emissiveFactor" : [
-                0.994898796081543,
-                0.9130695462226868,
-                1
+                0.4974493980407715,
+                0.4565347731113434,
+                0.5
             ],
             "name" : "Material.004",
             "pbrMetallicRoughness" : {

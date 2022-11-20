@@ -156,6 +156,7 @@ export default class Chest {
 
   setEvent()
   {
+    // Click
     this.preLoader.on("start", () => {
   
       this.contract = this.experience.world.lootBoxScene?.smartContracts.chestSC
@@ -194,8 +195,16 @@ export default class Chest {
       }
     })
 
+    
+    this.raycaster.on("click_button", (obj3dName: string) => 
+    {
+      let buttonName = obj3dName.split('_')[1]
+
+      this.clickButtonAnimation(this[`${buttonName}Button`])
+    })
 
 
+    // Hover
     this.raycaster.on("mouse_enter_chest", (obj3dName: string) => {
 
       this.chestStructure.layers.enable(1) // This will enable the outline effect of oering object
@@ -212,7 +221,7 @@ export default class Chest {
 
       let buttonName = obj3dName.split('_')[1]
 
-      this[`${buttonName}Button`].layers.enable(1)
+      this[`${buttonName}Button`].layers.enable(2)
       this[`${buttonName}Button`].children[0].material.emissiveIntensity = 10
       this[`${buttonName}Button`].children[0].material.emissive = new THREE.Color("#CE48E7")
       
@@ -222,8 +231,8 @@ export default class Chest {
       
       let buttonName = obj3dName.split('_')[1]
       
-      this[`${buttonName}Button`].layers.disable(1)
-      this[`${buttonName}Button`].children[0].material.emissiveIntensity = 1
+      this[`${buttonName}Button`].layers.disable(2)
+      this[`${buttonName}Button`].children[0].material.emissiveIntensity = 0.5
       this[`${buttonName}Button`].children[0].material.emissive = new THREE.Color("#FFFFFF")
 
     })
@@ -332,14 +341,15 @@ export default class Chest {
     this.openned = false
   }
 
+
   async clickButtonAnimation(button: THREE.Mesh)
   {
     let initScale = new Vector3().copy(button.scale)
-    gsap.to(button.scale, { duration: 1, ease: "power1.out", x: button.scale.x, y: button.scale.y, z: 0.1 })
+    gsap.to(button.scale, { duration: 0.1, ease: "power1.out", x: button.scale.x, y: button.scale.y, z: 0.03 })
 
-    await this.sleep(1100)
+    await this.sleep(100)
     
-    gsap.to(button.scale,  { duration: 1, ease: "power1.out", x: button.scale.x, y: button.scale.y, z: initScale.z })
+    gsap.to(button.scale,  { duration: 0.1, ease: "power1.out", x: button.scale.x, y: button.scale.y, z: initScale.z })
   }
 
 

@@ -253,6 +253,10 @@ export default class Raycaster extends EventEmitter{
               this.trigger("select_" + this.currentIntersect!.name.split("_")[0])
             break
 
+            case "button":
+              this.trigger("click_button", [this.currentIntersect!.name])
+            break
+
             default:
 
           }
