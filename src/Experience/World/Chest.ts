@@ -37,9 +37,9 @@ export default class Chest {
   originPos: THREE.Vector3 = new THREE.Vector3()
   animation: {[key: string]: any} = {}
   openYaxisOffset: number = 1.3
-  openIndex: number = 0
   selected: ChestItem[] = []
   locked: boolean = false
+  openned: boolean = false
 
   // blockchain
   contract?: Contract
@@ -131,7 +131,6 @@ export default class Chest {
       let action = this.animation.action.current
       let open   = this.sounds.openChest
       let close  = this.sounds.closeChest
-      let loots  = this.loots
 
       // Close chest
       if (action.paused) 
@@ -141,11 +140,7 @@ export default class Chest {
         
         setTimeout(() => action.stop(), 500)
         
-        for(const loot of loots) {
-          loot.mesh!.position.copy(this.chestScene.position)
-          loot.out = false
-        }
-        this.openIndex = 0;
+        this.closeAnimation()
       }
       // Open chest
       else 
@@ -201,11 +196,28 @@ export default class Chest {
 
   }
 
+
+
+
+
+
+
+
+
+
+  /***********************************|
+  |            Animations             |
+  |__________________________________*/
+
+
+
+
+
   async openAnimation() 
   {
     if (this.animation.action.current.paused) 
     {
-      if (this.locked === false && this.openIndex <= this.loots.length) 
+      if (this.locked === false && this.openned === false) 
       {
         this.locked = true
 
@@ -213,33 +225,35 @@ export default class Chest {
         let chestDirection = this.chestScene.getWorldDirection(new Vector3()) // Getting the dirrection of our chest (looking at)
         chestDirection.x = -chestDirection.x                                  // rotate this direction by 90deg
 
-        // Items animation
+        // 1. Items animation
         /************************************************************************************************************************ */
 
-        for(this.openIndex; this.openIndex < this.loots.length; this.openIndex++ ) 
+        for(let i = 0; i < this.loots.length; i++ ) 
         {
           // Calculing final position of current item
-          let finalPos = new THREE.Vector3().copy(this.originPos)
-          finalPos.add( new THREE.Vector3().addScalar(this.openIndex - ( this.loots.length / 2 ) + 0.5).multiply(chestDirection) )
+          let finalPos = new THREE.Vector3().copy(this.originPos)                                                     // chest pos
+          finalPos.add( new THREE.Vector3().addScalar(i - ( this.loots.length / 2 ) + 0.5).multiply(chestDirection) ) // X axis
+          finalPos.add(new THREE.Vector3(0, Math.cos(Math.sin(-this.time.getElapsedTime())) + this.openYaxisOffset, 0))                                                 // Y axis
 
-          let itemPos = this.loots[this.openIndex].mesh!.position
-          let itemRotation = this.loots[this.openIndex].mesh!.rotation
-          console.log("itemPos: ", itemPos)
+          let itemPos = this.loots[i].mesh!.position
+          let itemRotation = this.loots[i].mesh!.rotation
 
           
           gsap.to(itemPos,       { duration: 0.5, ease: "power1.out", x: finalPos.x, y: finalPos.y, z: finalPos.z })
           gsap.to(itemRotation,  { duration: 0.5, ease: "power1.out", x: itemRotation.x, y: itemRotation.y, z: itemRotation.z * Math.PI })
 
-          this.loots[this.openIndex].out = true;
-  
           await this.sleep(200)
+          
+          setTimeout(() => this.loots[i].out = true, 300)
         }
 
         /************************************************************************************************************************ */
 
+
         await this.sleep(600)
 
-        // Button animation
+
+        // 2. Button animation
         /************************************************************************************************************************ */
         
         let pos = new THREE.Vector3().copy(this.originPos)
@@ -251,19 +265,32 @@ export default class Chest {
         pos.copy(this.lootAllButton!.position)
         gsap.to(this.lootAllButton!.position,       { duration: 0.4, ease: "power1.out", x: pos.x + chestDirection.x, y: pos.y, z: pos.z + chestDirection.z })
         gsap.to(this.lootSelectedButton!.position,  { duration: 0.4, ease: "power1.out", x: pos.x - chestDirection.x, y: pos.y, z: pos.z - chestDirection.z })
-
-        this.openIndex++
         
         /************************************************************************************************************************ */
+        
 
-
+        this.openned = true
         this.locked = false
       }
 
-      // 4. Animaton once all the item has been set up hovering above the chest
+      // 3. Animaton once all the item has been set up hovering above the chest
       this.loots.forEach((loot: ChestItem) => loot.update())
     }
   }
+
+  closeAnimation()
+  {
+    for(const loot of this.loots) {
+      loot.mesh!.position.copy(this.chestScene.position)
+      loot.out = false
+    }
+    this.lootAllButton?.position.copy(this.originPos)
+    this.lootSelectedButton?.position.copy(this.originPos)
+    this.openned = false
+  }
+
+
+
 
 
 
@@ -273,6 +300,11 @@ export default class Chest {
   /***********************************|
   |         Public functions          |
   |__________________________________*/
+
+
+
+
+
 
   /**
    * @name sleep

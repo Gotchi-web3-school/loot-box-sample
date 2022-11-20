@@ -70,7 +70,7 @@ export default class ChestItem {
       case 1:
         this.mesh = this.factory.createErc20Mesh(item.address)
 
-        this.mesh.position.copy(this.chest.chestModel.scene.position)
+        this.mesh.position.copy(this.chest.originPos)
         this.mesh.name = `chestItem${this.item.index}_erc20`
         this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.item.index}`))
         break
@@ -78,7 +78,7 @@ export default class ChestItem {
       case 2:
         this.mesh = this.factory.createErc721Mesh(item.address, item.id.toString())
 
-        this.mesh.position.copy(this.chest.chestModel.scene.position)
+        this.mesh.position.copy(this.chest.originPos)
         this.mesh.name = `chestItem${this.item.index}_erc721`
         this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.item.index}`))
       break
@@ -86,7 +86,7 @@ export default class ChestItem {
       case 3:
         this.mesh = this.factory.createErc1155Mesh(item.address, item.id.toString())
 
-        this.mesh.position.copy(this.chest.chestModel.scene.position)
+        this.mesh.position.copy(this.chest.originPos)
         this.mesh.name = `chestItem${this.item.index}_erc1155`
         this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.item.index}`))
       break
