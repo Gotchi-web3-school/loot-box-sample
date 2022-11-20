@@ -10,6 +10,7 @@ export default class Factory {
   erc20?: any
   erc721?: any
   erc1155?: any
+  button?: any
 
   constructor() 
   {
@@ -20,6 +21,7 @@ export default class Factory {
       this.erc20 = this.resources.items.erc20Model
       this.erc721 = this.resources.items.erc721Model
       this.erc1155 = this.resources.items.erc1155Model
+      this.button = this.resources.items.buttonModel
     })
 
   }
@@ -123,4 +125,5 @@ export default class Factory {
 
     return token.children[0]
   }
+
 }

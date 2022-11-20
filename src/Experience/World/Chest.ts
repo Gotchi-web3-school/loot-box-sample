@@ -1,4 +1,6 @@
 import * as THREE         from "three";
+import { Vector3 }        from "three";
+import gsap               from "gsap";
 import { BigNumberish }   from "ethers";
 import { RootState }      from "@react-three/fiber";
 import Contract           from "./Contract";
@@ -9,7 +11,7 @@ import Materials          from "../Utils/Materials";
 import Raycaster          from "../Utils/Raycaster";
 import Sounds             from "../Sounds";
 import PreLoader          from "../PreLoader";
-import { Vector3 } from "three";
+import Factory            from "../Utils/Factory";
 
 
 export default class Chest {
@@ -17,6 +19,7 @@ export default class Chest {
   experience: Experience
   root: RootState
   raycaster: Raycaster
+  factory: Factory
   scene: THREE.Scene
   resources: Resources        
   preLoader: PreLoader
@@ -28,25 +31,29 @@ export default class Chest {
   chestModel: any
   chestScene: THREE.Group
   chestStructure: THREE.Object3D
+  lootAllButton?: THREE.Mesh
+  lootSelectedButton?: THREE.Mesh
   resource: any
   originPos: THREE.Vector3 = new THREE.Vector3()
   animation: {[key: string]: any} = {}
   openYaxisOffset: number = 1.3
   openIndex: number = 0
   selected: ChestItem[] = []
+  locked: boolean = false
 
   // blockchain
   contract?: Contract
   loots: ChestItem[] = []
 
-   // PostProcessing
-   outlineChest: any
+  // PostProcessing
+  outlineChest: any
 
   constructor() 
   {
     this.experience     = Experience.Instance()
     this.root           = this.experience.root
     this.raycaster      = this.experience.raycaster
+    this.factory        = this.experience.factory
     this.scene          = this.experience.scene
     this.resources      = this.experience.resources
     this.preLoader      = this.experience.preLoader 
@@ -62,6 +69,7 @@ export default class Chest {
     this.outlineChest  = this.experience.root["outlineChestHover"]
 
     this.setGLTF()
+    this.setLootButton()
     this.setAnimation()
     this.setEvent()
   }
@@ -78,6 +86,19 @@ export default class Chest {
     this.chestStructure.name = "chest"
 
     this.scene.add(this.chestModel.scene)
+  }
+
+  setLootButton()
+  {
+    this.lootAllButton = this.resources.items.buttonLootAll.scene.children[0]
+    this.lootSelectedButton = this.resources.items.buttonLootSelected.scene.children[0]
+
+    this.lootAllButton!.position.copy(this.chestScene.position)
+    this.chestScene.getWorldQuaternion(this.lootAllButton!.quaternion)
+    this.lootSelectedButton!.position.copy(this.chestScene.position)
+    this.chestScene.getWorldQuaternion(this.lootSelectedButton!.quaternion)
+
+    this.scene.add(this.lootAllButton!, this.lootSelectedButton!)
   }
 
   setAnimation() 
@@ -180,49 +201,89 @@ export default class Chest {
 
   }
 
-  openAnimation() 
+  async openAnimation() 
   {
     if (this.animation.action.current.paused) 
     {
-      // calcul each loot displacement & final position when openning the chest
-      if (this.openIndex < this.loots.length) 
+      if (this.locked === false && this.openIndex <= this.loots.length) 
       {
+        this.locked = true
+
 
         let chestDirection = this.chestScene.getWorldDirection(new Vector3()) // Getting the dirrection of our chest (looking at)
         chestDirection.x = -chestDirection.x                                  // rotate this direction by 90deg
 
-        // Calculing final position of current item
-        let finalPosition = new THREE.Vector3().copy(this.originPos)
-        finalPosition.add( new THREE.Vector3().addScalar(this.openIndex - ( this.loots.length / 2 ) + 0.5).multiply(chestDirection) )
-        
-        // the difference amount of distance between initial position and final position
-        let diffenrence = new THREE.Vector3().copy(finalPosition).sub(this.originPos)
+        // Items animation
+        /************************************************************************************************************************ */
 
-        
-        // 1. Animation during the openning of chest
-        if ( this.openYaxisOffset - this.loots[this.openIndex].mesh!.position.y > 0 ) 
+        for(this.openIndex; this.openIndex < this.loots.length; this.openIndex++ ) 
         {
-          this.loots[this.openIndex].mesh!.position.x = this.originPos.x + ( diffenrence.x * ((this.loots[this.openIndex].mesh!.position.y / this.openYaxisOffset)));
-          this.loots[this.openIndex].mesh!.position.z = this.originPos.z + ( diffenrence.z * ((this.loots[this.openIndex].mesh!.position.y / this.openYaxisOffset)));
+          // Calculing final position of current item
+          let finalPos = new THREE.Vector3().copy(this.originPos)
+          finalPos.add( new THREE.Vector3().addScalar(this.openIndex - ( this.loots.length / 2 ) + 0.5).multiply(chestDirection) )
 
-          this.loots[this.openIndex].mesh!.position.y += (this.time.getDelta() * 400);
+          let itemPos = this.loots[this.openIndex].mesh!.position
+          let itemRotation = this.loots[this.openIndex].mesh!.rotation
+          console.log("itemPos: ", itemPos)
+
           
-          // While getting to its final position rotate the item
-          this.loots[this.openIndex].mesh!.rotation.y = this.time.getElapsedTime() * 10
-        }
-        else 
-        {
-          // 2. Once the item is at his final position go to the next one
-          this.loots[this.openIndex].out = true;
+          gsap.to(itemPos,       { duration: 0.5, ease: "power1.out", x: finalPos.x, y: finalPos.y, z: finalPos.z })
+          gsap.to(itemRotation,  { duration: 0.5, ease: "power1.out", x: itemRotation.x, y: itemRotation.y, z: itemRotation.z * Math.PI })
 
-          this.openIndex++;
+          this.loots[this.openIndex].out = true;
+  
+          await this.sleep(200)
         }
+
+        /************************************************************************************************************************ */
+
+        await this.sleep(600)
+
+        // Button animation
+        /************************************************************************************************************************ */
+        
+        let pos = new THREE.Vector3().copy(this.originPos)
+        gsap.to(this.lootAllButton!.position,       { duration: 1, ease: "power1.out", x: pos.x, y: pos.y + 1, z: pos.z })
+        gsap.to(this.lootSelectedButton!.position,  { duration: 1, ease: "power1.out", x: pos.x, y: pos.y + 1, z: pos.z })
+        
+        await this.sleep(1100)
+
+        pos.copy(this.lootAllButton!.position)
+        gsap.to(this.lootAllButton!.position,       { duration: 0.4, ease: "power1.out", x: pos.x + chestDirection.x, y: pos.y, z: pos.z + chestDirection.z })
+        gsap.to(this.lootSelectedButton!.position,  { duration: 0.4, ease: "power1.out", x: pos.x - chestDirection.x, y: pos.y, z: pos.z - chestDirection.z })
+
+        this.openIndex++
+        
+        /************************************************************************************************************************ */
+
+
+        this.locked = false
       }
-      // 3. Animaton once all the item has been set up hovering above the chest
+
+      // 4. Animaton once all the item has been set up hovering above the chest
       this.loots.forEach((loot: ChestItem) => loot.update())
     }
   }
 
+
+
+
+
+
+  /***********************************|
+  |         Public functions          |
+  |__________________________________*/
+
+  /**
+   * @name sleep
+   * @notice Just stop the function where it is called until "ms" second is passed
+   * @param ms The waiting time in milliseconds
+   * @returns a Promise
+   */
+  sleep(ms: number): Promise<unknown> 
+  {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   update() 
   {

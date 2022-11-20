@@ -129,6 +129,16 @@ export const sources = [
     type: "gltfModel",
     path: "models/erc1155.gltf"
   },
+  {
+    name: "buttonLootAll",
+    type: "gltfModel",
+    path: "models/buttonLoot-all.gltf"
+  },
+  {
+    name: "buttonLootSelected",
+    type: "gltfModel",
+    path: "models/buttonLoot-selected.gltf"
+  },
  
   /**
    * Textures
