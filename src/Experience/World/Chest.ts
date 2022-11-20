@@ -209,15 +209,16 @@ export default class Chest {
       let signer          = this.experience.world.user?.wallet.signer
       let contract        = this.contract
       let args: any       = { items: [], tokenIds: [], amounts: []} 
-      let types: number[]  = []
+      let types: number[] = []
       
       this.clickButtonAnimation(this[`${buttonName}Button`])
       
       if (buttonName === "lootAll")
       {
-        args = this.lootsRaw
-        types = args["type_"]
-        delete args["type_"]
+        args.items      = this.lootsRaw.items
+        args.tokenIds   = this.lootsRaw.tokenIds
+        args.amounts    = this.lootsRaw.amounts
+        types           = this.lootsRaw.type_
 
         const tx = await batchLootTx(signer, contract!.interface!, args, types)
         contract!.handleTxs(tx)

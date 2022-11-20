@@ -728,6 +728,7 @@ export const batchLootTx = async(
     const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
     
   try {
+    console.log("")
     console.log("\t\tBATCH LOOT")
     console.log("///////////////////////////////////////////////")
     console.log("address: ", args.items)
