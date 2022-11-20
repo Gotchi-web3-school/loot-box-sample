@@ -334,6 +334,7 @@ export default class Chest {
 
         // 2. Button animation
         /************************************************************************************************************************ */
+        
         if (Object.values(this.selected).length > 0) 
         {
           let pos = new THREE.Vector3().copy(this.originPos)

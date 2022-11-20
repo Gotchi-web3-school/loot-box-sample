@@ -146,17 +146,6 @@ export default class Contract extends EventEmitter {
 
 
 
-  /**
-   * @name setPostProcessing
-   * @notice set all the meshes their postProcessing settings
-   */
-  // private setPostProcessing()
-  // {
-  //   this.model.layers.
-  // }
-
-
-
 
   /**
    * @name setEvents
