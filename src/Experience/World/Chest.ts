@@ -335,7 +335,7 @@ export default class Chest {
         // 2. Button animation
         /************************************************************************************************************************ */
         
-        if (Object.values(this.selected).length > 0) 
+        if (Object.values(this.loots).length > 0) 
         {
           let pos = new THREE.Vector3().copy(this.originPos)
           let scale = new THREE.Vector3().copy(this.lootAllButton!.scale)
