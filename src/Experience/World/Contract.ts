@@ -1,22 +1,22 @@
-import { ethers } from "ethers"
-import * as THREE from "three"
-import Experience from "../Experience"
-import Resources from "../Utils/Resources"
-import LootBoxScene from "./LootBoxScene"
-import Sounds from "../Sounds"
-import User from "./User"
-import Factory from "../Utils/Factory"
-import { Vector3 } from "three"
-import { RootState } from "@react-three/fiber"
-import Materials from "../Utils/Materials";
-import Raycaster from "../Utils/Raycaster";
-import EventEmitter from "../Utils/EventEmitter"
+import { ethers }     from "ethers"
+import * as THREE     from "three"
+import Experience     from "../Experience"
+import Resources      from "../Utils/Resources"
+import LootBoxScene   from "./LootBoxScene"
+import Sounds         from "../Sounds"
+import User           from "./User"
+import Factory        from "../Utils/Factory"
+import { Vector3 }    from "three"
+import { RootState }  from "@react-three/fiber"
+import Materials      from "../Utils/Materials";
+import Raycaster      from "../Utils/Raycaster";
+import EventEmitter   from "../Utils/EventEmitter"
 
 type Functions = {
   [key: string]: {
-    front:  { [key: string]: any }
-    contractFunctions: { [key: string]: any }
-    lib:    { [key: string]: any }
+    front:              { [key: string]: any }
+    contractFunctions:  { [key: string]: any }
+    lib:                { [key: string]: any }
   }
 }
 
@@ -126,8 +126,8 @@ export default class Contract extends EventEmitter {
       
         
         // set front
-        this.functions[name].front.body   = mesh
-        const text = this.model.getObjectByName(`${mesh.name}_text`)
+        this.functions[name].front.body = mesh
+        const text                      = this.model.getObjectByName(`${mesh.name}_text`)
         text.geometry.copy(this.factory.createTextGeometry(name, {size: 0.02}))
 
         const multiplier = name.length > 6 ? (6 / name.length) * 1.6 : 1
@@ -181,6 +181,7 @@ export default class Contract extends EventEmitter {
           
           if (funcName === "deploy" || funcName === "import") 
           {
+            console.log("meta", this.functions)
             this.metaScreen.add(this.functions[funcName].contractFunctions)
             this.metaScreen.visible = true
           }
