@@ -1,10 +1,10 @@
-import Experience from './Experience'
-import Camera from './Camera'
-import Resources from './Utils/Resources'
-import Sounds from './Sounds'
-import PreLoader from './PreLoader'
+import Experience   from './Experience'
+import Camera       from './Camera'
+import Resources    from './Utils/Resources'
+import Sounds       from './Sounds'
+import PreLoader    from './PreLoader'
 import LootBoxScene from './World/LootBoxScene'
-import Materials from './Utils/Materials'
+import Materials    from './Utils/Materials'
 
 export default class Controller
 {
@@ -22,23 +22,22 @@ export default class Controller
   private logic: {[key: string]: any} = {}
 
   // controls
-  worldControls:           {[key: string]: () => {}} = {}
-  chestSCContractControls:   {[key: string]: () => {}} = {}
-  erc20SCContractControls:   {[key: string]: () => {}} = {}
-  erc721SCContractControls:  {[key: string]: () => {}} = {}
-  erc1155ContractControls: {[key: string]: () => {}} = {}
-  camControls:             {[key: string]: (...args) => {}} = {}
+  worldControls:              {[key: string]: () => {}} = {}
+  chestSCContractControls:    {[key: string]: () => {}} = {}
+  erc20SCContractControls:    {[key: string]: () => {}} = {}
+  erc721SCContractControls:   {[key: string]: () => {}} = {}
+  erc1155SCContractControls:  {[key: string]: () => {}} = {}
+  camControls:                {[key: string]: (...args) => {}} = {}
 
   constructor()
   {
     // Setup
     this.experience = Experience.Instance()
-    this.camera = this.experience.camera
-    this.resources = this.experience.resources
-    this.sounds = this.experience.sounds
-    this.preLoader = this.experience.preLoader
-    this.config = this.experience.config
-    // this.animations = this.experience.animations
+    this.camera     = this.experience.camera
+    this.resources  = this.experience.resources
+    this.sounds     = this.experience.sounds
+    this.preLoader  = this.experience.preLoader
+    this.config     = this.experience.config
 
     this.setLogic()
     this.setWorldControls()
@@ -52,16 +51,16 @@ export default class Controller
     this.resources.on('ready', () =>
     {
       this.lootBoxScene = this.experience.world.lootBoxScene
-      this.materials = this.experience.materials
+      this.materials    = this.experience.materials
     })
 
   }
   
   setLogic()
   {
-    this.logic.buttonsLocked = false
-    this.logic.mode = []
-    this.camera.controller = this
+    this.logic.buttonsLocked  = false
+    this.logic.mode           = []
+    this.camera.controller    = this
 
     this.logic.lockButtons = async (lockDuration: number) =>
     {
@@ -232,7 +231,42 @@ export default class Controller
       }
     }
   }
-  setErc1155ContractControls() {}
+
+
+  setErc1155ContractControls() 
+  {
+    this.erc1155SCContractControls.inputsScreen = async () => 
+    {
+      if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) === "erc1155Contract")
+      {
+        this.sounds.playClick()
+        this.logic.mode.push('inputsScreen')
+        this.camControls.toInputsScreen("erc1155SC") // Give the groupe name's of the targeted model
+      }
+    }
+
+    this.erc1155SCContractControls.metaScreen = async () => 
+    {
+      if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) === "erc1155Contract")
+      {
+        this.sounds.playClick()
+        this.logic.mode.push('metaScreen')
+        this.camControls.toMetaScreen("erc1155SC") // Give the groupe name's of the targeted model
+      }
+    }
+
+    this.erc1155SCContractControls.main = async () => 
+    {
+      if ( this.logic.buttonsLocked === false && this.logic.mode.at(-1) !== "erc1155Contract")
+      {
+        this.sounds.playClick()
+        this.logic.mode.pop()
+        this.camControls.toErc1155Contract(0.5) // Give the groupe name's of the targeted model
+        this.experience.raycaster.trigger("main")
+
+      }
+    }
+  }
 
 
   // camera transitions and angles

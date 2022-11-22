@@ -7,6 +7,7 @@ import GUI from 'lil-gui';
 import User from "./World/User";
 import Controller from "./Controller";
 import { Vector3 } from "three";
+import { triggerAsyncId } from "async_hooks";
 
 export default class Camera {
 
@@ -273,7 +274,6 @@ export default class Camera {
       this.controls.enableRotate = false
       this.controls.enableZoom = false
 
-      
       // Get the directional view of our target to place the camera jus in front of it
       const direction = this.experience.world.lootBoxScene?.smartContracts[target].metaScreen.getWorldDirection(new Vector3())
       const targetPos = this.experience.world.lootBoxScene?.smartContracts[target].metaScreen.getWorldPosition(new Vector3())
@@ -282,6 +282,7 @@ export default class Camera {
       // Smooth animation when positioning the camera
       gsap.to( this.instance.position, { duration: duration, ease: "power1.out", x: cameraPos.x, y: cameraPos.y, z: cameraPos.z } )
       gsap.to( this.controls.target, { duration: duration, ease: "power1.out", x: targetPos.x, y: targetPos.y, z: targetPos.z } )
+
       await this.sleep(duration * 1000)
 
 

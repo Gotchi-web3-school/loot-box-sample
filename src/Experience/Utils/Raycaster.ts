@@ -334,8 +334,17 @@ export default class Raycaster extends EventEmitter{
       |             1.ERC1155SC            |
       |__________________________________*/
       case "erc1155Contract":
-        if (this.intersectsObjects.length) {
 
+        if ( this.intersectsObjects.length && (this.currentIntersect?.name.split('_').pop() === "deploy" ||
+                                               this.currentIntersect?.name.split('_').pop() === "import") )
+        {
+          this.controller.erc1155SCContractControls.metaScreen()
+          this.trigger("click_" + this.currentIntersect.name)
+        }
+        else if (this.intersectsObjects.length && this.currentIntersect?.name.split('_')[1] === "function" ) 
+        {
+          this.controller.erc1155SCContractControls.inputsScreen()
+          this.trigger("click_" + this.currentIntersect.name)
         } 
         else if (this.intersectsObjects.length === 0 || this.currentIntersect?.name.split('_')[0] !== "erc1155SC")
         {
