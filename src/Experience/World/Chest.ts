@@ -1,19 +1,20 @@
-import * as THREE         from "three";
-import * as ethers        from "ethers";
-import gsap               from "gsap";
-import { RootState }      from "@react-three/fiber";
-import Contract           from "./Contract";
-import ChestItem          from "./ChestItem";
-import Experience         from "../Experience";
-import Resources          from "../Utils/Resources";
-import Materials          from "../Utils/Materials";
-import Raycaster          from "../Utils/Raycaster";
-import Sounds             from "../Sounds";
-import PreLoader          from "../PreLoader";
-import Factory            from "../Utils/Factory";
-import { batchLootTx }    from "../../Lib/web3/transactions";
+import * as THREE           from "three";
+import * as ethers          from "ethers";
+import gsap                 from "gsap";
+import { RootState }        from "@react-three/fiber";
+import Contract             from "./Contract";
+import ChestItem, { Loot }  from "./ChestItem";
+import Experience           from "../Experience";
+import Resources            from "../Utils/Resources";
+import Materials            from "../Utils/Materials";
+import Raycaster            from "../Utils/Raycaster";
+import Sounds               from "../Sounds";
+import PreLoader            from "../PreLoader";
+import Factory              from "../Utils/Factory";
+import { batchLootTx }      from "../../Lib/web3/transactions";
 
-type Loots = {items: string[], tokenIds: ethers.BigNumberish[], amounts: ethers.BigNumberish[], type_: number[]} 
+
+type Mesh =  THREE.Mesh<THREE.BufferGeometry, THREE.Material>
 
 export default class Chest {
   // Class
@@ -27,6 +28,7 @@ export default class Chest {
   materials: Materials
   time: THREE.Clock
   sounds: Sounds
+  chestSC?: Contract
 
   // Scene
   chestModel: any
@@ -43,9 +45,9 @@ export default class Chest {
   openned: boolean                        = false
 
   // blockchain
-  contract: Contract | undefined  = undefined
-  lootsRaw: Loots                 = {items: [], tokenIds: [], amounts: [], type_: []} 
-  loots: ChestItem[]              = []
+  contract: ethers.Contract | undefined   = undefined
+  loots: ChestItem[]                      = []
+  events: string[]                        = ["Deposit", "Looted"]
 
   // PostProcessing
   outlineChest: any
@@ -117,30 +119,7 @@ export default class Chest {
     this.animation.action.current = this.animation.action.open
   }
 
-  async setLoots(loots: {items: string[], tokenIds: ethers.BigNumberish[], amounts: string[], type_: number[]}) 
-  {
-    const chestItems: any[] = []
-    
-    for (let i = 0; i < loots.items.length; i++) 
-    {
-      chestItems.push(
-
-        new ChestItem(this, {
-          index: i.toString(),
-          address: loots.items[i],
-          id: loots.tokenIds[i],
-          amount: loots.amounts[i],
-          type: loots.type_[i],
-        })
-
-      )
-    }
-    this.loots = chestItems
-
-    // Set selction for layer 2 & disable all object3d's layer
-    this.outlineChest.selection.set(this.raycaster.objectsToTest)
-    this.raycaster.objectsToTest.forEach(object3D => object3D.layers.disable(2))
-  }
+  
 
 
 
@@ -161,16 +140,16 @@ export default class Chest {
     // Click
     this.preLoader.on("start", () => {
   
-      this.contract = this.experience.world.lootBoxScene?.smartContracts.chestSC
-  
-      this.experience.world.lootBoxScene?.smartContracts.chestSC.on("import chestSC", async () => {
+      this.chestSC = this.experience.world.lootBoxScene!.smartContracts.chestSC
+      
+      this.experience.world.lootBoxScene?.smartContracts.chestSC.on("import chestSC", async (newAddress: string) => {
+        
+        if ( this.contract?.address ) this.contract!.removeAllListeners() 
+        this.contract = this.chestSC!.interface
 
-        this.contract   = this.experience.world.lootBoxScene?.smartContracts.chestSC
-        const IContract = this.contract!.interface!.connect(this.experience.world.user?.wallet.signer)
-        const loots     = await IContract.callStatic.look()
-        this.lootsRaw   = loots
+        for (const event of this.events) { this.contract!.on( event, (event) => {this.refreshLoots(); console.log("event: ", event)} ) }
 
-        this.setLoots(loots)
+        this.refreshLoots()
         
       })
   
@@ -207,7 +186,7 @@ export default class Chest {
     {
       let buttonName      = obj3dName.split('_')[1]
       let signer          = this.experience.world.user?.wallet.signer
-      let contract        = this.contract
+      let chestSC         = this.chestSC
       let args: any       = { items: [], tokenIds: [], amounts: []} 
       let types: number[] = []
       
@@ -215,13 +194,15 @@ export default class Chest {
       
       if (buttonName === "lootAll")
       {
-        args.items      = this.lootsRaw.items
-        args.tokenIds   = this.lootsRaw.tokenIds
-        args.amounts    = this.lootsRaw.amounts
-        types           = this.lootsRaw.type_
+        const loots = await this.contract!.callStatic.look()
 
-        const tx = await batchLootTx(signer, contract!.interface!, args, types)
-        contract!.handleTxs(tx)
+        args.items      = loots.items
+        args.tokenIds   = loots.tokenIds
+        args.amounts    = loots.amounts
+        types           = loots.type_
+
+        const tx = await batchLootTx(signer, chestSC!.interface!, args, types)
+        chestSC!.handleTxs(tx)
       }
       else if (buttonName === "lootSelected" && Object.values(this.selected).length > 0)
       {
@@ -232,8 +213,8 @@ export default class Chest {
           types.push(loot.item.type)
         }
         
-        const tx = await batchLootTx(signer, contract!.interface!, args, types)
-        contract!.handleTxs(tx)
+        const tx = await batchLootTx(signer, chestSC!.interface!, args, types)
+        chestSC!.handleTxs(tx)
       }
     })
 
@@ -273,11 +254,105 @@ export default class Chest {
   }
 
 
-  refreshLoots()
-  {
 
+
+
+
+
+
+
+
+
+
+  /**
+   * On event catch refresh the loots in the chest
+   */
+  async refreshLoots() 
+  {
+    const currentLoots: Loot[]   = this.loots.map(loot => loot.item)
+    const newLoots: Loot[]       = await this.contract!.callStatic.look().then(result => this.parseLoot(result)) 
+    let meshToRemove: Mesh[]     = []
+    let lootsToAdd: Loot[]       = []
+    
+
+    meshToRemove = this.loots.filter(loot => {
+
+      return !newLoots.map(newLoot => JSON.stringify(newLoot)).includes(JSON.stringify(loot.item))
+
+    }).map((loot) => loot.mesh)
+
+
+    lootsToAdd = newLoots.filter(newLoot => {
+
+      return !currentLoots.map(loot => JSON.stringify(loot)).includes(JSON.stringify(newLoot))
+
+    })
+
+    console.log("currentLoots", currentLoots)
+    console.log("newLoots", newLoots)
+
+    console.log("")
+
+    console.log("Loots to remove: ", meshToRemove)
+    console.log("Loots to add: ", lootsToAdd)
+
+    this.removeLoots(meshToRemove)
+    this.addLoots(lootsToAdd)
   }
 
+  removeLoots(loots: Mesh[])
+  {
+    for (const loot of loots)
+    {
+      loot.geometry.dispose()
+      loot.material.dispose()
+      
+      this.raycaster.objectsToTest.filter((elem: THREE.Mesh) => elem.name.startsWith(loot.name.split('_')[0]) )
+      if (Object.keys(this.selected).includes(loot.uuid)) delete this.selected[loot.uuid]
+
+      this.scene.remove(loot)
+    }
+    if ( Object.values(this.selected).length === 0 ) this.lootSelectedButton.material.color = new THREE.Color("#5E5E5E") 
+  }
+
+  addLoots(loots: Loot[]) 
+  {
+    for (let i = 0; i < loots.length; i++) 
+    {
+      this.loots.push(
+
+        new ChestItem(this, {
+          address: loots[i].address,
+          id: loots[i].id,
+          amount: loots[i].amount,
+          type: loots[i].type,
+        })
+
+      )
+    }
+
+    // Set selction for layer 2 & disable all object3d's layer
+    this.outlineChest.selection.set(this.raycaster.objectsToTest)
+    this.raycaster.objectsToTest.forEach(object3D => object3D.layers.disable(2))
+  }
+
+  parseLoot(rawLoots: {items: string[], tokenIds: ethers.BigNumberish[], amounts: ethers.BigNumberish[], type_: number[]}): Loot[]
+  {
+    let loots: Loot[] = []
+
+    rawLoots.items.forEach((loot, index) => {
+
+      loots.push({
+        address: rawLoots.items[index],
+        id: rawLoots.tokenIds[index],
+        amount: rawLoots.amounts[index],
+        type: rawLoots.type_[index]
+      })
+
+    }) 
+
+    return loots
+  }
 
 
 

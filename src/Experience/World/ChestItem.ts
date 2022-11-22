@@ -2,15 +2,14 @@ import * as THREE from "three";
 import Experience from "../Experience";
 import Resources from "../Utils/Resources";
 import Materials from "../Utils/Materials";
-import { ethers, BigNumberish } from "ethers";
+import { ethers, BigNumberish, } from "ethers";
 import Chest from "./Chest";
 import Factory from "../Utils/Factory"
 import Raycaster from "../Utils/Raycaster";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 import { MeshStandardMaterial } from "three";
 
-type Loot = {
-  index: string
+export type Loot = {
   address: string
   id: BigNumberish
   amount: BigNumberish
@@ -33,6 +32,7 @@ export default class ChestItem {
   item: Loot
   scene: THREE.Scene
 
+  indexId: string
   out: boolean = false
   locked: boolean = false
   resources: Resources
@@ -56,6 +56,7 @@ export default class ChestItem {
 
     let abi = this.resources.items[`${interfaceType[item.type]}Abi`].abi
     this.contract = new ethers.Contract(item.address, abi, this.experience.world.user?.wallet.signer)
+    this.indexId = ethers.utils.hashMessage(JSON.stringify(item))
 
     this.outlineChest  = this.experience.root["outlineChestHover"]
 
@@ -71,24 +72,24 @@ export default class ChestItem {
         this.mesh = this.factory.createErc20Mesh(item.address)
 
         this.mesh.position.copy(this.chest.originPos)
-        this.mesh.name = `chestItem${this.item.index}_erc20`
-        this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.item.index}`))
+        this.mesh.name = `chestItem${this.indexId}_erc20`
+        this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.indexId}`))
         break
         
       case 2:
         this.mesh = this.factory.createErc721Mesh(item.address, item.id.toString())
 
         this.mesh.position.copy(this.chest.originPos)
-        this.mesh.name = `chestItem${this.item.index}_erc721`
-        this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.item.index}`))
+        this.mesh.name = `chestItem${this.indexId}_erc721`
+        this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.indexId}`))
       break
         
       case 3:
         this.mesh = this.factory.createErc1155Mesh(item.address, item.id.toString())
 
         this.mesh.position.copy(this.chest.originPos)
-        this.mesh.name = `chestItem${this.item.index}_erc1155`
-        this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.item.index}`))
+        this.mesh.name = `chestItem${this.indexId}_erc1155`
+        this.mesh.children.forEach(item => item.name = item.name.replace("chestItem", `chestItem${this.indexId}`))
       break
 
       default:
@@ -104,7 +105,7 @@ export default class ChestItem {
 
   setEvents() {
 
-    this.raycaster.on(`mouse_enter_chestItem${this.item.index}`, (obj3dName: string) => {
+    this.raycaster.on(`mouse_enter_chestItem${this.indexId}`, (obj3dName: string) => {
 
       if (this.locked === false) 
       {
@@ -115,7 +116,7 @@ export default class ChestItem {
       
     })
     
-    this.raycaster.on(`mouse_leave_chestItem${this.item.index}`, (obj3dName: string) => {
+    this.raycaster.on(`mouse_leave_chestItem${this.indexId}`, (obj3dName: string) => {
       
       if (this.locked === false)
       {
@@ -126,7 +127,7 @@ export default class ChestItem {
       
     })
 
-    this.raycaster.on(`select_chestItem${this.item.index}`, (args: string) => {
+    this.raycaster.on(`select_chestItem${this.indexId}`, (args: string) => {
 
       if (this.chest.selected[this.mesh.uuid])
       {

@@ -211,6 +211,8 @@ export default class Contract extends EventEmitter {
     this.raycaster.on("mouse_leave_" + this.model.name, () => {
       this.model.layers.disable(1)
     })
+
+
   }
 
 
@@ -260,8 +262,9 @@ export default class Contract extends EventEmitter {
 
   public attachAddress(contractAddress: string): void
   {
-    this.interface = new ethers.Contract(contractAddress, this.abi)
+    this.interface = new ethers.Contract(contractAddress, this.abi, this.experience.world.user?.wallet.signer)
     this._address = contractAddress
+
     this.network.material = this.materials.items.ethConnected
     this.network.children[0].intensity = 2
     this.network.children[0].distance = 5
@@ -269,6 +272,7 @@ export default class Contract extends EventEmitter {
 
     // this._setAddress(this._address)
   }
+
 
   getAddress(): string | undefined
   {

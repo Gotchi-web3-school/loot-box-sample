@@ -250,7 +250,7 @@ export default class Raycaster extends EventEmitter{
               this.trigger("click_chest")
             break
 
-            case "chestItem" + this.currentIntersect!.name.split("_")[0].at(-1):
+            case "chestItem" + this.currentIntersect!.name.split("_")[0].split("chestItem")[1]:
               this.trigger("select_" + this.currentIntersect!.name.split("_")[0])
             break
 
