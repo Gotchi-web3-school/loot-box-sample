@@ -20,11 +20,9 @@ export default class World {
   constructor() {
 
     this.experience = Experience.Instance();
-    this.scene = this.experience.scene;
-    this.resources = this.experience.resources;
+    this.scene      = this.experience.scene;
+    this.resources  = this.experience.resources;
 
-    // const gridHelper = new THREE.GridHelper(100, 100);
-    // this.scene.add(gridHelper);
 
     this.resources.on("ready", () => 
     {

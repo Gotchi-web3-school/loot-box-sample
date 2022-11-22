@@ -276,7 +276,7 @@ export default class Chest {
     
 
     meshToRemove = this.loots.filter(loot => {
-
+      
       return !newLoots.map(newLoot => JSON.stringify(newLoot)).includes(JSON.stringify(loot.item))
 
     }).map((loot) => loot.mesh)
@@ -287,15 +287,6 @@ export default class Chest {
       return !currentLoots.map(loot => JSON.stringify(loot)).includes(JSON.stringify(newLoot))
 
     })
-
-
-    console.log("currentLoots", currentLoots)
-    console.log("newLoots", newLoots)
-
-    console.log("")
-
-    console.log("Loots to remove: ", meshToRemove)
-    console.log("Loots to add: ", lootsToAdd)
 
     this.removeLoots(meshToRemove)
     this.addLoots(lootsToAdd)
