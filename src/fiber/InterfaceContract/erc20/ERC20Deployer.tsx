@@ -1,13 +1,13 @@
 import { useRef, useState } from "react"
 import { Html } from "@react-three/drei"
-import Experience from "../Experience/Experience"
-import Contract from "../Experience/World/Contract";
+import Experience from "../../../Experience/Experience"
+import Contract from "../../../Experience/World/Contract";
 import { useForm } from "react-hook-form";
 import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'
-import { deployTx } from "../Lib/web3/transactions";
+import { deployErc20Tx } from "../../../Lib/web3/transactions";
 
-const ChestDeployer: React.FC<{group: string, experience: Experience}>  = ({ group, experience }) => {
+const ERC20Deployer: React.FC<{group: string, experience: Experience}>  = ({ group, experience }) => {
   
 
 
@@ -33,7 +33,7 @@ const ChestDeployer: React.FC<{group: string, experience: Experience}>  = ({ gro
   |__________________________________*/
 
   const onSubmit = async (data) => { 
-    const tx = await deployTx(user!.wallet.signer, contract!.deployer, data, group)
+    const tx = await deployErc20Tx(user!.wallet.signer, contract!.deployer, data)
     console.log("transaction sent !")
     contract!.handleDeployment(tx)
   };
@@ -51,7 +51,6 @@ const ChestDeployer: React.FC<{group: string, experience: Experience}>  = ({ gro
     setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected)
   })
-
 
 
 
@@ -76,9 +75,9 @@ const ChestDeployer: React.FC<{group: string, experience: Experience}>  = ({ gro
             <ChakraProvider>
               <Box border={"2px solid #9ecaed"}  overflowY="auto" width="268px" height={"268px"} padding="1rem" borderRadius={"32px"} textAlign="center" textColor={'white'} boxShadow={"inset 0 0 20px #9ecaed, 0 0 20px #9ecaed"}>
                 <Box>
-                  <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >Deploy chest</Text>
+                  <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >Deploy {group}</Text>
                   <Box as='button' fontSize={"10px"} position={"fixed"} top="20px" right="20px" onClick={() => {
-                    experience.controller.chestSCContractControls.main()
+                    experience.controller.erc20SCContractControls.main()
                     setCurrMode(experience.controller.getCurrentMode())
                   }}
                   >
@@ -91,8 +90,8 @@ const ChestDeployer: React.FC<{group: string, experience: Experience}>  = ({ gro
                   <Box>
                     <FormLabel>Name (optional)</FormLabel>
                     <Input fontSize={"8px"} size="sm" padding="0.3rem" placeholder="gotchi lootbox" borderRadius={"5px"} {...register("name")} />
-                    <FormLabel>type (optional)</FormLabel>
-                    <Input fontSize="8px" size="sm" padding="0.3rem" placeholder="ebik !" borderRadius={"5px"} {...register("type")} />
+                    <FormLabel>ticker (optional)</FormLabel>
+                    <Input fontSize="8px" size="sm" padding="0.3rem" placeholder="ebik !" borderRadius={"5px"} {...register("ticker")} />
                   </Box>
 
                   { connected ?
@@ -111,4 +110,4 @@ const ChestDeployer: React.FC<{group: string, experience: Experience}>  = ({ gro
   )
 }
 
-export default ChestDeployer
+export default ERC20Deployer

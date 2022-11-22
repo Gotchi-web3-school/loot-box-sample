@@ -1,5 +1,21 @@
 import * as ethers from "ethers"
 
+
+
+
+
+
+
+
+
+/***********************************|
+|               CHEST               |
+|__________________________________*/
+
+
+
+
+
 /**
  * @dev Deploy an instance of the standard chest
  * 
@@ -70,86 +86,6 @@ export const deployTx = async(
 }
 
 
-
-
-
-/**
- * @dev Deploy an instance of a ERC20 token
- * 
- * 
- * @param signer The user
- * @param IContract The contract to be interfaced with
- * @param args The arguments of the function to be called
- * @returns 
- */
-export const deployErc20Tx = async(
-  signer: ethers.Signer, 
-  deployer: ethers.ContractFactory,
-  args:  { [key: string]: any },
-  ): Promise<any> => {
-
-  const contractFactory = deployer.connect(signer)
-
-  try {  
-    console.log("")
-    console.info("DEPLOY ERC20")
-    console.log("///////////////////////////////////////////////")
-    console.log("name: " + args.name)
-    console.log("ticker: " + args.ticker)
-    console.log("///////////////////////////////////////////////")
-
-    
-    const tx = await contractFactory.deploy(...Object.values(args))
-      
-    return tx 
-          
-    } catch (error: any) {
-      console.log(error)
-  }
-}
-
-
-
-
-
-/**
- * @dev Deploy an instance of a ERC20 token
- * 
- * 
- * @param signer The user
- * @param IContract The contract to be interfaced with
- * @param args The arguments of the function to be called
- * @returns 
- */
-export const deployErc721Tx = async(
-  signer: ethers.Signer, 
-  deployer: ethers.ContractFactory,
-  args:  { [key: string]: any },
-  ): Promise<any> => {
-
-  const contractFactory = deployer.connect(signer)
-
-  try {  
-    console.log("")
-    console.info("DEPLOY ERC721")
-    console.log("///////////////////////////////////////////////")
-    console.log("name: " + args.name)
-    console.log("ticker: " + args.ticker)
-    console.log("///////////////////////////////////////////////")
-
-    const tx = await contractFactory.deploy(...Object.values(args))
-      
-    return tx 
-          
-    } catch (error: any) {
-      console.log(error)
-  }
-}
-
-
-
-
-
 /**
  * @dev The addWhitelist function of the chest standard.
  * https://github.com/Gotchi-web3-school/Chest-standard/blob/3ac6e3a7ee29cb7fa88a45ceab0ebd99aff07761/contracts/Chest/extensions/ChestHolder.sol#L177
@@ -159,7 +95,7 @@ export const deployErc721Tx = async(
  * @param args The arguments of the function to be called
  * @returns the Tx sent
  */
-export const addWhitelistTx = async(
+ export const addWhitelistTx = async(
   signer: ethers.Signer,
   IContract: ethers.Contract,
   args: string[]
@@ -187,9 +123,6 @@ export const addWhitelistTx = async(
 }
 
 
-
-
-
 /**
  * @dev The batchDeposit function of the chest standard.
  * https://github.com/Gotchi-web3-school/Chest-standard/blob/3ac6e3a7ee29cb7fa88a45ceab0ebd99aff07761/contracts/Chest/Chest.sol#L74
@@ -199,7 +132,7 @@ export const addWhitelistTx = async(
  * @param args The arguments of the function to be called
  * @returns the Tx sent
  */
-export const batchDepositTx = async(
+ export const batchDepositTx = async(
   signer: ethers.Signer,
   IContract: ethers.Contract,
   args: Array<any[]>
@@ -241,36 +174,101 @@ export const batchDepositTx = async(
 }
 
 
-
-
-
 /**
- * @dev The transferOwnership function of openzeppelin.
+ * @dev Loot a specific token from the chest.
  * 
  * @param signer The user
  * @param IContract The contract to be interfaced with
- * @param args The new owner of this chest
+ * @param args The token address, id & amount
  * @returns the Tx sent
  */
-export const transferOwnershipTx = async(
+ export const lootTx = async(
   signer: ethers.Signer,
   IContract: ethers.Contract,
-  args: string
+  args: { [ key: string ]: any },
+  type: number
   ) => {
-  const contract = IContract.connect(signer)
 
+    const contract = IContract.connect(signer)
+    const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
+    
   try {
     console.log("")
-    console.log("BATCH DEPOSIT")
+    console.log("\t\t\tLOOT")
     console.log("///////////////////////////////////////////////")
-    console.log("address: ", args)
+    console.log("address: ", args.address)
+    console.log("id: ", args.id)
+    console.log("amount: ", args.amount)
+    console.log("type: ", type)
     console.log("///////////////////////////////////////////////")
     
+    // if token is ERC20 parse it to big number
+    if (type === 1)
+    {
+      const contract = ERC20.attach(args.address)
+      args.amount = ethers.utils.parseUnits(args.amount, await contract.decimals())
+    } 
+    
     //Estimation of the gas cost
-    const gas = await contract.estimateGas.transferOwnership(args)     
+    const gas = await contract.estimateGas.loot(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.transferOwnership(args)     
+    const tx = await contract.loot(...Object.values(args))
+    console.log("transaction sent !")
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
+
+
+/**
+ * @dev Batch loot tokens from the chest.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The token addresses, ids & amounts
+ * @returns the Tx sent
+ */
+ export const batchLootTx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: any[] },
+  types: number[]
+) => {
+
+  const contract = IContract.connect(signer)
+  const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
+    
+  try {
+    console.log("")
+    console.log("\t\tBATCH LOOT")
+    console.log("///////////////////////////////////////////////")
+    console.log("address: ", args.items)
+    console.log("id: ",      args.tokenIds)
+    console.log("amount: ",  args.amounts)
+    console.log("type: ",    types)
+    console.log("///////////////////////////////////////////////")
+    
+    // Check if token is a ERC20 if yes parse the amount with its decimals
+    for(let i = 0; i < types.length; i++)
+    {
+      if (types[i] === 1 && (args.amounts[i] instanceof ethers.BigNumber) === false) 
+      {
+        const contract = ERC20.attach(args.items[i])
+        args.amounts[i] = ethers.utils.parseUnits(args.amounts[i], await contract.decimals());
+      }
+    }
+
+
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas.batchLoot(...Object.values(args))     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract.batchLoot(...Object.values(args))
+    console.log("transaction sent !")
 
     return tx
       
@@ -283,6 +281,55 @@ export const transferOwnershipTx = async(
 
 
 
+
+
+
+
+
+/***********************************|
+|               ERC20               |
+|__________________________________*/
+
+
+
+
+
+/**
+ * @dev Deploy an instance of a ERC20 token
+ * 
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The arguments of the function to be called
+ * @returns 
+ */
+export const deployErc20Tx = async(
+  signer: ethers.Signer, 
+  deployer: ethers.ContractFactory,
+  args:  { [key: string]: any },
+  ): Promise<any> => {
+
+  const contractFactory = deployer.connect(signer)
+
+  try {  
+    console.log("")
+    console.info("DEPLOY ERC20")
+    console.log("///////////////////////////////////////////////")
+    console.log("name: " + args.name)
+    console.log("ticker: " + args.ticker)
+    console.log("///////////////////////////////////////////////")
+
+    
+    const tx = await contractFactory.deploy(...Object.values(args))
+      
+    return tx 
+          
+    } catch (error: any) {
+      console.log(error)
+  }
+}
+
+
 /**
  * @dev Approve an address to spend token.
  * 
@@ -291,7 +338,7 @@ export const transferOwnershipTx = async(
  * @param args The address to be approved
  * @returns the Tx sent
  */
-export const approveERC20Tx = async(
+ export const approveERC20Tx = async(
   signer: ethers.Signer,
   IContract: ethers.Contract,
   args: { [ key: string ]: string }
@@ -322,7 +369,171 @@ export const approveERC20Tx = async(
 }
 
 
+/**
+ * @dev Mint some token.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The amounts to be minted
+ * @returns the Tx sent
+ */
+ export const mintERC20Tx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: string }
+  ) => {
+    const contract = IContract.connect(signer)
+    
 
+  try {
+    console.log("")
+    console.log("\t\t\tMINT")
+    console.log("///////////////////////////////////////////////")
+    console.log("to: ", args.address)
+    console.log("amount: ", args.amount)
+    console.log("///////////////////////////////////////////////")
+    
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas.mint(args.address, ethers.utils.parseEther(args.amount))     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract.mint(args.address, ethers.utils.parseEther(args.amount))
+    console.log("transaction sent !")
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
+
+
+/**
+ * @dev Mint some token.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The amounts to be minted
+ * @returns the Tx sent
+ */
+ export const transferERC20Tx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: string }
+  ) => {
+
+    const contract = IContract.connect(signer)
+
+  try {
+    console.log("")
+    console.log("\t\t\tTRANSFER")
+    console.log("///////////////////////////////////////////////")
+    console.log("address: ", args.address)
+    console.log("address: ", args.amount)
+    console.log("///////////////////////////////////////////////")
+    
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas.transfer(args.address, ethers.utils.parseEther(args.amount))     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract.transfer(args.address, ethers.utils.parseEther(args.amount))
+    console.log("transaction sent !")
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
+
+
+/**
+ * @dev Burn some token.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The amounts to be minted
+ * @returns the Tx sent
+ */
+ export const burnERC20Tx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: string }
+  ) => {
+    const contract = IContract.connect(signer)
+    
+
+  try {
+    console.log("")
+    console.log("\t\t\tBURN")
+    console.log("///////////////////////////////////////////////")
+    console.log("address: ", args.amount)
+    console.log("///////////////////////////////////////////////")
+    
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas.burn(ethers.utils.parseEther(args.amount))     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract.burn(ethers.utils.parseEther(args.amount))
+    console.log("transaction sent !")
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/***********************************|
+|              ERC721               |
+|__________________________________*/
+
+
+
+
+
+/**
+ * @dev Deploy an instance of a ERC20 token
+ * 
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The arguments of the function to be called
+ * @returns 
+ */
+export const deployErc721Tx = async(
+  signer: ethers.Signer, 
+  deployer: ethers.ContractFactory,
+  args:  { [key: string]: any },
+  ): Promise<any> => {
+
+  const contractFactory = deployer.connect(signer)
+
+  try {  
+    console.log("")
+    console.info("DEPLOY ERC721")
+    console.log("///////////////////////////////////////////////")
+    console.log("name: " + args.name)
+    console.log("ticker: " + args.ticker)
+    console.log("///////////////////////////////////////////////")
+
+    const tx = await contractFactory.deploy(...Object.values(args))
+      
+    return tx 
+          
+    } catch (error: any) {
+      console.log(error)
+  }
+}
 
 
 /**
@@ -364,94 +575,6 @@ export const approveERC721Tx = async(
 }
 
 
-
-
-
-/**
- * @dev Approve an address to manage a collection on behalf of the owner.
- * 
- * @param signer The user
- * @param IContract The contract to be interfaced with
- * @param args The address to be approved
- * @returns the Tx sent
- */
-export const setApprovalForAllTx = async(
-  signer: ethers.Signer,
-  IContract: ethers.Contract,
-  args: { [ key: string ]: any }
-  ) => {
-
-    const contract = IContract.connect(signer)
-    console.log(contract)
-
-  try {
-    console.log("")
-    console.log("SET APPROVAL FOR ALL")
-    console.log("///////////////////////////////////////////////")
-    console.log("to: ", args.to)
-    console.log("switch: ", args.switch)
-    console.log("///////////////////////////////////////////////")
-    
-    //Estimation of the gas cost
-    const gas = await contract.estimateGas.setApprovalForAll(args.to, args.switch)     
-    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
-        
-    const tx = await contract.setApprovalForAll(args.to, args.switch)
-    console.log("transaction sent !")
-
-    return tx
-      
-  } catch (error: any) {
-    console.log(error)
-  }
-}
-
-
-
-
-
-/**
- * @dev Mint some token.
- * 
- * @param signer The user
- * @param IContract The contract to be interfaced with
- * @param args The amounts to be minted
- * @returns the Tx sent
- */
-export const mintERC20Tx = async(
-  signer: ethers.Signer,
-  IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-    const contract = IContract.connect(signer)
-    
-
-  try {
-    console.log("")
-    console.log("\t\t\tMINT")
-    console.log("///////////////////////////////////////////////")
-    console.log("to: ", args.address)
-    console.log("amount: ", args.amount)
-    console.log("///////////////////////////////////////////////")
-    
-    //Estimation of the gas cost
-    const gas = await contract.estimateGas.mint(args.address, ethers.utils.parseEther(args.amount))     
-    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
-        
-    const tx = await contract.mint(args.address, ethers.utils.parseEther(args.amount))
-    console.log("transaction sent !")
-
-    return tx
-      
-  } catch (error: any) {
-    console.log(error)
-  }
-}
-
-
-
-
-
 /**
  * @dev Mint some token.
  * 
@@ -489,51 +612,6 @@ export const safeMintERC721Tx = async(
     console.log(error)
   }
 }
-
-
-
-
-
-/**
- * @dev Mint some token.
- * 
- * @param signer The user
- * @param IContract The contract to be interfaced with
- * @param args The amounts to be minted
- * @returns the Tx sent
- */
-export const transferERC20Tx = async(
-  signer: ethers.Signer,
-  IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-
-    const contract = IContract.connect(signer)
-
-  try {
-    console.log("")
-    console.log("\t\t\tTRANSFER")
-    console.log("///////////////////////////////////////////////")
-    console.log("address: ", args.address)
-    console.log("address: ", args.amount)
-    console.log("///////////////////////////////////////////////")
-    
-    //Estimation of the gas cost
-    const gas = await contract.estimateGas.transfer(args.address, ethers.utils.parseEther(args.amount))     
-    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
-        
-    const tx = await contract.transfer(args.address, ethers.utils.parseEther(args.amount))
-    console.log("transaction sent !")
-
-    return tx
-      
-  } catch (error: any) {
-    console.log(error)
-  }
-}
-
-
-
 
 
 /**
@@ -586,50 +664,6 @@ export const safeTransferFromErc721Tx = async(
 }
 
 
-
-
-
-/**
- * @dev Burn some token.
- * 
- * @param signer The user
- * @param IContract The contract to be interfaced with
- * @param args The amounts to be minted
- * @returns the Tx sent
- */
-export const burnERC20Tx = async(
-  signer: ethers.Signer,
-  IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-    const contract = IContract.connect(signer)
-    
-
-  try {
-    console.log("")
-    console.log("\t\t\tBURN")
-    console.log("///////////////////////////////////////////////")
-    console.log("address: ", args.amount)
-    console.log("///////////////////////////////////////////////")
-    
-    //Estimation of the gas cost
-    const gas = await contract.estimateGas.burn(ethers.utils.parseEther(args.amount))     
-    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
-        
-    const tx = await contract.burn(ethers.utils.parseEther(args.amount))
-    console.log("transaction sent !")
-
-    return tx
-      
-  } catch (error: any) {
-    console.log(error)
-  }
-}
-
-
-
-
-
 /**
  * @dev Burn some token.
  * 
@@ -671,46 +705,170 @@ export const burnERC721Tx = async(
 
 
 
+
+
+
+
+
+/***********************************|
+|              ERC1155               |
+|__________________________________*/
+
+
+
+
+
 /**
- * @dev Loot a specific token from the chest.
+ * @dev Deploy an instance of a ERC20 token
+ * 
  * 
  * @param signer The user
  * @param IContract The contract to be interfaced with
- * @param args The token address, id & amount
+ * @param args The arguments of the function to be called
+ * @returns 
+ */
+export const deployErc1155Tx = async(
+  signer: ethers.Signer, 
+  deployer: ethers.ContractFactory,
+  args:  { [key: string]: any },
+  ): Promise<any> => {
+
+  const contractFactory = deployer.connect(signer)
+
+  try {  
+    console.log("")
+    console.info("DEPLOY ERC1155")
+    console.log("///////////////////////////////////////////////")
+    console.log("uri: " + args.uri)
+    console.log("///////////////////////////////////////////////")
+
+    const tx = await contractFactory.deploy(...Object.values(args))
+      
+    return tx 
+          
+    } catch (error: any) {
+      console.log(error)
+  }
+}
+
+
+/**
+ * @dev Mint some token.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The amounts to be minted
  * @returns the Tx sent
  */
-export const lootTx = async(
+export const mintERC1155Tx = async(
   signer: ethers.Signer,
   IContract: ethers.Contract,
-  args: { [ key: string ]: any },
-  type: number
+  args: { [ key: string ]: string }
+  ) => {
+    const contract = IContract.connect(signer)
+    
+
+  try {
+    console.log("")
+    console.log("\t\t\tMINT")
+    console.log("///////////////////////////////////////////////")
+    console.log("to: ", args.to)
+    console.log("id: ", args.uri)
+    console.log("///////////////////////////////////////////////")
+    
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas.safeMint(args.to, args.uri)     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract.safeMint(args.to, args.uri)
+    console.log("transaction sent !")
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
+
+
+/**
+ * @dev Transfer a specific id of token ERC721.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args :
+ * - address from
+ * - address to
+ * - uint token id
+ * - string datas (optional)
+ * 
+ * @returns the Tx sent
+ */
+export const safeTransferFromErc1155Tx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: string }
   ) => {
 
     const contract = IContract.connect(signer)
-    const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
-    
+    console.log(contract)
+
   try {
     console.log("")
-    console.log("\t\t\tLOOT")
+    console.log("\tSAFE TRANSFER FROM")
     console.log("///////////////////////////////////////////////")
-    console.log("address: ", args.address)
+    console.log("from: ", args.from)
+    console.log("to: ", args.to)
     console.log("id: ", args.id)
-    console.log("amount: ", args.amount)
-    console.log("type: ", type)
+    console.log("datas: ", args.datas)
     console.log("///////////////////////////////////////////////")
     
-    // if token is ERC20 parse it to big number
-    if (type === 1)
-    {
-      const contract = ERC20.attach(args.address)
-      args.amount = ethers.utils.parseUnits(args.amount, await contract.decimals())
-    } 
-    
+    if (!args.datas) args.datas = "0x"
+    // console.log(await Object.entries(contract.estimateGas)[12][1]())
+    console.log(contract.estimateGas["safeTransferFrom(address,address,uint256,bytes)"])
     //Estimation of the gas cost
-    const gas = await contract.estimateGas.loot(...Object.values(args))     
+    const gas = await contract.estimateGas["safeTransferFrom(address,address,uint256,bytes)"](...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.loot(...Object.values(args))
+    const tx = await contract["safeTransferFrom(address,address,uint256,bytes)"](...Object.values(args))    
+    console.log("transaction sent !")
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
+
+
+/**
+ * @dev Burn some token.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The amounts to be minted
+ * @returns the Tx sent
+ */
+export const burnErc155Tx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: string }
+  ) => {
+    const contract = IContract.connect(signer)
+    
+
+  try {
+    console.log("")
+    console.log("\t\t\tBURN")
+    console.log("///////////////////////////////////////////////")
+    console.log("address: ", args.id)
+    console.log("///////////////////////////////////////////////")
+    
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas.burn(args.id)     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract.burn(args.id)
     console.log("transaction sent !")
 
     return tx
@@ -724,50 +882,82 @@ export const lootTx = async(
 
 
 
+
+
+
+
+
+/***********************************|
+|               UTILS               |
+|__________________________________*/
+
+
 /**
- * @dev Batch loot tokens from the chest.
+ * @dev The transferOwnership function of openzeppelin.
  * 
  * @param signer The user
  * @param IContract The contract to be interfaced with
- * @param args The token addresses, ids & amounts
+ * @param args The new owner of this chest
  * @returns the Tx sent
  */
-export const batchLootTx = async(
+ export const transferOwnershipTx = async(
   signer: ethers.Signer,
   IContract: ethers.Contract,
-  args: { [ key: string ]: any[] },
-  types: number[]
-) => {
-
+  args: string
+  ) => {
   const contract = IContract.connect(signer)
-  const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
-    
+
   try {
     console.log("")
-    console.log("\t\tBATCH LOOT")
+    console.log("BATCH DEPOSIT")
     console.log("///////////////////////////////////////////////")
-    console.log("address: ", args.items)
-    console.log("id: ",      args.tokenIds)
-    console.log("amount: ",  args.amounts)
-    console.log("type: ",    types)
+    console.log("address: ", args)
     console.log("///////////////////////////////////////////////")
     
-    // Check if token is a ERC20 if yes parse the amount with its decimals
-    for(let i = 0; i < types.length; i++)
-    {
-      if (types[i] === 1 && (args.amounts[i] instanceof ethers.BigNumber) === false) 
-      {
-        const contract = ERC20.attach(args.items[i])
-        args.amounts[i] = ethers.utils.parseUnits(args.amounts[i], await contract.decimals());
-      }
-    }
-
-
     //Estimation of the gas cost
-    const gas = await contract.estimateGas.batchLoot(...Object.values(args))     
+    const gas = await contract.estimateGas.transferOwnership(args)     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.batchLoot(...Object.values(args))
+    const tx = await contract.transferOwnership(args)     
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
+
+
+/**
+ * @dev Approve an address to manage a collection on behalf of the owner.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The address to be approved
+ * @returns the Tx sent
+ */
+ export const setApprovalForAllTx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: any }
+  ) => {
+
+    const contract = IContract.connect(signer)
+    console.log(contract)
+
+  try {
+    console.log("")
+    console.log("SET APPROVAL FOR ALL")
+    console.log("///////////////////////////////////////////////")
+    console.log("to: ", args.to)
+    console.log("switch: ", args.switch)
+    console.log("///////////////////////////////////////////////")
+    
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas.setApprovalForAll(args.to, args.switch)     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract.setApprovalForAll(args.to, args.switch)
     console.log("transaction sent !")
 
     return tx

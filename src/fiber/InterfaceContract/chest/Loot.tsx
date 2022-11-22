@@ -7,11 +7,11 @@ import {
   Stack, 
   Text, Button, HStack }    from '@chakra-ui/react'
 import { Html }             from "@react-three/drei"
-import Experience           from "../Experience/Experience"
+import Experience           from "../../../Experience/Experience"
 import { useForm }          from "react-hook-form";
 import { ChevronRightIcon } from '@chakra-ui/icons'
-import Contract             from "../Experience/World/Contract";
-import { lootTx }           from "../Lib/web3/transactions";
+import Contract             from "../../../Experience/World/Contract";
+import { lootTx }           from "../../../Lib/web3/transactions";
 import { Select }           from '@chakra-ui/react'
 
 const defaultLoots = {item: [], tokenIds: [], amounts: [], type_: []}

@@ -1,11 +1,11 @@
 import { useRef, useState } from "react"
 import { Html } from "@react-three/drei"
-import Experience from "../Experience/Experience"
+import Experience from "../../../Experience/Experience"
 import { useForm } from "react-hook-form";
 import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Flex, Center, Button } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'
-import { safeTransferFromErc721Tx } from "../Lib/web3/transactions"
-import Contract from "../Experience/World/Contract";
+import { safeTransferFromErc721Tx } from "../../../Lib/web3/transactions"
+import Contract from "../../../Experience/World/Contract";
 
 const SafeTransferFromErc721: React.FC<{group: string, experience: Experience, props: any}>  = ({ group, experience, props }) => {
   

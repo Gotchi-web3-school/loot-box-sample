@@ -1,13 +1,13 @@
 import { useRef, useState } from "react"
 import { Html } from "@react-three/drei"
-import Experience from "../Experience/Experience"
+import Experience from "../../../Experience/Experience"
 import { useForm } from "react-hook-form";
 import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button, Spacer } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'
-import { mintERC20Tx } from "../Lib/web3/transactions"
-import Contract from "../Experience/World/Contract";
+import { transferERC20Tx } from "../../../Lib/web3/transactions"
+import Contract from "../../../Experience/World/Contract";
 
-const MintERC20: React.FC<{group: string, experience: Experience}>  = ({ group, experience }) => {
+const TransferErc20: React.FC<{group: string, experience: Experience}>  = ({ group, experience }) => {
   
 
 
@@ -21,7 +21,7 @@ const MintERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
   const [contract, setContract] = useState<Contract>()
   const [mode, setCurrMode] = useState<string | undefined>(undefined)
   const [connected, setConnected] = useState<boolean>()
-  const mintRef = useRef<any>()
+  const transferRef = useRef<any>()
   const { register, handleSubmit, formState: { errors } } = useForm();
 
 
@@ -33,7 +33,7 @@ const MintERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
   |__________________________________*/
 
   const onSubmit = async (data) => {
-    const tx = await mintERC20Tx(user!.wallet.signer, contract?.interface!, data)
+    const tx = await transferERC20Tx(user!.wallet.signer, contract?.interface!, data)
     contract!.handleTxs(tx)
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
@@ -47,7 +47,7 @@ const MintERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
   |             EVENTS                |
   |__________________________________*/
 
-  experience.raycaster.on( `click_${group}_function_mint`, () => { 
+  experience.raycaster.on( `click_${group}_function_transfer`, () => { 
     setCurrMode(experience.controller.getCurrentMode())
     setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected) 
@@ -62,7 +62,7 @@ const MintERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
   |__________________________________*/
 
   return (
-    <mesh ref={mintRef} name={`${group} mint`} scale={0.6} position={ [ 0, -1, 0 ] }>
+    <mesh ref={transferRef} name={`${group} transfer`} scale={0.6} position={ [ 0, -1, 0 ] }>
 
       {mode === "inputsScreen" &&
           <Html
@@ -77,7 +77,7 @@ const MintERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
     {/* HEADER */}
 
                 <Box>
-                  <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >Mint</Text>
+                  <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >Transfer</Text>
                   <Box as="button" fontSize={"10px"} position={"fixed"} top="20px" right="20px" onClick={() => {
                     experience.controller[group + "ContractControls"].main()
                     setCurrMode(experience.controller.getCurrentMode())
@@ -94,7 +94,7 @@ const MintERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
                 <Stack py="1rem" alignItems={"center"} h="85%">
 
                   <Box width={"100%"}>
-                  <FormLabel>Receiver</FormLabel>
+                    <FormLabel>address to transfer</FormLabel>
                     <Input placeholder="0x..." px="1" size="sm" fontSize={"0.5rem"} borderRadius="md" {...register("address", { required: true, maxLength: 42, minLength: 42, pattern: /^0x[A-Fa-f0-9]{40}$/i})} />
                     {errors.address?.type === "pattern" && <p style={{color: "red", fontSize: "6px"}}>Address must start with "0x" and follow by 40 "Aa-Ff" and/or "0-9"<br />example: 0x0A2b6922FcFF343D51efB4bE45CFBA5Cd7aa08B6</p>}
                     {errors.address?.type === "required" && <p style={{color: "red", fontSize: "10px"}}>Address is required</p>}
@@ -122,4 +122,4 @@ const MintERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
   )
 }
 
-export default MintERC20 
+export default TransferErc20 

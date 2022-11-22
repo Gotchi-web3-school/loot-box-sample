@@ -1,27 +1,31 @@
-import { useEffect, useRef, useState } from "react";
-import { extend, useThree, useFrame } from "@react-three/fiber";
-import { OrbitControls, Stars } from "@react-three/drei"
-import { useControls } from 'leva'
+import { useEffect, useRef, useState }    from "react";
+import { useControls }                    from 'leva'
+import { extend, useThree, useFrame }     from "@react-three/fiber";
+import { OrbitControls, Stars }           from "@react-three/drei"
 import { Bloom, EffectComposer, Outline } from '@react-three/postprocessing'
-import Experience from "./Experience/Experience";
-import AddWhitelist from "./fiber/AddWhitelist";
-import ApproveERC20 from "./fiber/ApproveERC20";
-import ApproveERC721 from "./fiber/ApproveERC721";
-import SetApprovalForAll from "./fiber/SetApprovalForAll";
-import ChestDeployer from "./fiber/ChestDeployer";
-import ERC20Deployer from "./fiber/ERC20Deployer";
-import ERC721Deployer from "./fiber/ERC721Deployer";
-import Import from "./fiber/Import";
-import BatchDeposit from "./fiber/BatchDeposit";
-import TransferOwnership from "./fiber/TransferOwnership";
-import Loot from './fiber/Loot'
-import BatchLoot from './fiber/BatchLoot'
-import MintERC20 from "./fiber/MintERC20";
-import SafeMintERC721 from "./fiber/SafeMintERC721";
-import TransferErc20 from "./fiber/TransferERC20";
-import SafeTransferFromErc721 from "./fiber/SafeTransferFromErc721";
-import BurnERC20 from "./fiber/BurnERC20";
-import BurnERC721 from "./fiber/BurnERC721";
+import Experience             from "./Experience/Experience";
+
+import Import                 from "./fiber/InterfaceContract/Import";
+import SetApprovalForAll      from "./fiber/InterfaceContract/SetApprovalForAll";
+import TransferOwnership      from "./fiber/InterfaceContract/TransferOwnership";
+
+import ChestDeployer          from "./fiber/InterfaceContract/chest/ChestDeployer";
+import AddWhitelist           from "./fiber/InterfaceContract/chest/AddWhitelist";
+import BatchDeposit           from "./fiber/InterfaceContract/chest/BatchDeposit";
+import Loot                   from './fiber/InterfaceContract/chest/Loot'
+import BatchLoot              from './fiber/InterfaceContract/chest/BatchLoot'
+
+import ERC20Deployer          from "./fiber/InterfaceContract/erc20/ERC20Deployer";
+import ApproveERC20           from "./fiber/InterfaceContract/erc20/ApproveERC20";
+import TransferErc20          from "./fiber/InterfaceContract/erc20/TransferERC20";
+import MintERC20              from "./fiber/InterfaceContract/erc20/MintERC20";
+import BurnERC20              from "./fiber/InterfaceContract/erc20/BurnERC20";
+
+import ERC721Deployer         from "./fiber/InterfaceContract/erc721/ERC721Deployer";
+import ApproveERC721          from "./fiber/InterfaceContract/erc721/ApproveERC721";
+import SafeTransferFromErc721 from "./fiber/InterfaceContract/erc721/SafeTransferFromErc721";
+import SafeMintERC721         from "./fiber/InterfaceContract/erc721/SafeMintERC721";
+import BurnERC721             from "./fiber/InterfaceContract/erc721/BurnERC721";
 
 
 
@@ -29,24 +33,26 @@ extend({ OrbitControls })
 
 function App() {
   const [experience, setExperience] = useState<Experience>()
-  const root = useThree()
-  const controlsRef = useRef<any>()
-  const starsRef = useRef<any>()
-  const inputsFunctionRef = useRef<any>()
-  const outLineRef = useRef<any>()
-  const outLineChestRef = useRef<any>()
-  const composerRef = useRef<any>()
-  const chestRef = useRef<any>()
-  const erc20Ref = useRef<any>()
-  const erc721Ref = useRef<any>()
+  const root                        = useThree()
+  const controlsRef                 = useRef<any>()
+  const starsRef                    = useRef<any>()
+  const inputsFunctionRef           = useRef<any>()
+  const outLineRef                  = useRef<any>()
+  const outLineChestRef             = useRef<any>()
+  const composerRef                 = useRef<any>()
+  const chestRef                    = useRef<any>()
+  const erc20Ref                    = useRef<any>()
+  const erc721Ref                   = useRef<any>()
+  const erc1155Ref                  = useRef<any>()
 
   useEffect(() => {
-    root.controls = controlsRef.current
-    root["outlineHover"] = outLineRef.current
+    root.controls             = controlsRef.current
+    root["outlineHover"]      = outLineRef.current
     root["outlineChestHover"] = outLineChestRef.current
-    root["chestSC"] = chestRef.current
-    root["erc20SC"] = erc20Ref.current
-    root["erc721SC"] = erc721Ref.current
+    root["chestSC"]           = chestRef.current
+    root["erc20SC"]           = erc20Ref.current
+    root["erc721SC"]          = erc721Ref.current
+    root["erc1155SC"]         = erc1155Ref.current
 
     setExperience(Experience.Instance(root, controlsRef.current))
 
@@ -148,7 +154,22 @@ function App() {
               <SafeMintERC721          group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
               <SafeTransferFromErc721  group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
               <BurnERC721              group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <TransferOwnership       group={"erc721SC"} experience={experience} props={{ }} />
+              <TransferOwnership       group={"erc721SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+            </>
+          }
+        </group>
+
+        <group ref={erc1155Ref}>
+          { experience &&
+            <>
+              <ERC721Deployer          group={"erc115SC"} experience={experience} />
+              <Import                  group={"erc115SC"} experience={experience} />
+              {/* <ApproveERC721           group={"erc115SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <SetApprovalForAll       group={"erc115SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <SafeMintERC721          group={"erc115SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <SafeTransferFromErc721  group={"erc115SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <BurnERC721              group={"erc115SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <TransferOwnership       group={"erc115SC"} experience={experience} props={{ }} /> */}
             </>
           }
         </group>

@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import { Html } from "@react-three/drei"
-import Experience from "../Experience/Experience"
+import Experience from "../../Experience/Experience"
 import { useForm } from "react-hook-form";
 import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button, Spacer } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'

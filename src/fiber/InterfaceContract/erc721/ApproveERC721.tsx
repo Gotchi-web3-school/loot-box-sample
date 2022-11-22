@@ -1,13 +1,13 @@
 import { useRef, useState } from "react"
 import { Html } from "@react-three/drei"
-import Experience from "../Experience/Experience"
+import Experience from "../../../Experience/Experience"
 import { useForm } from "react-hook-form";
-import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button, Spacer } from '@chakra-ui/react'
+import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button, Flex, Center, Spacer } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'
-import { burnERC20Tx } from "../Lib/web3/transactions"
-import Contract from "../Experience/World/Contract";
+import { approveERC721Tx } from "../../../Lib/web3/transactions"
+import Contract from "../../../Experience/World/Contract";
 
-const BurnERC20: React.FC<{group: string, experience: Experience}>  = ({ group, experience }) => {
+const ApproveERC721: React.FC<{group: string, experience: Experience, props: any}>  = ({ group, experience, props }) => {
   
 
 
@@ -21,8 +21,8 @@ const BurnERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
   const [contract, setContract] = useState<Contract>()
   const [mode, setCurrMode] = useState<string | undefined>(undefined)
   const [connected, setConnected] = useState<boolean>()
-  const burnRef = useRef<any>()
-  const { register, handleSubmit } = useForm();
+  const approveRef = useRef<any>()
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
 
   
@@ -33,7 +33,7 @@ const BurnERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
   |__________________________________*/
 
   const onSubmit = async (data) => {
-    const tx = await burnERC20Tx(user!.wallet.signer, contract?.interface!, data)
+    const tx = await approveERC721Tx(user!.wallet.signer, contract?.interface!, data)
     contract!.handleTxs(tx)
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
@@ -47,7 +47,7 @@ const BurnERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
   |             EVENTS                |
   |__________________________________*/
 
-  experience.raycaster.on( `click_${group}_function_burn`, () => { 
+  experience.raycaster.on( `click_${group}_function_approve`, () => { 
     setCurrMode(experience.controller.getCurrentMode())
     setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected) 
@@ -62,22 +62,21 @@ const BurnERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
   |__________________________________*/
 
   return (
-    <mesh ref={burnRef} name={`${group} burn`} scale={0.6} position={ [ 0, -1, 0 ] }>
+    <mesh ref={approveRef} name={`${group} approve`} scale={0.6} position={ [ 0, -1, 0 ] }>
 
       {mode === "inputsScreen" &&
           <Html
             center
             distanceFactor={5}
             position={ [ 0, 1.67, 0 ] }
+            rotation={ props.rotation }
             transform
           >
             <ChakraProvider>
               <Box border={"2px solid #9ecaed"} overflowY="auto" width="268px" height={"268px"} padding="1rem" borderRadius={"32px"} textAlign="center" textColor={'white'} boxShadow={"inset 0 0 20px #9ecaed, 0 0 20px #9ecaed"}>
-
-    {/* HEADER */}
-
                 <Box>
-                  <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >Mint</Text>
+                  <Text fontWeight={"bold"} sx={{fontSize: "1rem"}} >Approve</Text>
+                  <Text pb="0.5rem" sx={{fontSize: "0.4rem"}} >{contract!.getAddress()}</Text>
                   <Box as="button" fontSize={"10px"} position={"fixed"} top="20px" right="20px" onClick={() => {
                     experience.controller[group + "ContractControls"].main()
                     setCurrMode(experience.controller.getCurrentMode())
@@ -87,15 +86,20 @@ const BurnERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
                   </Box>
                 </Box>
 
-    {/* HEADER END */}
-
-    {/* BODY */}
-
                 <Stack py="1rem" alignItems={"center"} h="85%">
 
                   <Box width={"100%"}>
-                    <FormLabel>amounts</FormLabel>
-                    <Input type="number" min="0" placeholder="100" px="1" size="sm" fontSize={"0.5rem"} borderRadius="md" {...register("amount", { required: true })} />
+                    <FormLabel fontSize={"sm"}>address to approve</FormLabel>
+                    <Input placeholder="0x..." px="1" size="sm" fontSize={"0.5rem"} borderRadius="md" {...register("address", { required: true, maxLength: 42, minLength: 42, pattern: /^0x[A-Fa-f0-9]{40}$/i})} />
+                    {errors.address?.type === "pattern" && <p style={{color: "red", fontSize: "6px"}}>Address must start with "0x" and follow by 40 "Aa-Ff" and/or "0-9"<br />example: 0x0A2b6922FcFF343D51efB4bE45CFBA5Cd7aa08B6</p>}
+                    {errors.address?.type === "required" && <p style={{color: "red", fontSize: "10px"}}>Address is required</p>}
+                    {(errors.address?.type === "minLength" || errors.address1?.type === "maxLength") && <p style={{color: "red", fontSize: "10px"}}>Address must be 42 long</p>}
+                    <Flex mt="1rem" >
+                      <Center>
+                        <Text alignItems={"center"} fontSize={"sm"} >Token id</Text>
+                        <Input type="number" min="0" ml="2rem" mr="5rem" maxW="20%" placeholder="0" px="1" size="sm" fontSize={"1rem"} borderRadius="md" {...register("id", { required: true })} />
+                      </Center>
+                    </Flex>
                   </Box>
 
                   <Spacer />
@@ -107,14 +111,15 @@ const BurnERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
                   }
 
                 </Stack>
-
-    {/* BODY END */}
               </Box>
             </ChakraProvider>
+
           </Html>
+
+
       }
     </mesh>
   )
 }
 
-export default BurnERC20 
+export default ApproveERC721 

@@ -1,11 +1,11 @@
 import { useRef, useState } from "react"
 import { Html } from "@react-three/drei"
-import Experience from "../Experience/Experience"
+import Experience from "../../../Experience/Experience"
 import { useForm } from "react-hook-form";
 import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button, Flex, HStack } from '@chakra-ui/react'
 import { ChevronRightIcon, AddIcon, CloseIcon } from '@chakra-ui/icons'
-import Contract from "../Experience/World/Contract";
-import { batchLootTx } from "../Lib/web3/transactions";
+import Contract from "../../../Experience/World/Contract";
+import { batchLootTx } from "../../../Lib/web3/transactions";
 import { Select } from '@chakra-ui/react'
 
 const defaultBatchLoots = {item: [], tokenIds: [], amounts: [], type_: []}

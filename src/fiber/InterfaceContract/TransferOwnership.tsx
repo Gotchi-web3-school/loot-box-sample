@@ -1,11 +1,11 @@
 import { useRef, useState } from "react"
 import { Html } from "@react-three/drei"
-import Experience from "../Experience/Experience"
+import Experience from "../../Experience/Experience"
 import { useForm } from "react-hook-form";
 import { ChakraProvider, FormLabel, Input, Box, Text, Button } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'
-import Contract from "../Experience/World/Contract";
-import { transferOwnershipTx } from "../Lib/web3/transactions";
+import Contract from "../../Experience/World/Contract";
+import { transferOwnershipTx } from "../../Lib/web3/transactions";
 
 const TransferOwnership: React.FC<{group: string, experience: Experience, props: any}> = ({ group, experience, props }) => {
 

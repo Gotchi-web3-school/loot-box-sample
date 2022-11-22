@@ -1,11 +1,11 @@
 import { useRef, useState } from "react"
 import { Html } from "@react-three/drei"
-import Experience from "../Experience/Experience"
+import Experience from "../../../Experience/Experience"
 import { useForm } from "react-hook-form";
 import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button, Flex, Spacer, HStack } from '@chakra-ui/react'
 import { AddIcon, CloseIcon, ChevronRightIcon } from '@chakra-ui/icons'
-import Contract from "../Experience/World/Contract";
-import { batchDepositTx } from "../Lib/web3/transactions";
+import Contract from "../../../Experience/World/Contract";
+import { batchDepositTx } from "../../../Lib/web3/transactions";
 
 const BatchDeposit: React.FC<{group: string, experience: Experience}> = ({ group, experience }) => {
 

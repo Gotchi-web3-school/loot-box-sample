@@ -1,11 +1,11 @@
 import { useRef, useState } from "react"
 import { Html } from "@react-three/drei"
-import Experience from "../Experience/Experience"
-import Contract from "../Experience/World/Contract";
+import Experience from "../../../Experience/Experience"
+import Contract from "../../../Experience/World/Contract";
 import { useForm } from "react-hook-form";
 import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Button } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'
-import { deployErc721Tx } from "../Lib/web3/transactions";
+import { deployErc721Tx } from "../../../Lib/web3/transactions";
 
 const ERC721Deployer: React.FC<{group: string, experience: Experience}>  = ({ group, experience }) => {
   
