@@ -288,6 +288,7 @@ export default class Chest {
 
     })
 
+
     console.log("currentLoots", currentLoots)
     console.log("newLoots", newLoots)
 
@@ -298,6 +299,8 @@ export default class Chest {
 
     this.removeLoots(meshToRemove)
     this.addLoots(lootsToAdd)
+
+    this.loots = this.loots.filter(loot => !meshToRemove.map(remove => remove.uuid).includes(loot.mesh.uuid))
   }
 
   removeLoots(loots: Mesh[])
