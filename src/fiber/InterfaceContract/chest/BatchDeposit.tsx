@@ -17,12 +17,12 @@ const BatchDeposit: React.FC<{group: string, experience: Experience}> = ({ group
   |              HOOKS                |
   |__________________________________*/
 
-  const { user } = experience.world
-  const [contract, setContract] = useState<Contract>()
-  const [mode, setCurrMode] = useState<string | undefined>()
-  const [batch, setBatch] = useState<any[]>([])
-  const [connected, setConnected] = useState<boolean>()
-  const batchDepositRef = useRef<any>()
+  const { user }                                          = experience.world
+  const [contract, setContract]                           = useState<Contract>()
+  const [mode, setCurrMode]                               = useState<string | undefined>()
+  const [batch, setBatch]                                 = useState<any[]>([])
+  const [connected, setConnected]                         = useState<boolean>()
+  const batchDepositRef                                   = useRef<any>()
   const { register, handleSubmit, formState: { errors } } = useForm();
 
 
@@ -34,11 +34,11 @@ const BatchDeposit: React.FC<{group: string, experience: Experience}> = ({ group
   |__________________________________*/
 
   const onSubmit = async (data) => {
-    const addresses: string[] = Object.entries(data).filter((elem) => elem[0].startsWith("address")).map((elem: any) => elem[1]).slice(0, batch.length + 1)
-    const ids: string[] = Object.entries(data).filter((elem) => elem[0].startsWith("id")).map((elem: any) => elem[1]).slice(0, batch.length + 1)
-    const amounts: string[] = Object.entries(data).filter((elem) => elem[0].startsWith("amount")).map((elem: any) => elem[1]).slice(0, batch.length + 1)
+    const addresses: string[] = Object.entries(data).filter((elem) => elem[0].startsWith("address")).map( (elem: any) => elem[1] ).slice(0, batch.length + 1)
+    const ids: string[]       = Object.entries(data).filter((elem) => elem[0].startsWith("id")).map(      (elem: any) => elem[1] ).slice(0, batch.length + 1)
+    const amounts: string[]   = Object.entries(data).filter((elem) => elem[0].startsWith("amount")).map(  (elem: any) => elem[1] ).slice(0, batch.length + 1)
+    const args                = [addresses, ids, amounts]
  
-    const args = [addresses, ids, amounts]
     const tx = await batchDepositTx(user?.wallet.signer, contract?.interface!, args)
     contract!.handleTxs(tx)
   };
