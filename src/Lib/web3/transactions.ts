@@ -960,14 +960,57 @@ export const burnErc1155Tx = async(
     console.log("")
     console.log("\t\t\tBURN")
     console.log("///////////////////////////////////////////////")
-    console.log("address: ", args.id)
+    console.log("account: ",  args.account)
+    console.log("id: ",       args.id)
+    console.log("amount: ",   args.amount)
     console.log("///////////////////////////////////////////////")
     
     //Estimation of the gas cost
-    const gas = await contract.estimateGas.burn(args.id)     
+    const gas = await contract.estimateGas.burn(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.burn(args.id)
+    const tx = await contract.burn(...Object.values(args))
+    console.log("transaction sent !")
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
+
+
+
+/**
+ * @dev Burn some token.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The amounts to be minted
+ * @returns the Tx sent
+ */
+export const burnBatchErc1155Tx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: string }
+  ) => {
+    const contract = IContract.connect(signer)
+    
+
+  try {
+    console.log("")
+    console.log("\t\t\tBURN")
+    console.log("///////////////////////////////////////////////")
+    console.log("account: ",   args.account)
+    console.log("ids: ",       args.ids)
+    console.log("amounts: ",   args.amounts)
+    console.log("///////////////////////////////////////////////")
+    
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas.burn(...Object.values(args))     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract.burn(...Object.values(args))
     console.log("transaction sent !")
 
     return tx
