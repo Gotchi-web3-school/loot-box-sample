@@ -5,27 +5,31 @@ import { OrbitControls, Stars }           from "@react-three/drei"
 import { Bloom, EffectComposer, Outline } from '@react-three/postprocessing'
 import Experience             from "./Experience/Experience";
 
-import Import                 from "./fiber/InterfaceContract/Import";
-import SetApprovalForAll      from "./fiber/InterfaceContract/SetApprovalForAll";
-import TransferOwnership      from "./fiber/InterfaceContract/TransferOwnership";
+import Import                   from "./fiber/InterfaceContract/Import";
+import SetApprovalForAll        from "./fiber/InterfaceContract/SetApprovalForAll";
+import TransferOwnership        from "./fiber/InterfaceContract/TransferOwnership";
 
-import ChestDeployer          from "./fiber/InterfaceContract/chest/ChestDeployer";
-import AddWhitelist           from "./fiber/InterfaceContract/chest/AddWhitelist";
-import BatchDeposit           from "./fiber/InterfaceContract/chest/BatchDeposit";
-import Loot                   from './fiber/InterfaceContract/chest/Loot'
-import BatchLoot              from './fiber/InterfaceContract/chest/BatchLoot'
+import ChestDeployer            from "./fiber/InterfaceContract/chest/ChestDeployer";
+import AddWhitelist             from "./fiber/InterfaceContract/chest/AddWhitelist";
+import BatchDeposit             from "./fiber/InterfaceContract/chest/BatchDeposit";
+import Loot                     from './fiber/InterfaceContract/chest/Loot'
+import BatchLoot                from './fiber/InterfaceContract/chest/BatchLoot'
 
-import ERC20Deployer          from "./fiber/InterfaceContract/erc20/ERC20Deployer";
-import ApproveERC20           from "./fiber/InterfaceContract/erc20/ApproveERC20";
-import TransferErc20          from "./fiber/InterfaceContract/erc20/TransferERC20";
-import MintERC20              from "./fiber/InterfaceContract/erc20/MintERC20";
-import BurnERC20              from "./fiber/InterfaceContract/erc20/BurnERC20";
+import ERC20Deployer            from "./fiber/InterfaceContract/erc20/ERC20Deployer";
+import ApproveERC20             from "./fiber/InterfaceContract/erc20/ApproveERC20";
+import TransferErc20            from "./fiber/InterfaceContract/erc20/TransferERC20";
+import MintERC20                from "./fiber/InterfaceContract/erc20/MintERC20";
+import BurnERC20                from "./fiber/InterfaceContract/erc20/BurnERC20";
 
-import ERC721Deployer         from "./fiber/InterfaceContract/erc721/ERC721Deployer";
-import ApproveERC721          from "./fiber/InterfaceContract/erc721/ApproveERC721";
-import SafeTransferFromErc721 from "./fiber/InterfaceContract/erc721/SafeTransferFromErc721";
-import SafeMintERC721         from "./fiber/InterfaceContract/erc721/SafeMintERC721";
-import BurnERC721             from "./fiber/InterfaceContract/erc721/BurnERC721";
+import ERC721Deployer           from "./fiber/InterfaceContract/erc721/ERC721Deployer";
+import ApproveERC721            from "./fiber/InterfaceContract/erc721/ApproveERC721";
+import SafeTransferFromErc721   from "./fiber/InterfaceContract/erc721/SafeTransferFromErc721";
+import SafeMintERC721           from "./fiber/InterfaceContract/erc721/SafeMintERC721";
+import BurnERC721               from "./fiber/InterfaceContract/erc721/BurnERC721";
+
+import ERC1155Deployer          from "./fiber/InterfaceContract/erc1155/ERC1155Deployer";
+import SafeTransferFromErc1155  from "./fiber/InterfaceContract/erc1155/safeTransferFrom1155";
+
 
 
 
@@ -162,14 +166,13 @@ function App() {
         <group ref={erc1155Ref}>
           { experience &&
             <>
-              <ERC721Deployer          group={"erc115SC"} experience={experience} />
-              <Import                  group={"erc115SC"} experience={experience} />
-              {/* <ApproveERC721           group={"erc115SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <SetApprovalForAll       group={"erc115SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <SafeMintERC721          group={"erc115SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <SafeTransferFromErc721  group={"erc115SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <BurnERC721              group={"erc115SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <TransferOwnership       group={"erc115SC"} experience={experience} props={{ }} /> */}
+              <ERC1155Deployer         group={"erc1155SC"} experience={experience} />
+              <Import                  group={"erc1155SC"} experience={experience} />
+              <SetApprovalForAll       group={"erc1155SC"} experience={experience} props={{ }} />
+              <SafeTransferFromErc1155 group={"erc1155SC"} experience={experience} props={{ }} />
+             {/*<SafeMintERC721          group={"erc1155SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <BurnERC721              group={"erc1155SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
+              <TransferOwnership       group={"erc1155SC"} experience={experience} props={{ }} /> */}
             </>
           }
         </group>
