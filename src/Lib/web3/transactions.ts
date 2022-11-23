@@ -640,15 +640,14 @@ export const safeTransferFromErc721Tx = async(
     console.log("")
     console.log("\tSAFE TRANSFER FROM")
     console.log("///////////////////////////////////////////////")
-    console.log("from: ", args.from)
-    console.log("to: ", args.to)
-    console.log("id: ", args.id)
+    console.log("from: ",  args.from)
+    console.log("to: ",    args.to)
+    console.log("id: ",    args.id)
     console.log("datas: ", args.datas)
     console.log("///////////////////////////////////////////////")
     
     if (!args.datas) args.datas = "0x"
-    // console.log(await Object.entries(contract.estimateGas)[12][1]())
-    console.log(contract.estimateGas["safeTransferFrom(address,address,uint256,bytes)"])
+
     //Estimation of the gas cost
     const gas = await contract.estimateGas["safeTransferFrom(address,address,uint256,bytes)"](...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
