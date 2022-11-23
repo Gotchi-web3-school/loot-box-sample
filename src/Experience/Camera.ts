@@ -1,12 +1,12 @@
-import * as THREE from "three";
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import gsap from "gsap";
-import Experience from './Experience';
-import Debug from './Utils/Debug';
-import GUI from 'lil-gui';
-import User from "./World/User";
-import Controller from "./Controller";
-import { Vector3 } from "three";
+import * as THREE         from "three";
+import { OrbitControls }  from 'three/examples/jsm/controls/OrbitControls.js';
+import gsap               from "gsap";
+import Experience         from './Experience';
+import Debug              from './Utils/Debug';
+import GUI                from 'lil-gui';
+import User               from "./World/User";
+import Controller         from "./Controller";
+import { Vector3 }        from "three";
 
 export default class Camera {
 
@@ -24,14 +24,14 @@ export default class Camera {
 
   // States of Camera
   instance: THREE.PerspectiveCamera | any
-  pointing: boolean = false
-  _currentPosition = new THREE.Vector3(0, 5, -9)
-  _currentLookat = new THREE.Vector3(0, 0, 20)
   controls: OrbitControls | any
-  cameraToggle: Object = { unlockCamera: false }
-  cam: boolean = false
   camAngle: { [key: string]: () => void } = {}
   transitions: { [key: string]: (duration: number, ...args) => void } = {}
+  pointing: boolean     = false
+  _currentPosition      = new THREE.Vector3(0, 5, -9)
+  _currentLookat        = new THREE.Vector3(0, 0, 20)
+  cameraToggle: Object  = { unlockCamera: false }
+  cam: boolean          = false
 
   // Debug
   debugFolder: GUI | any
@@ -113,12 +113,24 @@ export default class Camera {
     
     this.camAngle.smartContract = () =>
     {
-        this.controls.minDistance = 3
-        this.controls.maxDistance = 6
-        this.controls.minAzimuthAngle = -(Math.PI * 0.1) //left
-        this.controls.maxAzimuthAngle = Math.PI * 0.1 //right
-        this.controls.minPolarAngle = Math.PI * .4
-        this.controls.maxPolarAngle = Math.PI * .53
+      this.controls.minDistance = 3
+      this.controls.maxDistance = 6
+      this.controls.minAzimuthAngle = -(Math.PI * 0.1) //left
+      this.controls.maxAzimuthAngle = Math.PI * 0.1 //right
+      this.controls.minPolarAngle = Math.PI * .4
+      this.controls.maxPolarAngle = Math.PI * .53
+    }
+
+    this.camAngle.transition = () =>
+    {
+      this.controls.maxDistance = 30
+      this.controls.minDistance = 0
+      this.controls.minAzimuthAngle = 0
+      this.controls.maxAzimuthAngle = Math.PI * 1.999
+      this.controls.minPolarAngle = 0
+      this.controls.maxPolarAngle = Math.PI
+      this.cam = true
+      this.controls.enableZoom = false
     }
   }
 
@@ -195,7 +207,7 @@ export default class Camera {
       gsap.to( this.controls.target, { duration: duration, ease: "power1.out", x: -25.97, y: 0.86, z: -13.38 })
       
   
-      await this.sleep(1500)
+      await this.sleep(duration * 1000)
       this.controls.enableRotate = true
       this.controls.enableZoom = true
     }
@@ -216,7 +228,7 @@ export default class Camera {
   
       gsap.to( this.controls.target, { duration: duration, ease: "power1.out", x: -21.36, y: 0.86, z: -17.69 })
   
-      await this.sleep(1500)
+      await this.sleep(duration * 1000)
       this.controls.enableRotate = true
       this.controls.enableZoom = true
     }
@@ -237,7 +249,8 @@ export default class Camera {
   
       gsap.to( this.controls.target, { duration: duration, ease: "power1.out", x: -16.09, y: 0.86, z: -13.55 })
       
-      await this.sleep(1500)
+      await this.sleep(duration * 1000)
+
       this.controls.enableRotate = true
       this.controls.enableZoom = true
     }
@@ -261,8 +274,9 @@ export default class Camera {
       gsap.to( this.controls.target, { duration: duration, ease: "power1.out", x: targetPos.x, y: targetPos.y, z: targetPos.z } )
   
       await this.sleep(duration * 1000)
-      this.controls.enableRotate = true
 
+
+      this.controls.enableRotate = true
     }
 
     /**

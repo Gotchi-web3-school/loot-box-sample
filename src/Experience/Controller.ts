@@ -275,7 +275,7 @@ export default class Controller
     this.camControls.toDefault = async () =>
     {
       this.logic.lockButtons(1500)
-      this.camera.camAngle.unlocked()
+      this.camera.camAngle.transition()
       this.camera.transitions.default(1.5)
       await this.sleep(1500)
     }
@@ -285,8 +285,8 @@ export default class Controller
       this.sounds.playWhoosh()
       
       // Adding 10% more than sleep so it won't clash with the listener (listenContract) of Raycaster
-      this.logic.lockButtons(transition * 1000 * 1.1)
-      this.camera.camAngle.unlocked()
+      this.logic.lockButtons(transition * 1100)
+      this.camera.camAngle.transition()
       this.camera.transitions.chestContract(transition)
       await this.sleep(transition * 1000)
     }
@@ -295,30 +295,30 @@ export default class Controller
     {
       this.sounds.playWhoosh()
 
-      this.logic.lockButtons(transition * 1000 * 1.1)
-      this.camera.camAngle.unlocked()
+      this.logic.lockButtons(transition * 1100)
+      this.camera.camAngle.transition()
       this.camera.transitions.erc20Contract(transition)
-      await this.sleep(transition * 1000 * 1.1)
+      await this.sleep(transition * 1100)
     }
 
     this.camControls.toErc721Contract = async (transition: number = 1.5) =>
     {
       this.sounds.playWhoosh()
 
-      this.logic.lockButtons(transition * 1000 * 1.1)
-      this.camera.camAngle.unlocked()
+      this.logic.lockButtons(transition * 1100)
+      this.camera.camAngle.transition()
       this.camera.transitions.erc721Contract(transition)
-      await this.sleep(transition * 1000 * 1.1)
+      await this.sleep(transition * 1100)
     }
 
     this.camControls.toErc1155Contract = async (transition: number = 1.5) =>
     {
       this.sounds.playWhoosh()
 
-      this.logic.lockButtons(transition * 1000 * 1.1)
-      this.camera.camAngle.unlocked()
+      this.logic.lockButtons(transition * 1100)
+      this.camera.camAngle.transition()
       this.camera.transitions.erc1155Contract(transition)
-      await this.sleep(transition * 1000 * 1.1)
+      await this.sleep(transition * 1100)
     }
 
     this.camControls.toInputsScreen = async (target) =>
@@ -326,7 +326,7 @@ export default class Controller
       this.sounds.playWhoosh()
 
       this.logic.lockButtons(500)
-      this.camera.camAngle.unlocked()
+      this.camera.camAngle.transition()
       this.camera.transitions.inputsScreen(.5, target)
       await this.sleep(1500)
     }
@@ -336,7 +336,7 @@ export default class Controller
       this.sounds.playWhoosh()
 
       this.logic.lockButtons(500)
-      this.camera.camAngle.unlocked()
+      this.camera.camAngle.transition()
       this.camera.transitions.metaScreen(.5, target)
       await this.sleep(1500)
     }
