@@ -31,6 +31,7 @@ import ERC1155Deployer          from "./fiber/InterfaceContract/erc1155/ERC1155D
 import SafeTransferFromErc1155  from "./fiber/InterfaceContract/erc1155/safeTransferFrom1155";
 import SafeBatchTransferFrom    from "./fiber/InterfaceContract/erc1155/safeBatchTransferFrom";
 import MintERC1155 from "./fiber/InterfaceContract/erc1155/MintERC1155";
+import MintBatchERC1155 from "./fiber/InterfaceContract/erc1155/MintBatchERC1155";
 
 
 
@@ -174,6 +175,7 @@ function App() {
               <SafeTransferFromErc1155 group={"erc1155SC"} experience={experience} />
               <SafeBatchTransferFrom   group={"erc1155SC"} experience={experience} />
               <MintERC1155             group={"erc1155SC"} experience={experience} />
+              <MintBatchERC1155        group={"erc1155SC"} experience={experience} />
               <TransferOwnership       group={"erc1155SC"} experience={experience} /> 
             </>
           }

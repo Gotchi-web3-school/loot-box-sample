@@ -760,6 +760,49 @@ export const deployErc1155Tx = async(
  * @param args The amounts to be minted
  * @returns the Tx sent
  */
+export const mintBatchErc1155Tx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: string }
+  ) => {
+
+  const contract = IContract.connect(signer)
+
+  try {
+    console.log("")
+    console.log("\t\t\tMINT BATCH")
+    console.log("///////////////////////////////////////////////")
+    console.log("to: ", args.to)
+    console.log("ids: ", args.ids)
+    console.log("amounts: ", args.amounts)
+    console.log("datas: ", args.datas)
+    console.log("///////////////////////////////////////////////")
+
+    if (!args.datas) args.datas = "0x"
+    
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas.mintBatch(...Object.values(args))     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract.mintBatch(...Object.values(args))
+    console.log("transaction sent !")
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
+
+
+/**
+ * @dev Mint some token.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args The amounts to be minted
+ * @returns the Tx sent
+ */
 export const mintERC1155Tx = async(
   signer: ethers.Signer,
   IContract: ethers.Contract,
@@ -781,10 +824,10 @@ export const mintERC1155Tx = async(
     if (!args.datas) args.datas = "0x"
     
     //Estimation of the gas cost
-    const gas = await contract.estimateGas.safeMint(...Object.values(args))     
+    const gas = await contract.estimateGas.mint(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.safeMint(args.to, args.uri)
+    const tx = await contract.mint(...Object.values(args))
     console.log("transaction sent !")
 
     return tx
