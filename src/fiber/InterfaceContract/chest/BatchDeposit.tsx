@@ -93,13 +93,17 @@ const BatchDeposit: React.FC<{group: string, experience: Experience}> = ({ group
                   <Box mb="1rem">
                     <FormLabel  m="0" width="3.7rem" position={"relative"}top="-1" left="5" overflow={"hidden"} >Batch 1</FormLabel>
                     <Box border="0.01rem solid white" borderRadius={"xl"} textAlign="left" p="0.5rem">
-                      <Box >
+
+
+                      <Box>
                         <Text fontSize={"xs"}>Address</Text>
                         <Input _hover={{boxShadow:"inset 0 0 2px white, 0 0 2px white"}} fontSize="8px" border="none" padding="0.3rem" placeholder="0x..." size="sm" borderRadius={"5px"} {...register("address1", {required: true, maxLength: 42, minLength: 42, pattern: /^0x[A-Fa-f0-9]{40}$/i})} />
-                        {errors.address1?.type === "pattern" && <Text color="red" fontSize="6px">Address must start with "0x" and follow by 40 "Aa-Ff" and/or "0-9"<br />example: 0x0A2b6922FcFF343D51efB4bE45CFBA5Cd7aa08B6</Text>}
-                        {errors.address1?.type === "required" && <Text color="red" fontSize="10px">Address is required</Text>}
-                        {(errors.address1?.type === "minLength" || errors.address1?.type === "maxLength") && <Text color="red" fontSize="10px">Address must be 42 long</Text>}
+                        { errors.address1?.type  === "pattern" && <Text color="red" fontSize="6px">Address must start with "0x" and follow by 40 "Aa-Ff" and/or "0-9"<br />example: 0x0A2b6922FcFF343D51efB4bE45CFBA5Cd7aa08B6</Text> }
+                        { errors.address1?.type  === "required" && <Text color="red" fontSize="10px">Address is required</Text>                                                                                                       }
+                        { (errors.address1?.type === "minLength" || errors.address1?.type === "maxLength") && <Text color="red" fontSize="10px">Address must be 42 long</Text>                                                        }
                       </Box>
+
+
                       <HStack mt="1rem" alignItems={"center"}>
                           <Text fontSize={"xs"}>Id</Text>
                           <Input _hover={{boxShadow:"inset 0 0 2px white, 0 0 2px white"}} border="none" type="number" min="0" maxW="20%" fontSize="8px" padding="0.3rem" placeholder="0" size="sm" borderRadius={"5px"} {...register("id1", {required: true})} />
@@ -109,6 +113,8 @@ const BatchDeposit: React.FC<{group: string, experience: Experience}> = ({ group
                           <Input _hover={{boxShadow:"inset 0 0 2px white, 0 0 2px white"}} border="none" type="number" min="0" maxW="20%" fontSize="8px" padding="0.3rem" placeholder="3" size="sm" borderRadius={"5px"} {...register("amount1", {required: true})} />
                           {errors.amount1?.type === "required" && <Text textAlign={"center"} color="red" fontSize="10px">Amount is required</Text>}
                       </HStack>
+
+                      
                     </Box>
                   </Box>
 
