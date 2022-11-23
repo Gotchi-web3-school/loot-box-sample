@@ -999,7 +999,7 @@ export const burnBatchErc1155Tx = async(
 
   try {
     console.log("")
-    console.log("\t\t\tBURN")
+    console.log("\t\t\tBURN BATCH")
     console.log("///////////////////////////////////////////////")
     console.log("account: ",   args.account)
     console.log("ids: ",       args.ids)

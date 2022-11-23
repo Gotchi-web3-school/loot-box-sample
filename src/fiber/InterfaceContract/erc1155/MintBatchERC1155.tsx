@@ -35,7 +35,6 @@ const MintBatchERC1155: React.FC<{group: string, experience: Experience, props?:
 
   const onSubmit = async (data) => {
     let args: any   = {}
-    args["from"]    = data.from
     args["to"]      = data.to
     args["ids"]     = Object.entries(data).filter((elem) => elem[0].startsWith("id")).map(    (elem: any) => elem[1]).slice(0, batch.length + 1)
     args["amounts"] = Object.entries(data).filter((elem) => elem[0].startsWith("amount")).map((elem: any) => elem[1]).slice(0, batch.length + 1)
