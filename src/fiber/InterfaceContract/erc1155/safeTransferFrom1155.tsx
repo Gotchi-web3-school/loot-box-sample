@@ -7,7 +7,7 @@ import { useForm }                    from "react-hook-form";
 import { safeTransferFromErc1155Tx }  from "../../../Lib/web3/transactions"
 import Contract                       from "../../../Experience/World/Contract";
 
-const SafeTransferFromErc1155: React.FC<{group: string, experience: Experience, props: any}> = ({ group, experience, props = {} }) => {
+const SafeTransferFromErc1155: React.FC<{group: string, experience: Experience, props?: any}> = ({ group, experience, props = {} }) => {
   
 
 

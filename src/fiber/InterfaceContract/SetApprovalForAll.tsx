@@ -7,7 +7,7 @@ import { ChevronRightIcon } from '@chakra-ui/icons'
 import { setApprovalForAllTx } from "../../Lib/web3/transactions"
 import Contract from "../../Experience/World/Contract";
 
-const SetApprovalForAll: React.FC<{group: string, experience: Experience, props: any}>  = ({ group, experience, props }) => {
+const SetApprovalForAll: React.FC<{group: string, experience: Experience, props?: any}>  = ({ group, experience, props = {} }) => {
   
 
 

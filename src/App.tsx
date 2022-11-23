@@ -30,6 +30,7 @@ import BurnERC721               from "./fiber/InterfaceContract/erc721/BurnERC72
 import ERC1155Deployer          from "./fiber/InterfaceContract/erc1155/ERC1155Deployer";
 import SafeTransferFromErc1155  from "./fiber/InterfaceContract/erc1155/safeTransferFrom1155";
 import SafeBatchTransferFrom    from "./fiber/InterfaceContract/erc1155/safeBatchTransferFrom";
+import MintERC1155 from "./fiber/InterfaceContract/erc1155/mintERC1155";
 
 
 
@@ -169,12 +170,11 @@ function App() {
             <>
               <ERC1155Deployer         group={"erc1155SC"} experience={experience} />
               <Import                  group={"erc1155SC"} experience={experience} />
-              <SetApprovalForAll       group={"erc1155SC"} experience={experience} props={{ }} />
-              <SafeTransferFromErc1155 group={"erc1155SC"} experience={experience} props={{ }} />
-              <SafeBatchTransferFrom   group={"erc1155SC"} experience={experience} props={{ }} />
-             {/*<SafeMintERC721          group={"erc1155SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <BurnERC721              group={"erc1155SC"} experience={experience} props={{ rotation: [ 0, Math.PI * 1.5, 0 ] }} />
-              <TransferOwnership       group={"erc1155SC"} experience={experience} props={{ }} /> */}
+              <SetApprovalForAll       group={"erc1155SC"} experience={experience} />
+              <SafeTransferFromErc1155 group={"erc1155SC"} experience={experience} />
+              <SafeBatchTransferFrom   group={"erc1155SC"} experience={experience} />
+              <MintERC1155             group={"erc1155SC"} experience={experience} />
+              <TransferOwnership       group={"erc1155SC"} experience={experience} /> 
             </>
           }
         </group>

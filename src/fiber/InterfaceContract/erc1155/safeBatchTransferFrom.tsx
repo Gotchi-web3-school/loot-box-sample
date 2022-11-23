@@ -7,7 +7,7 @@ import { useForm }                                from "react-hook-form";
 import { SafeBatchTransferFromTx }                from "../../../Lib/web3/transactions"
 import Contract                                   from "../../../Experience/World/Contract";
 
-const SafeBatchTransferFrom: React.FC<{group: string, experience: Experience, props: any}> = ({ group, experience, props = {} }) => {
+const SafeBatchTransferFrom: React.FC<{group: string, experience: Experience, props?: any}> = ({ group, experience, props = {} }) => {
   
 
 
