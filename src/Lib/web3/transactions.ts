@@ -773,11 +773,15 @@ export const mintERC1155Tx = async(
     console.log("\t\t\tMINT")
     console.log("///////////////////////////////////////////////")
     console.log("to: ", args.to)
-    console.log("id: ", args.uri)
+    console.log("id: ", args.id)
+    console.log("amount: ", args.amount)
+    console.log("datas: ", args.datas)
     console.log("///////////////////////////////////////////////")
+
+    if (!args.datas) args.datas = "0x"
     
     //Estimation of the gas cost
-    const gas = await contract.estimateGas.safeMint(args.to, args.uri)     
+    const gas = await contract.estimateGas.safeMint(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
     const tx = await contract.safeMint(args.to, args.uri)

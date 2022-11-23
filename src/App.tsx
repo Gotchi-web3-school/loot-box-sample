@@ -30,7 +30,7 @@ import BurnERC721               from "./fiber/InterfaceContract/erc721/BurnERC72
 import ERC1155Deployer          from "./fiber/InterfaceContract/erc1155/ERC1155Deployer";
 import SafeTransferFromErc1155  from "./fiber/InterfaceContract/erc1155/safeTransferFrom1155";
 import SafeBatchTransferFrom    from "./fiber/InterfaceContract/erc1155/safeBatchTransferFrom";
-import MintERC1155 from "./fiber/InterfaceContract/erc1155/mintERC1155";
+import MintERC1155 from "./fiber/InterfaceContract/erc1155/MintERC1155";
 
 
 
