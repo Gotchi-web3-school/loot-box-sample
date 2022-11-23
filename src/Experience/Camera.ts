@@ -7,7 +7,6 @@ import GUI from 'lil-gui';
 import User from "./World/User";
 import Controller from "./Controller";
 import { Vector3 } from "three";
-import { triggerAsyncId } from "async_hooks";
 
 export default class Camera {
 
