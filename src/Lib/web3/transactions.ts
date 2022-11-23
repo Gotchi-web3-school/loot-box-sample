@@ -921,13 +921,11 @@ export const SafeBatchTransferFromTx = async(
     console.log("///////////////////////////////////////////////")
     
     if (!args.datas) args.datas = "0x"
-    // console.log(await Object.entries(contract.estimateGas)[12][1]())
-    console.log(contract.estimateGas["safeTransferFrom(address,address,uint256[],uint256[],bytes)"])
     //Estimation of the gas cost
-    const gas = await contract.estimateGas["safeTransferFrom(address,address,uint256[],uint256[],bytes)"](...Object.values(args))     
+    const gas = await contract.estimateGas["safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)"](...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract["safeTransferFrom(address,address,uint256[],uint256[],bytes)"](...Object.values(args))    
+    const tx = await contract["safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)"](...Object.values(args))    
     console.log("transaction sent !")
 
     return tx
