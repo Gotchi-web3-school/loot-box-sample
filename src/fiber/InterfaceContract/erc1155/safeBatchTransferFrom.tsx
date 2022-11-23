@@ -1,5 +1,5 @@
 import { useRef, useState }                       from "react"
-import { ChakraProvider, FormLabel, Input, Box, Stack, Text, Flex, HStack, Button, Spacer } from '@chakra-ui/react'
+import { ChakraProvider, FormLabel, Input, Box, Stack, Text, HStack, Button, Spacer } from '@chakra-ui/react'
 import { ChevronRightIcon, CloseIcon, AddIcon }   from '@chakra-ui/icons'
 import { Html }                                   from "@react-three/drei"
 import Experience                                 from "../../../Experience/Experience"
