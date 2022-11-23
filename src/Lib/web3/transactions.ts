@@ -840,6 +840,56 @@ export const safeTransferFromErc1155Tx = async(
     console.log(error)
   }
 }
+/**
+ * @dev Transfer a specific id of token ERC721.
+ * 
+ * @param signer The user
+ * @param IContract The contract to be interfaced with
+ * @param args :
+ * - address from
+ * - address to
+ * - uint256[] token ids
+ * - uint256[] amounts
+ * - string datas (optional)
+ * 
+ * @returns the Tx sent
+ */
+export const SafeBatchTransferFromTx = async(
+  signer: ethers.Signer,
+  IContract: ethers.Contract,
+  args: { [ key: string ]: string }
+  ) => {
+
+    const contract = IContract.connect(signer)
+    console.log(contract)
+
+  try {
+    console.log("")
+    console.log("\tSAFE BATCH TRANSFER FROM")
+    console.log("///////////////////////////////////////////////")
+    console.log("from: ", args.from)
+    console.log("to: ", args.to)
+    console.log("id: ", args.ids)
+    console.log("amount: ", args.amounts)
+    console.log("datas: ", args.datas)
+    console.log("///////////////////////////////////////////////")
+    
+    if (!args.datas) args.datas = "0x"
+    // console.log(await Object.entries(contract.estimateGas)[12][1]())
+    console.log(contract.estimateGas["safeTransferFrom(address,address,uint256[],uint256[],bytes)"])
+    //Estimation of the gas cost
+    const gas = await contract.estimateGas["safeTransferFrom(address,address,uint256[],uint256[],bytes)"](...Object.values(args))     
+    console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
+        
+    const tx = await contract["safeTransferFrom(address,address,uint256[],uint256[],bytes)"](...Object.values(args))    
+    console.log("transaction sent !")
+
+    return tx
+      
+  } catch (error: any) {
+    console.log(error)
+  }
+}
 
 
 /**
@@ -850,7 +900,7 @@ export const safeTransferFromErc1155Tx = async(
  * @param args The amounts to be minted
  * @returns the Tx sent
  */
-export const burnErc155Tx = async(
+export const burnErc1155Tx = async(
   signer: ethers.Signer,
   IContract: ethers.Contract,
   args: { [ key: string ]: string }
