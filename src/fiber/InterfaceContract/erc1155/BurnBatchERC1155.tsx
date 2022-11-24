@@ -35,10 +35,9 @@ const BurnBatchERC1155: React.FC<{group: string, experience: Experience, props?:
 
   const onSubmit = async (data) => {
     let args: any   = {}
-    args["account"]    = data.from
+    args["account"] = data.account
     args["ids"]     = Object.entries(data).filter((elem) => elem[0].startsWith("id")).map(    (elem: any) => elem[1]).slice(0, batch.length + 1)
     args["amounts"] = Object.entries(data).filter((elem) => elem[0].startsWith("amount")).map((elem: any) => elem[1]).slice(0, batch.length + 1)
-    args["datas"]   = data.datas
 
     const tx = await burnBatchErc1155Tx(user!.wallet.signer, contract?.interface!, args)
     contract!.handleTxs(tx)
@@ -99,7 +98,7 @@ const BurnBatchERC1155: React.FC<{group: string, experience: Experience, props?:
 
 
                     <FormLabel fontSize={"xs"} mb="0">Account address</FormLabel>
-                    <Input placeholder="0x..." px="1" size="sm" fontSize={"0.5rem"} borderRadius="md" {...register("to", { required: true, maxLength: 42, minLength: 42, pattern: /^0x[A-Fa-f0-9]{40}$/i})} />
+                    <Input placeholder="0x..." px="1" size="sm" fontSize={"0.5rem"} borderRadius="md" {...register("account", { required: true, maxLength: 42, minLength: 42, pattern: /^0x[A-Fa-f0-9]{40}$/i})} />
                     {errors.address?.type  === "pattern"  && <p style={{color: "red", fontSize: "6px"}}>Address must start with "0x" and follow by 40 "Aa-Ff" and/or "0-9"<br />example: 0x0A2b6922FcFF343D51efB4bE45CFBA5Cd7aa08B6</p>}
                     {errors.address?.type  === "required" && <p style={{color: "red", fontSize: "10px"}}>Address is required</p>}
                     {(errors.address?.type === "minLength" || errors.address1?.type === "maxLength") && <p style={{color: "red", fontSize: "10px"}}>Address must be 42 long</p>}
@@ -147,9 +146,6 @@ const BurnBatchERC1155: React.FC<{group: string, experience: Experience, props?:
                       })}
 
                     <Button alignSelf={'center'} backgroundColor={"green"} width="1.5rem" height="1.5rem" p="0.8rem" borderRadius="10rem" onClick={() => setBatch(new Array(batch.length + 1).fill('yolo'))}><AddIcon boxSize="0.5rem" /></Button>
-
-                    <FormLabel m="0" mt="1rem" fontSize={"xs"}>Datas (optional)</FormLabel>
-                    <Input placeholder="" px="1" size="sm" fontSize={"0.5rem"} borderRadius="md" {...register("datas")} />
 
 
                   </Box>

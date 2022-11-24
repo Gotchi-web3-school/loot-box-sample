@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState }    from "react";
-import { useControls }                    from 'leva'
+import { useControls }                    from 'leva';
 import { extend, useThree, useFrame }     from "@react-three/fiber";
-import { OrbitControls, Stars }           from "@react-three/drei"
+import { OrbitControls, Stars, Sparkles } from "@react-three/drei"
 import { Bloom, EffectComposer, Outline } from '@react-three/postprocessing'
-import Experience             from "./Experience/Experience";
+import Experience               from "./Experience/Experience";
 
 import Import                   from "./fiber/InterfaceContract/Import";
 import SetApprovalForAll        from "./fiber/InterfaceContract/SetApprovalForAll";
@@ -120,6 +120,8 @@ function App() {
       
         <Bloom mipmapBlur intensity={ intensity } luminanceThreshold={ luminanceThreshold } luminanceSmoothing={ luminanceSmoothing } />
       </EffectComposer>
+
+      <Sparkles size={4}  scale={[25,4,20]} position={[-5,1.5,-15]} count={ 50 }/>
 
 
     

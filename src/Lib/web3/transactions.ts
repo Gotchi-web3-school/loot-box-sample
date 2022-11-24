@@ -1004,10 +1004,10 @@ export const burnBatchErc1155Tx = async(
     console.log("///////////////////////////////////////////////")
     
     //Estimation of the gas cost
-    const gas = await contract.estimateGas.burn(...Object.values(args))     
+    const gas = await contract.estimateGas.burnBatch(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.burn(...Object.values(args))
+    const tx = await contract.burnBatch(...Object.values(args))
     console.log("transaction sent !")
 
     return tx
