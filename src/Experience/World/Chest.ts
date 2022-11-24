@@ -202,7 +202,7 @@ export default class Chest {
         types           = loots.type_
 
         const tx = await batchLootTx(signer, chestSC!.interface!, args, types)
-        chestSC!.handleTxs(tx)
+        chestSC!.handleTxs(tx, "chest", "batchLoot")
       }
       else if (buttonName === "lootSelected" && Object.values(this.selected).length > 0)
       {
@@ -214,7 +214,7 @@ export default class Chest {
         }
         
         const tx = await batchLootTx(signer, chestSC!.interface!, args, types)
-        chestSC!.handleTxs(tx)
+        chestSC!.handleTxs(tx, "chest", "batchLoot")
       }
     })
 

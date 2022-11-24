@@ -34,7 +34,7 @@ const SafeTransferFromErc721: React.FC<{group: string, experience: Experience, p
 
   const onSubmit = async (data) => {
     const tx = await safeTransferFromErc721Tx(user!.wallet.signer, contract?.interface!, data)
-    contract!.handleTxs(tx)
+    contract!.handleTxs(tx, group, "safeTransferFrom")
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
   };

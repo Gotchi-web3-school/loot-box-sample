@@ -34,7 +34,7 @@ const ApproveERC721: React.FC<{group: string, experience: Experience, props: any
 
   const onSubmit = async (data) => {
     const tx = await approveERC721Tx(user!.wallet.signer, contract?.interface!, data)
-    contract!.handleTxs(tx)
+    contract!.handleTxs(tx, group, "approve")
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
   };

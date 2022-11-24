@@ -1,15 +1,15 @@
 import { ethers }     from "ethers"
 import * as THREE     from "three"
-import Experience     from "../Experience"
-import Resources      from "../Utils/Resources"
-import LootBoxScene   from "./LootBoxScene"
-import Sounds         from "../Sounds"
-import User           from "./User"
-import Factory        from "../Utils/Factory"
-import { Vector3 }    from "three"
 import { RootState }  from "@react-three/fiber"
-import Materials      from "../Utils/Materials";
-import Raycaster      from "../Utils/Raycaster";
+import LootBoxScene   from "./LootBoxScene"
+import User           from "./User"
+import Sounds         from "../Sounds"
+import Experience     from "../Experience"
+import Toast          from "../Utils/Toast"
+import Resources      from "../Utils/Resources"
+import Factory        from "../Utils/Factory"
+import Materials      from "../Utils/Materials"
+import Raycaster      from "../Utils/Raycaster"
 import EventEmitter   from "../Utils/EventEmitter"
 
 type Functions = {
@@ -23,6 +23,7 @@ type Functions = {
 export default class Contract extends EventEmitter {
   // Classes
   experience: Experience
+  toast: Toast
   scene: THREE.Scene
   raycaster: Raycaster
   factory: Factory
@@ -76,6 +77,7 @@ export default class Contract extends EventEmitter {
     super()
 
     this.experience   = Experience.Instance()
+    this.toast        = this.experience.toast
     this.scene        = this.experience.scene
     this.factory      = this.experience.factory
     this.raycaster    = this.experience.raycaster
@@ -131,7 +133,7 @@ export default class Contract extends EventEmitter {
         text.geometry.copy(this.factory.createTextGeometry(name, {size: 0.02}))
 
         const multiplier = name.length > 6 ? (6 / name.length) * 1.6 : 1
-        text.scale.multiply(new Vector3(multiplier, multiplier, 0.05))
+        text.scale.multiply(new THREE.Vector3(multiplier, multiplier, 0.05))
 
         // set HTML form function of the current contract
         const contractName = mesh.name.split('_')[0]
@@ -228,30 +230,49 @@ export default class Contract extends EventEmitter {
   /***********************************|
   |             Public                |
   |__________________________________*/
-  async handleTxs(tx: any)
+  
+  async handleTxs(tx: any, contractName: string, funcName: string)
   {
     this._txPending()
     this.pending[tx.hash] = tx
     
     try {
+
       const receipt = await tx.wait()
       this._txSuccess()
+      this.toast.txValided({ signer: this.user?.wallet.signer, contractName, funcName, tx })
+      this.receipt.push(tx)
+      delete this.pending[tx.hash]
       console.log(receipt)
+
     } catch (error: any) {
+
       this._txFailed()
-      console.log(error.message)
+      this.toast.txFailed({ signer: this.user?.wallet.signer, contractName, funcName, tx, error })
+      delete this.pending[tx.hash]
+      return
+
     }
-    
-    this.receipt.push(tx)
-    delete this.pending[tx.hash]
   }
 
-  async handleDeployment(tx: any): Promise<any>
+  async handleDeployment(tx: any, contractName: string, funcName: string): Promise<any>
   {
     this._txPending()
     this.pending[tx.deployTransaction.hash] = tx
-    
-    await tx.deployed()
+
+    try {
+
+      await tx.deployed()
+      this.toast.deploy({ signer: this.user?.wallet.signer, contractName, funcName, tx })
+
+    } catch (error) {
+
+      this._txFailed()
+      this.toast.txFailed({ signer: this.user?.wallet.signer, contractName, funcName, tx, error })
+      delete this.pending[tx.deployTransaction.hash]
+      return 
+
+    }
 
     this.deployed.push(tx.address)
     this.receipt.push(tx)
@@ -283,30 +304,6 @@ export default class Contract extends EventEmitter {
   update() {
     if (this._address) this.network.rotation.z += 0.025
   }
-
-  // _setAddress(address: string)
-  // {
-  //   const ref = this.model.children.find(child => child.name.split('_').pop() === "interface")
-  //   if (this.meshAddress)
-  //   {
-  //     this.meshAddress.geometry.dispose()
-  //     this.scene.remove(this.meshAddress)
-  //   }
-
-  //   this.meshAddress = this.factory.createTextMesh(address)
-    
-  //   this.meshAddress.scale.multiplyScalar(0.02)
-  //   this.meshAddress.position.copy(ref.position)
-  //   this.meshAddress.position.y += 0.49
-  //   this.meshAddress.position.z += -0.2
-  //   this.meshAddress.position.x += 0
-  //   this.meshAddress.applyQuaternion(ref.quaternion)
-  //   this.meshAddress.scale.multiply(new Vector3(-1, -1, 1))
-  //   this.meshAddress.material = new THREE.MeshBasicMaterial({color: "black"})
-  //   this.raycaster.objectsToTest.push(this.meshAddress)
-    
-  //   this.scene.add(this.meshAddress)
-  // }
 
   _txSuccess(): void
   {

@@ -35,7 +35,7 @@ const SetApprovalForAll: React.FC<{group: string, experience: Experience, props?
 
   const onSubmit = async (data) => {
     const tx = await setApprovalForAllTx(user!.wallet.signer, contract?.interface!, {to: data.to, switch: parseInt(value) ? true : false})
-    contract!.handleTxs(tx)
+    contract!.handleTxs(tx, group, "setApprovalForAll")
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
   };

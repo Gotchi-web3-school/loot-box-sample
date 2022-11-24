@@ -34,7 +34,7 @@ const SafeMintERC721: React.FC<{group: string, experience: Experience, props: an
 
   const onSubmit = async (data) => {
     const tx = await safeMintERC721Tx(user!.wallet.signer, contract?.interface!, data)
-    contract!.handleTxs(tx)
+    contract!.handleTxs(tx, group, "safeMint")
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
   };

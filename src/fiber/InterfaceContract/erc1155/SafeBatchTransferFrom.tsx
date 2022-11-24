@@ -42,7 +42,7 @@ const SafeBatchTransferFrom: React.FC<{group: string, experience: Experience, pr
     args["datas"]   = data.datas
 
     const tx = await SafeBatchTransferFromTx(user!.wallet.signer, contract?.interface!, args)
-    contract!.handleTxs(tx)
+    contract!.handleTxs(tx, group, "safeBatchTransferFrom")
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
   };

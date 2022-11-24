@@ -55,7 +55,7 @@ const BatchLoot: React.FC<{group: string, experience: Experience}> = ({ group, e
     const args = { items: addresses, tokenIds: ids, amounts: amounts }
     const tx = await batchLootTx(user?.wallet.signer, contract?.interface!, args, types)
 
-    contract!.handleTxs(tx)
+    contract!.handleTxs(tx, group, "batchLoot")
   };
 
   const lookInside = async (): Promise<any> => 

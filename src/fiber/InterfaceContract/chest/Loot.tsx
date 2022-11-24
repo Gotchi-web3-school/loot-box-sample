@@ -51,7 +51,7 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
     const type = loots.type_[parseInt(watch().address)]
     const tx = await lootTx(user?.wallet.signer, contract?.interface!, args, type)
 
-    contract!.handleTxs(tx)
+    contract!.handleTxs(tx, group, "loot")
   };
   
   const lookInside = async (): Promise<any> => 

@@ -41,7 +41,7 @@ const MintBatchERC1155: React.FC<{group: string, experience: Experience, props?:
     args["datas"]   = data.datas
 
     const tx = await mintBatchErc1155Tx(user!.wallet.signer, contract?.interface!, args)
-    contract!.handleTxs(tx)
+    contract!.handleTxs(tx, group, "mintBatch")
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
   };

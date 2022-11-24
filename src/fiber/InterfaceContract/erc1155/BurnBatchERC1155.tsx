@@ -40,7 +40,7 @@ const BurnBatchERC1155: React.FC<{group: string, experience: Experience, props?:
     args["amounts"] = Object.entries(data).filter((elem) => elem[0].startsWith("amount")).map((elem: any) => elem[1]).slice(0, batch.length + 1)
 
     const tx = await burnBatchErc1155Tx(user!.wallet.signer, contract?.interface!, args)
-    contract!.handleTxs(tx)
+    contract!.handleTxs(tx, group, "burnBatch")
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
   };

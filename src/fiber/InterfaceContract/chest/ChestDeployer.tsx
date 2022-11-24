@@ -35,7 +35,7 @@ const ChestDeployer: React.FC<{group: string, experience: Experience}>  = ({ gro
   const onSubmit = async (data) => { 
     const tx = await deployTx(user!.wallet.signer, contract!.deployer, data, group)
     console.log("transaction sent !")
-    contract!.handleDeployment(tx)
+    contract!.handleDeployment(tx, group, "deploy")
   };
 
 

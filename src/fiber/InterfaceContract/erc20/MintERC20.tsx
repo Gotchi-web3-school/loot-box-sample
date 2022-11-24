@@ -34,7 +34,7 @@ const MintERC20: React.FC<{group: string, experience: Experience}>  = ({ group, 
 
   const onSubmit = async (data) => {
     const tx = await mintERC20Tx(user!.wallet.signer, contract?.interface!, data)
-    contract!.handleTxs(tx)
+    contract!.handleTxs(tx, group, "mint")
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
   };
