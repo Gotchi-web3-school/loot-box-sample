@@ -1,10 +1,10 @@
-import * as THREE from "three";
-import EventEmitter from "./EventEmitter";
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
-import PreLoader from "../PreLoader";
-import Experience from "../Experience";
+import * as THREE       from "three";
+import EventEmitter     from "./EventEmitter";
+import { GLTFLoader }   from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { FontLoader }   from "three/examples/jsm/loaders/FontLoader.js";
+import { DRACOLoader }  from 'three/examples/jsm/loaders/DRACOLoader'
+import PreLoader        from "../PreLoader";
+import Experience       from "../Experience";
 
 type Sources = {
   name: string, 
@@ -51,13 +51,13 @@ export default class Resources extends EventEmitter {
   setLoaders() {
 
     this.loaders = {
-      fontLoader: new FontLoader(),
-      dracoLoader: new DRACOLoader(),
-      gltfLoader: new GLTFLoader(),
-      textureLoader: new THREE.TextureLoader(),
-      imageLoader: new THREE.ImageLoader(),
-      cubeTextureLoader: new THREE.CubeTextureLoader(),
-      abiLoader: new THREE.FileLoader()
+      fontLoader:         new FontLoader(),
+      dracoLoader:        new DRACOLoader(),
+      gltfLoader:         new GLTFLoader(),
+      textureLoader:      new THREE.TextureLoader(),
+      imageLoader:        new THREE.ImageLoader(),
+      cubeTextureLoader:  new THREE.CubeTextureLoader(),
+      abiLoader:          new THREE.FileLoader()
     }
     
     this.loaders.dracoLoader.setDecoderPath('/draco/')

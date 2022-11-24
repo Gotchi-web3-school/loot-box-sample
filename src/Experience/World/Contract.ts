@@ -17,6 +17,7 @@ type Functions = {
     front:              { [key: string]: any }
     contractFunctions:  { [key: string]: any }
     lib:                { [key: string]: any }
+    icon:               string
   }
 }
 
@@ -120,7 +121,7 @@ export default class Contract extends EventEmitter {
       if (mesh.name.split('_')[1] === "function" && mesh.name.split('_').length === 3)
       { 
         const name = mesh.name.split('_').pop()
-        this.functions[name] = {front: {}, contractFunctions: {}, lib: {}}
+        this.functions[name] = {front: {}, contractFunctions: {}, lib: {}, icon: ""}
         
         // set lib, needed while hovering in & out of function
         this.functions[name].lib.materials = { default: mesh.material                        }
@@ -233,6 +234,9 @@ export default class Contract extends EventEmitter {
   
   async handleTxs(tx: any, contractName: string, funcName: string)
   {
+    let wallet = this.experience.world.user!.wallet
+    window.setTimeout(() => this.toast.txSent({wallet, contractName, funcName, tx}), 100)
+
     this._txPending()
     this.pending[tx.hash] = tx
     
@@ -240,7 +244,7 @@ export default class Contract extends EventEmitter {
 
       const receipt = await tx.wait()
       this._txSuccess()
-      this.toast.txValided({ signer: this.user?.wallet.signer, contractName, funcName, tx })
+      this.toast.txValided({ wallet: wallet, contractName, funcName, tx })
       this.receipt.push(tx)
       delete this.pending[tx.hash]
       console.log(receipt)
@@ -248,7 +252,7 @@ export default class Contract extends EventEmitter {
     } catch (error: any) {
 
       this._txFailed()
-      this.toast.txFailed({ signer: this.user?.wallet.signer, contractName, funcName, tx, error })
+      this.toast.txFailed({ wallet, contractName, funcName, tx, error })
       delete this.pending[tx.hash]
       return
 
@@ -257,18 +261,21 @@ export default class Contract extends EventEmitter {
 
   async handleDeployment(tx: any, contractName: string, funcName: string): Promise<any>
   {
+    let wallet = this.experience.world.user!.wallet
+    window.setTimeout(() => this.toast.txSent({wallet, contractName, funcName, tx}), 100)
+
     this._txPending()
     this.pending[tx.deployTransaction.hash] = tx
 
     try {
 
       await tx.deployed()
-      this.toast.deploy({ signer: this.user?.wallet.signer, contractName, funcName, tx })
+      this.toast.deploy({ wallet, contractName, funcName, tx })
 
     } catch (error) {
 
       this._txFailed()
-      this.toast.txFailed({ signer: this.user?.wallet.signer, contractName, funcName, tx, error })
+      this.toast.txFailed({ wallet, contractName, funcName, tx, error })
       delete this.pending[tx.deployTransaction.hash]
       return 
 
@@ -291,8 +298,6 @@ export default class Contract extends EventEmitter {
     this.network.children[0].intensity = 2
     this.network.children[0].distance = 5
     this.network.children[0].color.copy(this.materials.items.ethConnected.color)
-
-    // this._setAddress(this._address)
   }
 
 

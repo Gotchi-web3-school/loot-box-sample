@@ -37,7 +37,7 @@ const AddWhitelist: React.FC<{group: string, experience: Experience}> = ({ group
     let args: any = Object.entries(data).slice(0, addr.length + 1).map((elem) => elem[1])
     args = new Set(args)
 
-    const tx = await addWhitelistTx(user?.wallet.signer, contract?.interface!, [...args])
+    const tx = await addWhitelistTx(user!.wallet, contract?.interface!, [...args], experience.toast)
     contract!.handleTxs(tx, group, "addWhitelist")
   };
   

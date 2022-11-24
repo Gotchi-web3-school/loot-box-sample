@@ -33,7 +33,7 @@ const ERC721Deployer: React.FC<{group: string, experience: Experience}>  = ({ gr
   |__________________________________*/
 
   const onSubmit = async (data) => { 
-    const tx = await deployErc721Tx(user!.wallet.signer, contract!.deployer, data)
+    const tx = await deployErc721Tx(user!.wallet, contract!.deployer, data, experience.toast)
     console.log("transaction sent !")
     contract!.handleDeployment(tx, group, "deploy")
   };

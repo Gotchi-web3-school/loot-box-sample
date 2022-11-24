@@ -34,7 +34,7 @@ const TransferOwnership: React.FC<{group: string, experience: Experience, props?
 
   const onSubmit = async (data) => {
 
-    const tx = await transferOwnershipTx(user?.wallet.signer, contract?.interface!, data.address)
+    const tx = await transferOwnershipTx(user!.wallet, contract?.interface!, data.address, group, experience.toast)
     contract!.handleTxs(tx, group, "transferOwnership")
   };
   

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState }    from "react";
+import { useToast }                       from "@chakra-ui/react"
 import { useControls }                    from 'leva';
 import { extend, useThree, useFrame }     from "@react-three/fiber";
 import { OrbitControls, Stars, Sparkles } from "@react-three/drei"
@@ -33,7 +34,7 @@ import SafeBatchTransferFrom    from "./fiber/InterfaceContract/erc1155/SafeBatc
 import MintERC1155              from "./fiber/InterfaceContract/erc1155/MintERC1155";
 import MintBatchERC1155         from "./fiber/InterfaceContract/erc1155/MintBatchERC1155";
 import BurnERC1155              from "./fiber/InterfaceContract/erc1155/BurnERC1155";
-import BurnBatchERC1155 from "./fiber/InterfaceContract/erc1155/BurnBatchERC1155";
+import BurnBatchERC1155         from "./fiber/InterfaceContract/erc1155/BurnBatchERC1155";
 
 
 
@@ -43,6 +44,7 @@ extend({ OrbitControls })
 function App() {
   const [experience, setExperience] = useState<Experience>()
   const root                        = useThree()
+  const toast                       = useToast()
   const controlsRef                 = useRef<any>()
   const starsRef                    = useRef<any>()
   const inputsFunctionRef           = useRef<any>()
@@ -55,7 +57,8 @@ function App() {
   const erc1155Ref                  = useRef<any>()
 
   useEffect(() => {
-    root.controls             = controlsRef.current
+    root["toast"]             = toast
+    root["controls"]          = controlsRef.current
     root["outlineHover"]      = outLineRef.current
     root["outlineChestHover"] = outLineChestRef.current
     root["chestSC"]           = chestRef.current
@@ -65,7 +68,7 @@ function App() {
 
     setExperience(Experience.Instance(root, controlsRef.current))
 
-  }, [root])
+  }, [root, toast])
 
 
   useFrame( () => { experience?.update() } )
@@ -88,8 +91,6 @@ function App() {
     luminanceSmoothing:   { value: 0.025, min: 0, max: 1             },
 
   })
-
-
 
   return (
     <>

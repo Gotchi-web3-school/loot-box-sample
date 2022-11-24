@@ -49,7 +49,7 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
     const args = data
     args.address = loots.item[parseInt(watch().address)]
     const type = loots.type_[parseInt(watch().address)]
-    const tx = await lootTx(user?.wallet.signer, contract?.interface!, args, type)
+    const tx = await lootTx(user!.wallet, contract?.interface!, args, type, experience.toast)
 
     contract!.handleTxs(tx, group, "loot")
   };
@@ -57,7 +57,7 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
   const lookInside = async (): Promise<any> => 
   {
     const contract = experience.world.lootBoxScene!.smartContracts[group].interface
-    const chest = await contract.connect(experience.world.user?.wallet.signer)
+    const chest = await contract.connect(experience.world.user?.wallet)
     const res = await chest.look()
     return {item: res[0], tokenIds: res[1], amounts: res[2], type_: res[3]}
   }

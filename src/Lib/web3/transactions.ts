@@ -1,4 +1,6 @@
 import * as ethers from "ethers"
+import Toast from "../../Experience/Utils/Toast"
+import Wallet from "../../Experience/Utils/Wallet"
 
 
 
@@ -22,20 +24,22 @@ import * as ethers from "ethers"
  * @notice It allow the owner to deposit any ERC20, 721, 1155 and be lootable by anyone
  * For a full tutorial follow the README => https://github.com/Gotchi-web3-school/Chest-standard
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The arguments of the function to be called
  * @param contractName Just for the console.log :p
  * @returns 
  */
 export const deployTx = async(
-  signer: ethers.Signer, 
+  wallet: Wallet, 
   deployer: ethers.ContractFactory,
   args:  { [key: string]: any },
-  contractName: string
-  ): Promise<any> => {
+  contractName: string,
+  toast: Toast
+): Promise<any> => {
 
-  const contractFactory = deployer.connect(signer)
+  let tx;
+  const contractFactory = deployer.connect(wallet.signer)
 
   try { 
     console.log("")
@@ -45,43 +49,23 @@ export const deployTx = async(
     console.log("type: " + args.type)
     console.log("///////////////////////////////////////////////")
 
-    
-    const tx = await contractFactory.deploy(...Object.values(args))
-      
-      
-    // TODO: Toast pop-up
+    tx = await contractFactory.deploy(...Object.values(args))
 
-    // tx.toast({
-      //     title: `Add liquidity: ${tx.amount0.token.symbol} + ${tx.amount1.token.symbol}`,
-      //     description: `transaction pending at: ${transaction.hash}`,
-      //     position: "top-right",
-      //     status: "loging",
-      //     isClosable: true,
-      //     })
-      
-      // const receipt = await transaction.wait()
-      
-      // tx.toast({
-        //     title: `Add liquidity: ${tx.amount0.token.symbol} + ${tx.amount1.token.symbol}`,
-        //     description: `Liquidity added successfully !`,
-        //     position: "top-right",
-        //     status: "success",
-        //     duration: 6000,
-        //     isClosable: true,
-        //     })
+    return tx 
           
-      return tx 
-          
-        } catch (error: any) {
-      console.log(error)
-      // tx.toast({
-        //     position: "bottom-right",
-      //     title: 'An error occurred.',
-      //     description: `Add Liquidity: ${error.message}`,
-      //     status: 'error',
-      //     duration: 9000,
-      //     isClosable: true,
-      //   })
+  } catch (error: any) {
+    let err;
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: contractName, 
+      funcName: "deploy", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -90,17 +74,20 @@ export const deployTx = async(
  * @dev The addWhitelist function of the chest standard.
  * https://github.com/Gotchi-web3-school/Chest-standard/blob/3ac6e3a7ee29cb7fa88a45ceab0ebd99aff07761/contracts/Chest/extensions/ChestHolder.sol#L177
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The arguments of the function to be called
  * @returns the Tx sent
  */
  export const addWhitelistTx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: string[]
-  ) => {
-  const contract = IContract.connect(signer)
+  args: string[],
+  toast: Toast
+) => {
+  
+  let tx;
+  const contract = IContract.connect(wallet.signer)
 
   try {
     console.log("")
@@ -113,12 +100,23 @@ export const deployTx = async(
     const gas = await contract.estimateGas.addWhitelist(args)     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.addWhitelist(args)
+    tx = await contract.addWhitelist(args)
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err;
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "chestSC", 
+      funcName: "addWhitelist", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -127,19 +125,21 @@ export const deployTx = async(
  * @dev The batchDeposit function of the chest standard.
  * https://github.com/Gotchi-web3-school/Chest-standard/blob/3ac6e3a7ee29cb7fa88a45ceab0ebd99aff07761/contracts/Chest/Chest.sol#L74
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The arguments of the function to be called
  * @returns the Tx sent
  */
  export const batchDepositTx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: Array<any[]>
-  ) => {
+  args: Array<any[]>,
+  toast: Toast
+) => {
 
-  const contract = IContract.connect(signer)
-  const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
+  let tx;
+  const contract = IContract.connect(wallet.signer)
+  const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], wallet.signer)
 
   try {
     console.log("")
@@ -164,12 +164,23 @@ export const deployTx = async(
     const gas = await contract.estimateGas.batchDeposit(...args)     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.batchDeposit(...args)
+    tx = await contract.batchDeposit(...args)
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "chestSC", 
+      funcName: "batchDeposit", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -177,20 +188,22 @@ export const deployTx = async(
 /**
  * @dev Loot a specific token from the chest.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The token address, id & amount
  * @returns the Tx sent
  */
  export const lootTx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
   args: { [ key: string ]: any },
-  type: number
-  ) => {
+  type: number,
+  toast: Toast
+) => {
 
-    const contract = IContract.connect(signer)
-    const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
+    let tx;
+    const contract = IContract.connect(wallet.signer)
+    const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], wallet.signer)
     
   try {
     console.log("")
@@ -213,13 +226,23 @@ export const deployTx = async(
     const gas = await contract.estimateGas.loot(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.loot(...Object.values(args))
-    console.log("transaction sent !")
+    tx = await contract.loot(...Object.values(args))
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "chestSC", 
+      funcName: "loot", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -227,20 +250,22 @@ export const deployTx = async(
 /**
  * @dev Batch loot tokens from the chest.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The token addresses, ids & amounts
  * @returns the Tx sent
  */
  export const batchLootTx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
   args: { [ key: string ]: any[] },
-  types: number[]
+  types: number[],
+  toast: Toast
 ) => {
 
-  const contract = IContract.connect(signer)
-  const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], signer)
+  let tx;
+  const contract = IContract.connect(wallet.signer)
+  const ERC20 = new ethers.Contract("0x0000000000000000000000000000000000000000", ["function decimals() public view returns(uint8)"], wallet.signer)
     
   try {
     console.log("")
@@ -267,13 +292,23 @@ export const deployTx = async(
     const gas = await contract.estimateGas.batchLoot(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.batchLoot(...Object.values(args))
-    console.log("transaction sent !")
+    tx = await contract.batchLoot(...Object.values(args))
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "chestSC", 
+      funcName: "batchLoot", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -298,18 +333,20 @@ export const deployTx = async(
  * @dev Deploy an instance of a ERC20 token
  * 
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The arguments of the function to be called
  * @returns 
  */
 export const deployErc20Tx = async(
-  signer: ethers.Signer, 
+  wallet: Wallet, 
   deployer: ethers.ContractFactory,
   args:  { [key: string]: any },
-  ): Promise<any> => {
+  toast: Toast
+): Promise<any> => {
 
-  const contractFactory = deployer.connect(signer)
+  let tx;
+  const contractFactory = deployer.connect(wallet.signer)
 
   try {  
     console.log("")
@@ -320,12 +357,23 @@ export const deployErc20Tx = async(
     console.log("///////////////////////////////////////////////")
 
     
-    const tx = await contractFactory.deploy(...Object.values(args))
-      
+    tx = await contractFactory.deploy(...Object.values(args))
+
     return tx 
           
-    } catch (error: any) {
-      console.log(error)
+  } catch (error: any) {
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc20SC", 
+      funcName: "deploy", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -333,17 +381,20 @@ export const deployErc20Tx = async(
 /**
  * @dev Approve an address to spend token.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The address to be approved
  * @returns the Tx sent
  */
  export const approveERC20Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-    const contract = IContract.connect(signer)
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
+
+  let tx;
+  const contract = IContract.connect(wallet.signer)
     
 
   try {
@@ -358,13 +409,23 @@ export const deployErc20Tx = async(
     const gas = await contract.estimateGas.approve(args.address, ethers.utils.parseEther(args.amount))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.approve(args.address, ethers.utils.parseEther(args.amount))
-    console.log("transaction sent !")
+    tx = await contract.approve(args.address, ethers.utils.parseEther(args.amount))
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc20SC", 
+      funcName: "approve", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -372,17 +433,20 @@ export const deployErc20Tx = async(
 /**
  * @dev Mint some token.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The amounts to be minted
  * @returns the Tx sent
  */
  export const mintERC20Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-    const contract = IContract.connect(signer)
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
+  
+  let tx;
+  const contract = IContract.connect(wallet.signer)
     
 
   try {
@@ -397,13 +461,23 @@ export const deployErc20Tx = async(
     const gas = await contract.estimateGas.mint(args.address, ethers.utils.parseEther(args.amount))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.mint(args.address, ethers.utils.parseEther(args.amount))
-    console.log("transaction sent !")
+    tx = await contract.mint(args.address, ethers.utils.parseEther(args.amount))
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc20SC", 
+      funcName: "mint", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -411,18 +485,20 @@ export const deployErc20Tx = async(
 /**
  * @dev Mint some token.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The amounts to be minted
  * @returns the Tx sent
  */
  export const transferERC20Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
 
-    const contract = IContract.connect(signer)
+  let tx;
+  const contract = IContract.connect(wallet.signer)
 
   try {
     console.log("")
@@ -436,13 +512,23 @@ export const deployErc20Tx = async(
     const gas = await contract.estimateGas.transfer(args.address, ethers.utils.parseEther(args.amount))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.transfer(args.address, ethers.utils.parseEther(args.amount))
-    console.log("transaction sent !")
+    tx = await contract.transfer(args.address, ethers.utils.parseEther(args.amount))
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc20SC", 
+      funcName: "transfer", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -450,17 +536,20 @@ export const deployErc20Tx = async(
 /**
  * @dev Burn some token.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The amounts to be minted
  * @returns the Tx sent
  */
  export const burnERC20Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-    const contract = IContract.connect(signer)
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
+
+  let tx;
+  const contract = IContract.connect(wallet.signer)
     
 
   try {
@@ -474,13 +563,23 @@ export const deployErc20Tx = async(
     const gas = await contract.estimateGas.burn(ethers.utils.parseEther(args.amount))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.burn(ethers.utils.parseEther(args.amount))
-    console.log("transaction sent !")
+    tx = await contract.burn(ethers.utils.parseEther(args.amount))
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc20SC", 
+      funcName: "burn", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -505,18 +604,20 @@ export const deployErc20Tx = async(
  * @dev Deploy an instance of a ERC20 token
  * 
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The arguments of the function to be called
  * @returns 
  */
 export const deployErc721Tx = async(
-  signer: ethers.Signer, 
+  wallet: Wallet, 
   deployer: ethers.ContractFactory,
   args:  { [key: string]: any },
-  ): Promise<any> => {
+  toast: Toast
+): Promise<any> => {
 
-  const contractFactory = deployer.connect(signer)
+  let tx;
+  const contractFactory = deployer.connect(wallet.signer)
 
   try {  
     console.log("")
@@ -526,12 +627,23 @@ export const deployErc721Tx = async(
     console.log("ticker: " + args.ticker)
     console.log("///////////////////////////////////////////////")
 
-    const tx = await contractFactory.deploy(...Object.values(args))
-      
+    tx = await contractFactory.deploy(...Object.values(args))
+
     return tx 
           
-    } catch (error: any) {
-      console.log(error)
+  } catch (error: any) {
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc721SC", 
+      funcName: "deploy", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -539,17 +651,20 @@ export const deployErc721Tx = async(
 /**
  * @dev Approve an address to spend token.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The address to be approved
  * @returns the Tx sent
  */
 export const approveERC721Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-    const contract = IContract.connect(signer)
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
+
+  let tx;
+  const contract = IContract.connect(wallet.signer)
     
 
   try {
@@ -564,13 +679,23 @@ export const approveERC721Tx = async(
     const gas = await contract.estimateGas.approve(args.address, args.id)     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.approve(args.address, args.id)
-    console.log("transaction sent !")
+    tx = await contract.approve(args.address, args.id)
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc721SC", 
+      funcName: "approve", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -578,17 +703,20 @@ export const approveERC721Tx = async(
 /**
  * @dev Mint some token.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The amounts to be minted
  * @returns the Tx sent
  */
 export const safeMintERC721Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-    const contract = IContract.connect(signer)
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
+
+  let tx;
+  const contract = IContract.connect(wallet.signer)
     
 
   try {
@@ -603,13 +731,23 @@ export const safeMintERC721Tx = async(
     const gas = await contract.estimateGas.safeMint(args.to, args.uri)     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.safeMint(args.to, args.uri)
-    console.log("transaction sent !")
+    tx = await contract.safeMint(args.to, args.uri)
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc721SC", 
+      funcName: "mint", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -617,7 +755,7 @@ export const safeMintERC721Tx = async(
 /**
  * @dev Transfer a specific id of token ERC721.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args :
  * - address from
@@ -628,13 +766,14 @@ export const safeMintERC721Tx = async(
  * @returns the Tx sent
  */
 export const safeTransferFromErc721Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
 
-    const contract = IContract.connect(signer)
-    console.log(contract)
+  let tx;
+  const contract = IContract.connect(wallet.signer)
 
   try {
     console.log("")
@@ -652,13 +791,23 @@ export const safeTransferFromErc721Tx = async(
     const gas = await contract.estimateGas["safeTransferFrom(address,address,uint256,bytes)"](...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract["safeTransferFrom(address,address,uint256,bytes)"](...Object.values(args))    
-    console.log("transaction sent !")
+    tx = await contract["safeTransferFrom(address,address,uint256,bytes)"](...Object.values(args))    
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc721SC", 
+      funcName: "safeTransferFrom", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -666,18 +815,20 @@ export const safeTransferFromErc721Tx = async(
 /**
  * @dev Burn some token.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The amounts to be minted
  * @returns the Tx sent
  */
 export const burnERC721Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-    const contract = IContract.connect(signer)
-    
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
+
+  let tx;
+  const contract = IContract.connect(wallet.signer)
 
   try {
     console.log("")
@@ -690,13 +841,23 @@ export const burnERC721Tx = async(
     const gas = await contract.estimateGas.burn(args.id)     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.burn(args.id)
-    console.log("transaction sent !")
+    tx = await contract.burn(args.id)
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc721SC", 
+      funcName: "burn", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -721,18 +882,20 @@ export const burnERC721Tx = async(
  * @dev Deploy an instance of a ERC20 token
  * 
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The arguments of the function to be called
  * @returns 
  */
 export const deployErc1155Tx = async(
-  signer: ethers.Signer, 
+  wallet: Wallet, 
   deployer: ethers.ContractFactory,
   args:  { [key: string]: any },
-  ): Promise<any> => {
+  toast: Toast
+): Promise<any> => {
 
-  const contractFactory = deployer.connect(signer)
+  let tx;
+  const contractFactory = deployer.connect(wallet.signer)
 
   try {  
     console.log("")
@@ -741,12 +904,23 @@ export const deployErc1155Tx = async(
     console.log("uri: " + args.uri)
     console.log("///////////////////////////////////////////////")
 
-    const tx = await contractFactory.deploy(...Object.values(args))
-      
+    tx = await contractFactory.deploy(...Object.values(args))
+
     return tx 
           
-    } catch (error: any) {
-      console.log(error)
+  } catch (error: any) {
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc1155SC", 
+      funcName: "deploy", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -754,18 +928,20 @@ export const deployErc1155Tx = async(
 /**
  * @dev Mint some token.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The amounts to be minted
  * @returns the Tx sent
  */
 export const mintBatchErc1155Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
 
-  const contract = IContract.connect(signer)
+  let tx;
+const contract = IContract.connect(wallet.signer)
 
   try {
     console.log("")
@@ -783,13 +959,23 @@ export const mintBatchErc1155Tx = async(
     const gas = await contract.estimateGas.mintBatch(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.mintBatch(...Object.values(args))
-    console.log("transaction sent !")
+    tx = await contract.mintBatch(...Object.values(args))
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc1155SC", 
+      funcName: "mintBatch", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -797,18 +983,20 @@ export const mintBatchErc1155Tx = async(
 /**
  * @dev Mint some token.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The amounts to be minted
  * @returns the Tx sent
  */
 export const mintERC1155Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-    const contract = IContract.connect(signer)
-    
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
+
+  let tx;
+  const contract = IContract.connect(wallet.signer)
 
   try {
     console.log("")
@@ -826,13 +1014,23 @@ export const mintERC1155Tx = async(
     const gas = await contract.estimateGas.mint(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.mint(...Object.values(args))
-    console.log("transaction sent !")
+    tx = await contract.mint(...Object.values(args))
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc1155SC", 
+      funcName: "mint", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -840,7 +1038,7 @@ export const mintERC1155Tx = async(
 /**
  * @dev Transfer a specific id of token ERC721.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args :
  * - address from
@@ -851,13 +1049,14 @@ export const mintERC1155Tx = async(
  * @returns the Tx sent
  */
 export const safeTransferFromErc1155Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
 
-    const contract = IContract.connect(signer)
-    console.log(contract)
+  let tx;
+  const contract = IContract.connect(wallet.signer)
 
   try {
     console.log("")
@@ -871,25 +1070,34 @@ export const safeTransferFromErc1155Tx = async(
     console.log("///////////////////////////////////////////////")
     
     if (!args.datas) args.datas = "0x"
-    // console.log(await Object.entries(contract.estimateGas)[12][1]())
-    console.log(contract.estimateGas["safeTransferFrom(address,address,uint256,uint256,bytes)"])
+
     //Estimation of the gas cost
     const gas = await contract.estimateGas["safeTransferFrom(address,address,uint256,uint256,bytes)"](...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract["safeTransferFrom(address,address,uint256,uint256,bytes)"](...Object.values(args))    
-    console.log("transaction sent !")
+    tx = await contract["safeTransferFrom(address,address,uint256,uint256,bytes)"](...Object.values(args))    
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc1155SC", 
+      funcName: "safeTransferFrom", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 /**
  * @dev Transfer a specific id of token ERC721.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args :
  * - address from
@@ -901,13 +1109,14 @@ export const safeTransferFromErc1155Tx = async(
  * @returns the Tx sent
  */
 export const SafeBatchTransferFromTx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
 
-    const contract = IContract.connect(signer)
-    console.log(contract)
+  let tx;
+  const contract = IContract.connect(wallet.signer)
 
   try {
     console.log("")
@@ -925,13 +1134,23 @@ export const SafeBatchTransferFromTx = async(
     const gas = await contract.estimateGas["safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)"](...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract["safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)"](...Object.values(args))    
-    console.log("transaction sent !")
+    tx = await contract["safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)"](...Object.values(args))    
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc1155SC", 
+      funcName: "safeBatchTransferFrom", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -940,18 +1159,20 @@ export const SafeBatchTransferFromTx = async(
 /**
  * @dev Burn some token.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The amounts to be minted
  * @returns the Tx sent
  */
 export const burnErc1155Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-    const contract = IContract.connect(signer)
-    
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
+
+  let tx;
+  const contract = IContract.connect(wallet.signer)
 
   try {
     console.log("")
@@ -966,13 +1187,23 @@ export const burnErc1155Tx = async(
     const gas = await contract.estimateGas.burn(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.burn(...Object.values(args))
-    console.log("transaction sent !")
+    tx = await contract.burn(...Object.values(args))
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc1155SC", 
+      funcName: "burn", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -981,18 +1212,20 @@ export const burnErc1155Tx = async(
 /**
  * @dev Burn some token.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The amounts to be minted
  * @returns the Tx sent
  */
 export const burnBatchErc1155Tx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: string }
-  ) => {
-    const contract = IContract.connect(signer)
-    
+  args: { [ key: string ]: string },
+  toast: Toast
+) => {
+
+  let tx;
+  const contract = IContract.connect(wallet.signer)  
 
   try {
     console.log("")
@@ -1007,13 +1240,23 @@ export const burnBatchErc1155Tx = async(
     const gas = await contract.estimateGas.burnBatch(...Object.values(args))     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.burnBatch(...Object.values(args))
-    console.log("transaction sent !")
+    tx = await contract.burnBatch(...Object.values(args))
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: "erc1155SC", 
+      funcName: "burnBatch", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -1034,21 +1277,25 @@ export const burnBatchErc1155Tx = async(
 /**
  * @dev The transferOwnership function of openzeppelin.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The new owner of this chest
  * @returns the Tx sent
  */
  export const transferOwnershipTx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: string
-  ) => {
-  const contract = IContract.connect(signer)
+  args: string,
+  contractName: string,
+  toast: Toast
+) => {
+
+  let tx;
+  const contract = IContract.connect(wallet.signer)
 
   try {
     console.log("")
-    console.log("BATCH DEPOSIT")
+    console.log("TRANSFER OWNERSHIP")
     console.log("///////////////////////////////////////////////")
     console.log("address: ", args)
     console.log("///////////////////////////////////////////////")
@@ -1057,12 +1304,23 @@ export const burnBatchErc1155Tx = async(
     const gas = await contract.estimateGas.transferOwnership(args)     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.transferOwnership(args)     
+    tx = await contract.transferOwnership(args)     
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: contractName, 
+      funcName: "transferOwnership", 
+      tx: tx, 
+      error: err
+    })
   }
 }
 
@@ -1070,19 +1328,21 @@ export const burnBatchErc1155Tx = async(
 /**
  * @dev Approve an address to manage a collection on behalf of the owner.
  * 
- * @param signer The user
+ * @param wallet.signer The user
  * @param IContract The contract to be interfaced with
  * @param args The address to be approved
  * @returns the Tx sent
  */
  export const setApprovalForAllTx = async(
-  signer: ethers.Signer,
+  wallet: Wallet,
   IContract: ethers.Contract,
-  args: { [ key: string ]: any }
-  ) => {
+  args: { [ key: string ]: any },
+  contractName: string,
+  toast: Toast
+) => {
 
-    const contract = IContract.connect(signer)
-    console.log(contract)
+  let tx;
+  const contract = IContract.connect(wallet.signer)
 
   try {
     console.log("")
@@ -1096,12 +1356,22 @@ export const burnBatchErc1155Tx = async(
     const gas = await contract.estimateGas.setApprovalForAll(args.to, args.switch)     
     console.log("Gas cost: " + (ethers.utils.formatEther(gas?.toString() ?? "") + " MATIC"))
         
-    const tx = await contract.setApprovalForAll(args.to, args.switch)
-    console.log("transaction sent !")
+    tx = await contract.setApprovalForAll(args.to, args.switch)
 
-    return tx
-      
+    return tx 
+          
   } catch (error: any) {
-    console.log(error)
+    let err = "";
+
+    if (error.error.message) err = error.error.message
+    else err = error.message
+    
+    toast.txFailed({
+      wallet: wallet, 
+      contractName: contractName, 
+      funcName: "setApprovalForAll", 
+      tx: tx, 
+      error: err
+    })
   }
 }

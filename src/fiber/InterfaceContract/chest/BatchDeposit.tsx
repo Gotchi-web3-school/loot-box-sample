@@ -39,7 +39,7 @@ const BatchDeposit: React.FC<{group: string, experience: Experience}> = ({ group
     const amounts: string[]   = Object.entries(data).filter((elem) => elem[0].startsWith("amount")).map(  (elem: any) => elem[1] ).slice(0, batch.length + 1)
     const args                = [addresses, ids, amounts]
  
-    const tx = await batchDepositTx(user?.wallet.signer, contract?.interface!, args)
+    const tx = await batchDepositTx(user!.wallet, contract?.interface!, args, experience.toast)
     contract!.handleTxs(tx, group, "batchDeposit")
   };
   

@@ -53,7 +53,7 @@ const BatchLoot: React.FC<{group: string, experience: Experience}> = ({ group, e
     const types: number[]     = indexes.map(type => loots.type_[parseInt(type)])
 
     const args = { items: addresses, tokenIds: ids, amounts: amounts }
-    const tx = await batchLootTx(user?.wallet.signer, contract?.interface!, args, types)
+    const tx = await batchLootTx(user!.wallet, contract?.interface!, args, types, experience.toast)
 
     contract!.handleTxs(tx, group, "batchLoot")
   };
@@ -61,7 +61,7 @@ const BatchLoot: React.FC<{group: string, experience: Experience}> = ({ group, e
   const lookInside = async (): Promise<any> => 
   {
     const contract = experience.world.lootBoxScene!.smartContracts[group].interface
-    const chest = await contract.connect(experience.world.user?.wallet.signer)
+    const chest = await contract.connect(experience.world.user?.wallet)
     const res = await chest.look()
     return {item: res[0], tokenIds: res[1], amounts: res[2], type_: res[3]}
   }

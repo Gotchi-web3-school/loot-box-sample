@@ -19,11 +19,13 @@ const Import: React.FC<{group: string, experience: Experience}>  = ({ group, exp
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
     experience.world.lootBoxScene!.smartContracts[group].trigger("import " + group)
+
+    window.setTimeout(() => experience.toast.import(data.address), 100)
   };
   
   // Events
   experience.raycaster.on( `click_${group}_function_import`, () => { 
-    setCurrMode(experience.controller.getCurrentMode()) 
+    setCurrMode(experience.controller.getCurrentMode())
   })
 
 

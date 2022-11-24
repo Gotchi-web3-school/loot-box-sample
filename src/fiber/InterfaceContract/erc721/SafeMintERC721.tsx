@@ -33,7 +33,7 @@ const SafeMintERC721: React.FC<{group: string, experience: Experience, props: an
   |__________________________________*/
 
   const onSubmit = async (data) => {
-    const tx = await safeMintERC721Tx(user!.wallet.signer, contract?.interface!, data)
+    const tx = await safeMintERC721Tx(user!.wallet, contract?.interface!, data, experience.toast)
     contract!.handleTxs(tx, group, "safeMint")
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())

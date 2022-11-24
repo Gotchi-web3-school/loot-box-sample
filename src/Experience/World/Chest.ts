@@ -185,7 +185,7 @@ export default class Chest {
     this.raycaster.on("click_button", async (obj3dName: string) => 
     {
       let buttonName      = obj3dName.split('_')[1]
-      let signer          = this.experience.world.user?.wallet.signer
+      let wallet          = this.experience.world.user!.wallet
       let chestSC         = this.chestSC
       let args: any       = { items: [], tokenIds: [], amounts: []} 
       let types: number[] = []
@@ -201,8 +201,8 @@ export default class Chest {
         args.amounts    = loots.amounts
         types           = loots.type_
 
-        const tx = await batchLootTx(signer, chestSC!.interface!, args, types)
-        chestSC!.handleTxs(tx, "chest", "batchLoot")
+        const tx = await batchLootTx(wallet, chestSC!.interface!, args, types, this.experience.toast)
+        chestSC!.handleTxs(tx, "chestSC", "batchLoot")
       }
       else if (buttonName === "lootSelected" && Object.values(this.selected).length > 0)
       {
@@ -213,8 +213,8 @@ export default class Chest {
           types.push(loot.item.type)
         }
         
-        const tx = await batchLootTx(signer, chestSC!.interface!, args, types)
-        chestSC!.handleTxs(tx, "chest", "batchLoot")
+        const tx = await batchLootTx(wallet, chestSC!.interface!, args, types, this.experience.toast)
+        chestSC!.handleTxs(tx, "chestSC", "batchLoot")
       }
     })
 

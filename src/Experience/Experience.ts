@@ -1,22 +1,24 @@
-import * as THREE from "three"
-import { sources } from "./sources"
-import Camera from "./Camera"
-import World from "./World/World"
-import Resources from "./Utils/Resources"
-import Debug from "./Utils/Debug"
-import Raycaster from "./Utils/Raycaster"
-import PreLoader from "./PreLoader"
-import Factory from "./Utils/Factory"
-import Materials from "./Utils/Materials"
-import Sounds from "./Sounds"
-import Controller from "./Controller"
-import { RootState } from "@react-three/fiber"
-import Time from "./Utils/Time"
+import * as THREE     from "three"
+import { sources }    from "./sources"
+import { RootState }  from "@react-three/fiber"
+import Camera         from "./Camera"
+import PreLoader      from "./PreLoader"
+import Sounds         from "./Sounds"
+import Controller     from "./Controller"
+import Resources      from "./Utils/Resources"
+import Debug          from "./Utils/Debug"
+import Raycaster      from "./Utils/Raycaster"
+import Factory        from "./Utils/Factory"
+import Materials      from "./Utils/Materials"
+import Toast          from "./Utils/Toast"
+import Time           from "./Utils/Time"
+import World          from "./World/World"
 
 export default class Experience {
   private static _instance: Experience | null;
 
   root: RootState
+  toast: Toast
   debug: Debug
   time: Time
   scene: THREE.Scene
@@ -37,7 +39,12 @@ export default class Experience {
     Experience._instance = this
     this.root = root
 
+    // loading 
+    this.resources = new Resources(sources)
+    this.preLoader = new PreLoader()
+
     // set up Utils classes
+    this.toast = new Toast()
     this.debug = new Debug()
     this.time = new Time(root.clock) 
     this.mouse = root.mouse
@@ -45,8 +52,6 @@ export default class Experience {
 
     // Set up the scene in canvas (loading page)
     this.scene = root.scene
-    this.resources = new Resources(sources)
-    this.preLoader = new PreLoader()
     this.factory = new Factory()
     this.camera = new Camera(controls, root.camera)
     this.controller = new Controller()

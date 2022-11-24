@@ -33,7 +33,7 @@ const ApproveERC20: React.FC<{group: string, experience: Experience}>  = ({ grou
   |__________________________________*/
 
   const onSubmit = async (data) => {
-    const tx = await approveERC20Tx(user!.wallet.signer, contract?.interface!, data)
+    const tx = await approveERC20Tx(user!.wallet, contract?.interface!, data, experience.toast)
     contract!.handleTxs(tx, group, "approve")
     experience.controller[group + "ContractControls"].main()
     setCurrMode(experience.controller.getCurrentMode())
