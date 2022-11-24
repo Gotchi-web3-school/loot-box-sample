@@ -41,6 +41,9 @@ const BatchDeposit: React.FC<{group: string, experience: Experience}> = ({ group
  
     const tx = await batchDepositTx(user!.wallet, contract?.interface!, args, experience.toast)
     contract!.handleTxs(tx, group, "batchDeposit")
+    
+    experience.controller[group + "ContractControls"].main()
+    setCurrMode(experience.controller.getCurrentMode())
   };
   
 

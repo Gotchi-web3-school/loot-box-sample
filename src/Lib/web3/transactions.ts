@@ -59,13 +59,15 @@ export const deployTx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: contractName, 
       funcName: "deploy", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -110,13 +112,15 @@ export const deployTx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "chestSC", 
       funcName: "addWhitelist", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -174,13 +178,15 @@ export const deployTx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "chestSC", 
       funcName: "batchDeposit", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -236,13 +242,15 @@ export const deployTx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "chestSC", 
       funcName: "loot", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -302,13 +310,15 @@ export const deployTx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "chestSC", 
       funcName: "batchLoot", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -367,13 +377,15 @@ export const deployErc20Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc20SC", 
       funcName: "deploy", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -419,13 +431,15 @@ export const deployErc20Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc20SC", 
       funcName: "approve", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -471,13 +485,15 @@ export const deployErc20Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc20SC", 
       funcName: "mint", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -522,13 +538,15 @@ export const deployErc20Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc20SC", 
       funcName: "transfer", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -573,13 +591,15 @@ export const deployErc20Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc20SC", 
       funcName: "burn", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -637,13 +657,15 @@ export const deployErc721Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc721SC", 
       funcName: "deploy", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -689,13 +711,15 @@ export const approveERC721Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
-      contractName: "erc721SC", 
-      funcName: "approve", 
-      tx: tx, 
-      error: err
-    })
+    window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
+        contractName: "erc721SC", 
+        funcName: "approve", 
+        tx: tx, 
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -741,13 +765,15 @@ export const safeMintERC721Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc721SC", 
       funcName: "mint", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -801,13 +827,15 @@ export const safeTransferFromErc721Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc721SC", 
       funcName: "safeTransferFrom", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -851,13 +879,15 @@ export const burnERC721Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc721SC", 
       funcName: "burn", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -914,13 +944,15 @@ export const deployErc1155Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc1155SC", 
       funcName: "deploy", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -969,13 +1001,15 @@ const contract = IContract.connect(wallet.signer)
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc1155SC", 
       funcName: "mintBatch", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -1024,13 +1058,15 @@ export const mintERC1155Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc1155SC", 
       funcName: "mint", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -1085,13 +1121,15 @@ export const safeTransferFromErc1155Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc1155SC", 
       funcName: "safeTransferFrom", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 /**
@@ -1144,13 +1182,15 @@ export const SafeBatchTransferFromTx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc1155SC", 
       funcName: "safeBatchTransferFrom", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -1197,13 +1237,15 @@ export const burnErc1155Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc1155SC", 
       funcName: "burn", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -1250,13 +1292,15 @@ export const burnBatchErc1155Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: "erc1155SC", 
       funcName: "burnBatch", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -1314,13 +1358,15 @@ export const burnBatchErc1155Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
 
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: contractName, 
       funcName: "transferOwnership", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }
 
@@ -1366,12 +1412,14 @@ export const burnBatchErc1155Tx = async(
     if (error.error.message) err = error.error.message
     else err = error.message
     
-    toast.txFailed({
-      wallet: wallet, 
+     window.setTimeout( () => {
+      toast.txFailed({
+        wallet: wallet, 
       contractName: contractName, 
       funcName: "setApprovalForAll", 
       tx: tx, 
-      error: err
-    })
+        error: err
+      })
+    }, 100)
   }
 }

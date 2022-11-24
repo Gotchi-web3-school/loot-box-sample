@@ -39,6 +39,9 @@ const AddWhitelist: React.FC<{group: string, experience: Experience}> = ({ group
 
     const tx = await addWhitelistTx(user!.wallet, contract?.interface!, [...args], experience.toast)
     contract!.handleTxs(tx, group, "addWhitelist")
+    
+    experience.controller[group + "ContractControls"].main()
+    setCurrMode(experience.controller.getCurrentMode())
   };
   
 

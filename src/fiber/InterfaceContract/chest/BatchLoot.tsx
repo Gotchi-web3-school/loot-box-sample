@@ -54,14 +54,16 @@ const BatchLoot: React.FC<{group: string, experience: Experience}> = ({ group, e
 
     const args = { items: addresses, tokenIds: ids, amounts: amounts }
     const tx = await batchLootTx(user!.wallet, contract?.interface!, args, types, experience.toast)
-
     contract!.handleTxs(tx, group, "batchLoot")
+
+    experience.controller[group + "ContractControls"].main()
+    setCurrMode(experience.controller.getCurrentMode())
   };
 
   const lookInside = async (): Promise<any> => 
   {
     const contract = experience.world.lootBoxScene!.smartContracts[group].interface
-    const chest = await contract.connect(experience.world.user?.wallet)
+    const chest = await contract.connect(experience.world.user?.wallet.signer)
     const res = await chest.look()
     return {item: res[0], tokenIds: res[1], amounts: res[2], type_: res[3]}
   }
@@ -74,7 +76,7 @@ const BatchLoot: React.FC<{group: string, experience: Experience}> = ({ group, e
   |             EVENTS                |
   |__________________________________*/
 
-  experience.raycaster.on( "click_chestSC_function_batchLoot", async () => { 
+  experience.raycaster.on( `click_${group}_function_batchLoot`, async () => { 
     setCurrMode(experience.controller.getCurrentMode())
     setContract(experience.world.lootBoxScene!.smartContracts[group])
     setConnected(experience.world.user!.wallet.isConnected)

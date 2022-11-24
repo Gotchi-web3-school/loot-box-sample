@@ -49,7 +49,7 @@ export const ICONS = {
     mint:                   "/images/icons/mint_erc1155.png",
     mintBatch:              "/images/icons/batchMint_erc1155.png",
     burn:                   "/images/icons/burn_erc721.png",
-    batchBurn:              "/images/icons/batchBurn_erc1155.png",
+    burnBatch:              "/images/icons/batchBurn_erc1155.png",
     transferOwnership:      "/images/icons/transferOwnership.png",
   },
 

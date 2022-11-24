@@ -7,7 +7,7 @@ import { ChevronRightIcon } from '@chakra-ui/icons'
 import Contract from "../../Experience/World/Contract";
 import { transferOwnershipTx } from "../../Lib/web3/transactions";
 
-const TransferOwnership: React.FC<{group: string, experience: Experience, props?: any}> = ({ group, experience, props }) => {
+const TransferOwnership: React.FC<{group: string, experience: Experience, props?: any}> = ({ group, experience, props = {} }) => {
 
 
 

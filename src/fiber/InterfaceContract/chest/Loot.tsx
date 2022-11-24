@@ -50,8 +50,10 @@ const Loot: React.FC<{group: string, experience: Experience}> = ({ group, experi
     args.address = loots.item[parseInt(watch().address)]
     const type = loots.type_[parseInt(watch().address)]
     const tx = await lootTx(user!.wallet, contract?.interface!, args, type, experience.toast)
-
     contract!.handleTxs(tx, group, "loot")
+    
+    experience.controller[group + "ContractControls"].main()
+    setCurrMode(experience.controller.getCurrentMode())
   };
   
   const lookInside = async (): Promise<any> => 

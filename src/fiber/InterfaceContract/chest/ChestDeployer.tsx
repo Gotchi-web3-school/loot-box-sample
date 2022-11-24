@@ -37,6 +37,9 @@ const ChestDeployer: React.FC<{group: string, experience: Experience}>  = ({ gro
     try {
       tx = await deployTx(user!.wallet, contract!.deployer, data, group, experience.toast)
       contract!.handleDeployment(tx, group, "deploy")
+
+      experience.controller[group + "ContractControls"].main()
+      setCurrMode(experience.controller.getCurrentMode())
     } catch (error: any) {
       experience.toast.txFailed({wallet: user!.wallet, contractName: group, funcName: "deploy", tx: tx, error: error.message})
     }

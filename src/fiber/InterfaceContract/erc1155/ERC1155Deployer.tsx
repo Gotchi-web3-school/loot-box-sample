@@ -75,7 +75,7 @@ const ERC1155Deployer: React.FC<{group: string, experience: Experience}>  = ({ g
             <ChakraProvider>
               <Box border={"2px solid #9ecaed"}  overflowY="auto" width="268px" height={"268px"} padding="1rem" borderRadius={"32px"} textAlign="center" textColor={'white'} boxShadow={"inset 0 0 20px #9ecaed, 0 0 20px #9ecaed"}>
                 <Box>
-                  <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >Deploy {group}</Text>
+                  <Text pb="0.5rem" fontWeight={"bold"} sx={{fontSize: "1rem"}} >Deploy erc1155</Text>
                   <Box as='button' fontSize={"10px"} position={"fixed"} top="20wpx" right="20px" onClick={() => {
                     experience.controller.erc1155SCContractControls.main()
                     setCurrMode(experience.controller.getCurrentMode())
