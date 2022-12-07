@@ -12,12 +12,14 @@ import Factory        from "./Utils/Factory"
 import Materials      from "./Utils/Materials"
 import Toast          from "./Utils/Toast"
 import Time           from "./Utils/Time"
+import Socket         from "./Utils/Socket"
 import World          from "./World/World"
 
 export default class Experience {
   private static _instance: Experience | null;
 
   root: RootState
+  socket: Socket
   toast: Toast
   debug: Debug
   time: Time
@@ -36,31 +38,32 @@ export default class Experience {
   
   constructor(root: RootState, controls: any) {
     // Singleton
-    Experience._instance = this
-    this.root = root
+    this.root             = root
+    Experience._instance  = this
+    this.socket           = new Socket()
 
     // loading 
     this.resources = new Resources(sources)
     this.preLoader = new PreLoader()
 
     // set up Utils classes
-    this.toast = new Toast()
-    this.debug = new Debug()
-    this.time = new Time(root.clock) 
-    this.mouse = root.mouse
+    this.mouse  = root.mouse
+    this.toast  = new Toast()
+    this.debug  = new Debug()
+    this.time   = new Time(root.clock) 
     this.sounds = new Sounds()
 
     // Set up the scene in canvas (loading page)
-    this.scene = root.scene
-    this.factory = new Factory()
-    this.camera = new Camera(controls, root.camera)
+    this.scene      = root.scene
+    this.factory    = new Factory()
+    this.camera     = new Camera(controls, root.camera)
     this.controller = new Controller()
     
     
     // Set up the world with all the models & how we will interact with them
-    this.world = new World()
-    this.materials = new Materials()
-    this.raycaster = new Raycaster()
+    this.world      = new World()
+    this.materials  = new Materials()
+    this.raycaster  = new Raycaster()
     
     //config
     window.addEventListener('touchstart', () => { this.config.touch = true }, { once: true })

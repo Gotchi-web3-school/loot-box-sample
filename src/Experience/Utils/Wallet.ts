@@ -18,8 +18,8 @@ export default class Wallet {
   resources: Resources
   factory: Factory
   
-  ethereum: any
-  provider: Web3Provider
+  ethereum?: any
+  provider?: Web3Provider
   signer?: any
   isConnected = false
   network = ''
@@ -33,11 +33,10 @@ export default class Wallet {
     this.factory = this.experience.factory
 
     this.ethereum = window.ethereum
-    this.provider = new ethers.providers.Web3Provider(window.ethereum);
+    this.provider = window.ethereum && new ethers.providers.Web3Provider(window.ethereum);
 
     this.setConnect()
 
-    window.ethereum.on('chainChanged', (chainId: number) => window.location.reload());
   }
 
   private setConnect(): void
@@ -58,6 +57,8 @@ export default class Wallet {
     try 
     {
       // Get signer
+      this.ethereum = window.ethereum
+      window.ethereum.on('chainChanged', (chainId: number) => window.location.reload());
       await this.ethereum.request({ method: 'eth_requestAccounts' });
       console.log("selected address: ", this.ethereum.selectedAddress)
       this.provider = new ethers.providers.Web3Provider(this.ethereum);

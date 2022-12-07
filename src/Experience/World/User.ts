@@ -1,22 +1,24 @@
-import * as THREE from "three";
+import * as THREE         from "three";
 import { Scene, Vector3 } from "three";
-import GUI from "lil-gui";
-import Experience from "../Experience";
-import Debug from "../Utils/Debug";
-import Resources from "../Utils/Resources";
-import Time from "../Utils/Time";
-import Wallet from "../Utils/Wallet";
-import Camera from "../Camera";
-import Controller from "../Controller";
+import GUI                from "lil-gui";
+import Experience         from "../Experience";
+import Debug              from "../Utils/Debug";
+import Resources          from "../Utils/Resources";
+import Time               from "../Utils/Time";
+import Wallet             from "../Utils/Wallet";
+import Camera             from "../Camera";
+import Controller         from "../Controller";
+import Socket             from "../Utils/Socket";
 
-const UP = ["ArrowUp", 'w', 'W']
-const DOWN = ["ArrowDown", 's', 'S']
-const LEFT = ["ArrowLeft", 'a', 'A']
+const UP    = ["ArrowUp", 'w', 'W']
+const DOWN  = ["ArrowDown", 's', 'S']
+const LEFT  = ["ArrowLeft", 'a', 'A']
 const RIGHT = ["ArrowRight", 'd', 'D']
 
 export default class User {
   // Class
   experience: Experience
+  socket: Socket
   scene: Scene
   resources: Resources
   camera: Camera
@@ -45,6 +47,7 @@ export default class User {
   constructor() 
   {
     this.experience = Experience.Instance()
+    this.socket = Socket.Instance()
     this.wallet = new Wallet(this)
     this.scene = this.experience.scene
     this.resources = this.experience.resources
@@ -175,24 +178,33 @@ export default class User {
     {
       this.fox.scene.position.z += (this.time.deltaTime * direction.z) * 9
       this.fox.scene.position.x += (this.time.deltaTime * direction.x) * 9
+      this.socket.socket.emit("move", this.fox.scene.position)
     }
 
     if (this.movements.ArrowDown)
     {
       this.fox.scene.position.z -= (this.time.deltaTime * direction.z) * 3
       this.fox.scene.position.x -= (this.time.deltaTime * direction.x) * 3
+      this.socket.socket.emit("move", this.fox.scene.position)
+
     }
 
     if (this.movements.ArrowLeft)
     {
       this.fox.scene.rotation.y += this.time.deltaTime * 3
+      this.socket.socket.emit("move", this.fox.scene.position)
+
     }
 
     if (this.movements.ArrowRight)
     {
       this.fox.scene.rotation.y -= this.time.deltaTime * 3
+      this.socket.socket.emit("move", this.fox.scene.position)
+
     }
+
   }
+
   public update(): void 
   {
     this.move()
