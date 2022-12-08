@@ -12,14 +12,14 @@ import Factory        from "./Utils/Factory"
 import Materials      from "./Utils/Materials"
 import Toast          from "./Utils/Toast"
 import Time           from "./Utils/Time"
-import Socket         from "./Utils/Socket"
+import Room           from "./Utils/Room"
 import World          from "./World/World"
 
 export default class Experience {
   private static _instance: Experience | null;
 
   root: RootState
-  socket: Socket
+  room: Room
   toast: Toast
   debug: Debug
   time: Time
@@ -40,19 +40,19 @@ export default class Experience {
     // Singleton
     this.root             = root
     Experience._instance  = this
-    this.socket           = new Socket()
-
+    this.room             = new Room()
+    
     // loading 
     this.resources = new Resources(sources)
     this.preLoader = new PreLoader()
-
+    
     // set up Utils classes
     this.mouse  = root.mouse
     this.toast  = new Toast()
     this.debug  = new Debug()
     this.time   = new Time(root.clock) 
     this.sounds = new Sounds()
-
+    
     // Set up the scene in canvas (loading page)
     this.scene      = root.scene
     this.factory    = new Factory()

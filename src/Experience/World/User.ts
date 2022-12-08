@@ -8,7 +8,7 @@ import Time               from "../Utils/Time";
 import Wallet             from "../Utils/Wallet";
 import Camera             from "../Camera";
 import Controller         from "../Controller";
-import Socket             from "../Utils/Socket";
+import Room               from "../Utils/Room";
 
 const UP    = ["ArrowUp", 'w', 'W']
 const DOWN  = ["ArrowDown", 's', 'S']
@@ -18,7 +18,7 @@ const RIGHT = ["ArrowRight", 'd', 'D']
 export default class User {
   // Class
   experience: Experience
-  socket: Socket
+  room: Room
   scene: Scene
   resources: Resources
   camera: Camera
@@ -46,21 +46,22 @@ export default class User {
 
   constructor() 
   {
-    this.experience = Experience.Instance()
-    this.socket = Socket.Instance()
-    this.wallet = new Wallet(this)
-    this.scene = this.experience.scene
-    this.resources = this.experience.resources
-    this.time = this.experience.time
-    this.camera = this.experience.camera
-    this.controller = this.experience.controller
-    this.fox.model = this.resources.items.foxModel
-    this.debug = this.experience.debug
-    this.camera.user = this
+    this.experience   = Experience.Instance()
+    this.room         = Room.Instance()
+    this.wallet       = new Wallet(this)
+    this.scene        = this.experience.scene
+    this.resources    = this.experience.resources
+    this.time         = this.experience.time
+    this.camera       = this.experience.camera
+    this.controller   = this.experience.controller
+    this.fox.model    = this.resources.items.foxModel
+    this.debug        = this.experience.debug
+    this.camera.user  = this
 
     this.setGLTF()
     this.setAnimations()
     this.setActions()
+    this.room.listen()
   }
 
   private setGLTF(): void 
@@ -77,13 +78,13 @@ export default class User {
 
   private setAnimations(): void 
   {
-    this.fox.animation = {}
-    this.fox.animation.mixer = new THREE.AnimationMixer(this.fox.scene)
+    this.fox.animation        = {}
+    this.fox.animation.mixer  = new THREE.AnimationMixer(this.fox.scene)
     
-    this.fox.animation.action = {}
-    this.fox.animation.action.idle = this.fox.animation.mixer.clipAction(this.fox.model.animations[0])
-    this.fox.animation.action.walk = this.fox.animation.mixer.clipAction(this.fox.model.animations[1])
-    this.fox.animation.action.run = this.fox.animation.mixer.clipAction(this.fox.model.animations[2])
+    this.fox.animation.action       = {}
+    this.fox.animation.action.idle  = this.fox.animation.mixer.clipAction(this.fox.model.animations[0])
+    this.fox.animation.action.walk  = this.fox.animation.mixer.clipAction(this.fox.model.animations[1])
+    this.fox.animation.action.run   = this.fox.animation.mixer.clipAction(this.fox.model.animations[2])
 
     this.fox.animation.action.current = this.fox.animation.action.idle
     this.fox.animation.action.current.play()
@@ -94,6 +95,8 @@ export default class User {
     // Player is moving
     window.addEventListener("keydown", (event) => 
     {
+        this.room.socket.emit("keydown", event.key)
+
         // Run
         if (UP.includes(event.key)) 
         {
@@ -145,6 +148,8 @@ export default class User {
     // Player stop moving
     window.addEventListener("keyup", (event) => 
     {
+      this.room.socket.emit("keyup", event.key)
+
       if (UP.includes(event.key) || DOWN.includes(event.key))
       {
         UP.includes(event.key) ? this.movements["ArrowUp"] = false : this.movements["ArrowDown"] = false
@@ -178,31 +183,27 @@ export default class User {
     {
       this.fox.scene.position.z += (this.time.deltaTime * direction.z) * 9
       this.fox.scene.position.x += (this.time.deltaTime * direction.x) * 9
-      this.socket.socket.emit("move", this.fox.scene.position)
+      this.room.socket.emit("move", this.fox.scene.position, this.fox.scene.rotation)
     }
 
     if (this.movements.ArrowDown)
     {
       this.fox.scene.position.z -= (this.time.deltaTime * direction.z) * 3
       this.fox.scene.position.x -= (this.time.deltaTime * direction.x) * 3
-      this.socket.socket.emit("move", this.fox.scene.position)
-
+      this.room.socket.emit("move", this.fox.scene.position, this.fox.scene.rotation)
     }
 
     if (this.movements.ArrowLeft)
     {
       this.fox.scene.rotation.y += this.time.deltaTime * 3
-      this.socket.socket.emit("move", this.fox.scene.position)
-
+      this.room.socket.emit("move", this.fox.scene.position, this.fox.scene.rotation)
     }
 
     if (this.movements.ArrowRight)
     {
       this.fox.scene.rotation.y -= this.time.deltaTime * 3
-      this.socket.socket.emit("move", this.fox.scene.position)
-
+      this.room.socket.emit("move", this.fox.scene.position, this.fox.scene.rotation)
     }
-
   }
 
   public update(): void 

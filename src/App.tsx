@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState }    from "react";
 import { useToast }                       from "@chakra-ui/react"
-import { useControls }                    from 'leva';
+import { useControls, Leva }              from 'leva';
 import { extend, useThree, useFrame }     from "@react-three/fiber";
 import { OrbitControls, Stars, Sparkles } from "@react-three/drei"
 import { Bloom, EffectComposer, Outline } from '@react-three/postprocessing'
@@ -94,6 +94,7 @@ function App() {
 
   return (
     <>
+    <Leva hidden={true} />
       <color args={ ["black"] } attach="background" />
       <OrbitControls args={ [root.camera, root.gl.domElement] } ref={controlsRef} />
       <Stars ref={starsRef} radius={radius} depth={depth} count={count} factor={factor} saturation={saturation} speed={speed} />
