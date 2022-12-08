@@ -4,6 +4,7 @@ import { clone }          from 'three/examples/jsm/utils/SkeletonUtils.js';
 import Experience         from "../Experience";
 import Resources          from "../Utils/Resources";
 import Room               from "../Utils/Room";
+import Time               from "../Utils/Time";
 
 const UP    = ["ArrowUp", 'w', 'W']
 const DOWN  = ["ArrowDown", 's', 'S']
@@ -17,6 +18,7 @@ export default class Player {
   experience: Experience
   room: Room
   scene: Scene
+  time: Time
   resources: Resources
 
   // Model
@@ -37,6 +39,7 @@ export default class Player {
     this.experience = Experience.Instance()
     this.room       = Room.Instance()
     this.scene      = this.experience.scene
+    this.time       = this.experience.time
     this.resources  = this.experience.resources
     this.fox.model  = this.resources.items.foxModel
 

@@ -73,6 +73,7 @@ export default class Experience {
   update(): void {
     this.time.tick()
     this.camera.update()
+    this.room.update()
     this.world.update()
     this.raycaster.update()
   }

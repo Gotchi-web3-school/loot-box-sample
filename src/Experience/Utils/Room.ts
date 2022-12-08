@@ -58,5 +58,7 @@ export default class Room {
     return this._instance || ( this._instance = new this() );
   }
 
-  
+  update() {
+    Object.values(this.players).forEach((player) => player.update())
+  }
 }
