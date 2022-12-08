@@ -10,7 +10,7 @@ export default class Room {
   players: { [key: string]: Player } = {}
 
   // State
-  socket = io("https://44.212.69.195:8000")
+  socket = io("http://44.212.69.195:8000")
 
   constructor() {
     Room._instance = this
